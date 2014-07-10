@@ -1,0 +1,37 @@
+<p>This is the partial for view 2.</p>
+<p>
+  Showing of 'interpolate' filter:
+  {{ 'Current version is v%VERSION%.' | interpolate }}
+  
+</p>
+<h1>{{dataValue}}</h1>
+<table>
+    <thead>
+      <tr><th colspan="4">Drivers Championship Standings</th></tr>
+    </thead>
+    <tbody>	
+		<tr ng-repeat="driver in driversList">
+				<td>{{$index + 1}}</td>
+				<td>
+				  {{driver.Driver.givenName}}&nbsp;{{driver.Driver.familyName}}
+				</td>
+				<td>{{driver.Constructors[0].name}}</td>
+				<td>{{driver.points}}</td>
+		</tr>
+	</tbody>
+ </table>
+ 
+ <table>
+    <thead>
+      <tr><th colspan="4">Drivers Championship Standings</th></tr>
+    </thead>
+    <tbody>	
+		<tr ng-repeat="user in userList">
+				<td>{{$index + 1}}</td>
+				<td>
+				  {{driver.username}}&nbsp;{{driver.password}}
+				</td>
+		</tr>
+	</tbody>
+ </table>
+ 

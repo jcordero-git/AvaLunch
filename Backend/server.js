@@ -12,13 +12,15 @@ app.configure(function () {
   app.use(express.methodOverride());
   app.use(app.router);
 });
-
-app.get('/', function(req, res) {
-  res.send("Hello world!");
+/*
+app.get('*', function(req, res) {
+		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
+*/
 
 require('./rutes')(app);
 
 app.listen(3000, function() {
   console.log("Node server running on http://localhost:3000");
 });
+

@@ -8,6 +8,12 @@ module.exports = function(app){
 		else console.log('Error'+ err);
 	});	
 	};
+	validateUser=function(req, res){
+	userVa.findOne({username:req.params.username,password:req.params.password}, function(err,user){
+		if(!err) res.send(user);
+		else console.log('Error '+err);
+		});
+	};
 	registerUser=function(req, res){
 	var user = new userVa(
 		{
@@ -24,6 +30,7 @@ module.exports = function(app){
 	
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
+app.get('/user/:username::password',validateUser);
 	
 };
 

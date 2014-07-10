@@ -1,0 +1,28 @@
+<!DOCTYPE  html>
+<!--ng-app hace referencia al nombre de nuestro modulo-->
+<html ng-app="app">
+    <head>
+        
+		<!--
+		<script type="text/javascript" src="angular.js"></script>
+        <script type="text/javascript" src="angular_resource.js"></script>
+        <script type="text/javascript" src="app.js"></script>
+		-->
+    </head>
+    <body>
+        <!--añadimos aquí el controlador appController ya que será donde mostremos los datos-->
+        <div class="row" ng-controller="controller1">
+            <h1 class="subheader">Consumir un json con $http en AngularJS</h1>
+			<h1> {{1 + 1}} </h1>
+            <ul class="panel callout radius">
+                <li ng-repeat="data in datos">
+                    <p>Id: {{ data.id }} Nombre: {{ data.username }} Profesion: {{ data.password }}</p>
+                </li>
+            </ul> 
+        </div>
+      
+	  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+      <script type="text/javascript" src="https://dl.dropboxusercontent.com/u/100321571/ANGULAR/app.js"></script>
+		
+    </body>
+</html>
