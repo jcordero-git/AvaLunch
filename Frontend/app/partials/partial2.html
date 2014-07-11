@@ -20,7 +20,7 @@
 		</tr>
 	</tbody>
  </table>
- 
+ {{userList1.id}}
  <table>
     <thead>
       <tr><th colspan="4">Drivers Championship Standings</th></tr>
@@ -29,7 +29,7 @@
 		<tr ng-repeat="user in userList">
 				<td>{{$index + 1}}</td>
 				<td>
-				  {{driver.username}}&nbsp;{{driver.password}}
+				  {{user.id}}&nbsp;{{user.content}}
 				</td>
 		</tr>
 	</tbody>
