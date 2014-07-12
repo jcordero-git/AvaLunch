@@ -1,10 +1,12 @@
 <p>This is the partial for view 2.</p>
 <p>
   Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
+  <!--{{ 'Current version is v%VERSION%.' | interpolate }} -->
   
 </p>
-<h1>{{dataValue}}</h1>
+ <h1>{{dataValue}}</h1>
+
+
 <table>
     <thead>
       <tr><th colspan="4">Drivers Championship Standings</th></tr>
@@ -20,10 +22,12 @@
 		</tr>
 	</tbody>
  </table>
- {{userList1.id}}
+   
+ <!--<h1> Phone ID Web Service: {{ mainImageUrl }};-->
+
  <table>
     <thead>
-      <tr><th colspan="4">Drivers Championship Standings</th></tr>
+      <tr><th colspan="4">Drivers Championship WEB SERVICE</th></tr>
     </thead>
     <tbody>	
 		<tr ng-repeat="user in userList">
@@ -35,3 +39,15 @@
 	</tbody>
  </table>
  
+ <h3>AngularJS GitHub Issues</h3>
+<table class="table table-striped">
+  <tr>
+    <th>Number</th>
+    <th>State</th>
+  </tr>
+  <tr ng-repeat="issue in datau.usersweb">
+    <td>{{$index + 1}}</td>
+    <td>{{issue.username}}</td>
+    <td>{{issue.password}}</td>
+  </tr>
+</table>

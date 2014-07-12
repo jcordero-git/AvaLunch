@@ -1,2 +1,2 @@
 https://mongolab.com
-mongodb://<admin>:<admin>@ds027799.mongolab.com:27799/foodproviders
+mongodb://admin:admin@ds027799.mongolab.com:27799/foodproviders

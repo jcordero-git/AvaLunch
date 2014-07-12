@@ -2,52 +2,30 @@
 
 /* Controllers */
 
-app= angular.module('myApp.controllers', [])
-  
-  .controller('MyCtrl1', ['$scope', function($scope) {
+app= angular.module('myApp.controllers', [])  
 
+  .controller('MyCtrl1', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
+	$scope.data = {};   
+    AngularIssues.query(function(response) {
+      // Assign the response INSIDE the callback
+      $scope.data.issues = response;
+    });	
+	
+  
   }])
   
-  .controller('MyCtrl2', ['$scope', '$http','$templateCache', function($scope, $http, $templateCache) {
-	$scope.dataValue=2;		
+  .controller('MyCtrl2', ['$scope', 'JsonService', function($scope, JsonService) {
+
+	$scope.datau = {};   
+    JsonService.query(function(response) {
+      // Assign the response INSIDE the callback
+      $scope.datau.usersweb = response;
+    });	
 	
-	$scope.method = 'GET';
-    $scope.url = 'http://rest-service.guides.spring.io/greeting';
-	/*
-	$http.get('http://rest-service.guides.spring.io/greeting')
-		.success(function(data) {
-			$scope.userList = data;
-			console.log(data);
-		});
-	alert(data);
-	*/
-	
-	var userList1= [{id:'hola'}];
-	
-	$http({method: $scope.method, url: $scope.url, cache: $templateCache}).
-        success(function(data, status) {
-          $scope.userList = data;	
-			alert(data);	  
-        }).
-        error(function(data, status) {
-         
-      });
-	
-	
+	$scope.dataValue="Valor seteado en Ctrl2";
 	
 	$scope.driversList = [
       {
-          Driver: {
-              givenName: 'Sebastian',
-              familyName: 'Vettel'
-          },
-          points: 322,
-          nationality: "German",
-          Constructors: [
-              {name: "Red Bull"}
-          ]
-      },
-	  {
           Driver: {
               givenName: 'Sebastian',
               familyName: 'Vettel'

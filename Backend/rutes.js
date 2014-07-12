@@ -4,7 +4,7 @@ module.exports = function(app){
 	//GET
 	findAllUsers=function(req, res){
 	userVa.find(function(err,user){
-		if(!err) res.send(user);
+		if(!err) res.json(user);
 		else console.log('Error'+ err);
 	});	
 	};
