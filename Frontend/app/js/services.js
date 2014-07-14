@@ -13,6 +13,15 @@ angular.module('myApp.services', ['ngResource'])
 	//return $resource('http://localhost:3000/user/', {})
   })
   .factory('JsonService', function($resource) {
-   return $resource('http://192.168.0.123:3000/user/', {});
+   return $resource('http://localhost:3000/user/', {});
   })   
+  .factory('ValidateUser', function($resource){
+  return $resource('http://localhost:3000/user/:username/:password',
+	{
+	username:'@username',
+	password:'@password'
+	},
+	{}
+  );
+  })
   .value('version', '0.1');

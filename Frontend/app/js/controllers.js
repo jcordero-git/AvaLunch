@@ -1,9 +1,48 @@
 'use strict';
 
 /* Controllers */
+(function(){
+
+var user = [];
 
 app= angular.module('myApp.controllers', [])  
 
+ .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', function($scope, ValidateUser, $location) {
+	$scope.value = "NO"; 
+	$scope.username;
+	$scope.password;
+
+	user.username;
+	user.password
+	
+	//$scope.Validate = function(product){
+	$scope.Validate = function(){
+	//alert($scope.username);
+	//alert($scope.password);
+	
+     ValidateUser.get({'username': $scope.username,'password': $scope.password}, function(response){
+	  // $scope.UserId=response.Id;
+	  // $scope.value=response.Id;
+	  //alert(response);
+	  $scope.value="NO";
+	   if(response.username)
+		{
+		$scope.value="OK";
+		$location.path('/welcome');
+		}
+	  });
+	 // product.reviews.push($scope.review);
+     // $scope.review = {};	  
+    };
+	
+    	  
+  }])
+
+    .controller('WelcomeCtrl', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
+	$scope.userName = gems;  
+  
+  }])
+  
   .controller('MyCtrl1', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
 	$scope.data = {};   
     AngularIssues.query(function(response) {
@@ -58,3 +97,9 @@ app.controller("testCtrl3", function () {
   
 
 });
+
+
+
+
+
+})();

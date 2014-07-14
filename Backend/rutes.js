@@ -30,7 +30,7 @@ module.exports = function(app){
 	
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username::password',validateUser);
+app.get('/user/:username/:password',validateUser);
 	
 };
 
