@@ -2,33 +2,60 @@
 
 /* Controllers */
 (function(){
-
-var user = [];
+1
+//var user = [];
+//var username1;
+//var username2="hola 2777";
 
 app= angular.module('myApp.controllers', [])  
 
- .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', function($scope, ValidateUser, $location) {
-	$scope.value = "NO"; 
+.controller('TemplateCtrl',['$scope','loggedInStatus',function($scope,loggedInStatus){
+	$scope.panelLogin=true;
+	$scope.logged=loggedInStatus.getLoggedIn(); 	
+	
+	$scope.LogOut = function(){
+		$scope.logged=false;
+		loggedInStatus.setLoggedIn(false);
+		//alert($scope.logged);
+		};
+	$scope.PanelLogin = function(status){
+		$scope.panelLogin=status;
+		};
+	
+	
+}])
+
+ .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', function($scope, ValidateUser, $location, loggedInStatus, $http) {
+ 
+	
+	$http.defaults.useXDomain = true;
+ 	
 	$scope.username;
 	$scope.password;
+	$scope.statusMessage="Welcome User";
 
-	user.username;
-	user.password
+	//user.username="Jose";
+	//user.password;
 	
 	//$scope.Validate = function(product){
 	$scope.Validate = function(){
 	//alert($scope.username);
 	//alert($scope.password);
 	
-     ValidateUser.get({'username': $scope.username,'password': $scope.password}, function(response){
+    ValidateUser.get({'username': $scope.username,'password': $scope.password}, function(response){
 	  // $scope.UserId=response.Id;
 	  // $scope.value=response.Id;
-	  //alert(response);
-	  $scope.value="NO";
+	 // alert("hola");
+	 
 	   if(response.username)
-		{
-		$scope.value="OK";
+		{				
+		loggedInStatus.setUsername(response.username);
+		loggedInStatus.setLoggedIn(true);
 		$location.path('/welcome');
+		}
+		else
+		{
+		$scope.statusMessage="Password and Username does not match";
 		}
 	  });
 	 // product.reviews.push($scope.review);
@@ -38,8 +65,11 @@ app= angular.module('myApp.controllers', [])
     	  
   }])
 
-    .controller('WelcomeCtrl', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
-	$scope.userName = gems;  
+    .controller('WelcomeCtrl', ['$scope', 'AngularIssues', 'loggedInStatus', function($scope, AngularIssues, loggedInStatus) {
+	
+	
+	//alert(loggedInStatus.getUsername());
+	$scope.username = loggedInStatus.getUsername(); 	
   
   }])
   
@@ -97,9 +127,6 @@ app.controller("testCtrl3", function () {
   
 
 });
-
-
-
 
 
 })();
