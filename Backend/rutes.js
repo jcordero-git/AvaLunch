@@ -1,5 +1,38 @@
 module.exports = function(app){
 	var userVa= require('./model/user');
+	var menuVa= require('./model/menu');
+	var listVa= require('./model/list');
+	
+	findAllList=function(req, res){
+	listVa.find(function(err,list){
+	console.log("menu: "+list);
+		if(!err) res.json(list);
+		else console.log('Error'+ err);
+	});	
+	};
+	
+	findAllMenu=function(req, res){
+	menuVa.find(function(err,menu){
+	console.log("menu: "+menu);
+		if(!err) res.json(menu);
+		else console.log('Error'+ err);
+	});	
+	};
+	
+	registerMenu=function(req, res){
+	var menu = new menuVa(
+		{
+		menuname: req.body.menuname,
+		price: req.body.price	
+		});
+	console.log("Menu: "+menu);
+		menu.save(function(err){
+			if (!err) console.log('menu saved');
+			else console.log('error'+ err);
+		});
+		res.send(menu);
+	};
+	
 	
 	//GET
 	findAllUsers=function(req, res){
@@ -18,6 +51,7 @@ module.exports = function(app){
 	var user = new userVa(
 		{
 		username: req.body.username,
+		email: req.body.email,
 		password: req.body.password	
 		});
 	console.log("usuario: "+user);
@@ -28,6 +62,9 @@ module.exports = function(app){
 		res.send(user);
 	};
 	
+app.get('/list',findAllList);
+app.get('/menu',findAllMenu);
+app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
 app.get('/user/:username/:password',validateUser);

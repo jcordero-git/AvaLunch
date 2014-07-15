@@ -3,13 +3,13 @@ var mongoose=require('mongoose');
 var app = express();
 
 
-mongoose.connect('mongodb://admin:admin@ds027799.mongolab.com:27799/foodproviders', function(err,res){
+mongoose.connect('mongodb://admin:admin@kahana.mongohq.com:10058/foodproviders', function(err,res){
 	if(err) console.log('Error en la conexion con Mongo'+ err);
 	else console.log('conexion exitosa con Mongo');
 });
 
 var allowCrossDomain = function(req, res, next){
-      res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+      res.header("Access-Control-Allow-Origin", "http://localhost:8080");
       res.header("Access-Control-Allow-Headers", "X-Requested-With");
       res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELELE");
       res.header("Access-Control-Max-Age", "3600");
@@ -22,7 +22,7 @@ app.configure(function ($httpProvider) {
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
- // app.use(allowCrossDomain);
+  //app.use(allowCrossDomain);
   //$httpProvider.defaults.useXDomain = true;
     
 });
@@ -38,8 +38,15 @@ app.all('*', function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header("Access-Control-Allow-Headers", "X-Requested-With");
    res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,POST,PUT,DELETE');
-   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");   
-  next();
+   res.header("Access-Control-Allow-Headers", "Origin, X--With, Content-Type, Accept");   
+   // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+
  });
  
 

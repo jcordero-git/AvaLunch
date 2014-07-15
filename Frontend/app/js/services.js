@@ -23,7 +23,24 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	port: ':3000'
 	}
    );
-  })   
+  }) 
+
+    .factory('JsonServiceList', function($resource) {
+   return $resource('http://localhost:port/list/', 
+	{
+	port: ':3000'
+	}
+   );
+  }) 
+  
+  .factory('JsonServiceMenu', function($resource) {
+   return $resource('http://localhost:port/menu/', 
+	{
+	port: ':3000'
+	}
+   );
+  }) 
+  
   .factory('ValidateUser', function($resource){
   return $resource('http://localhost:port/user/:username/:password',
 	{
@@ -34,6 +51,8 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	{}
   );
   })
+  
+
   
   .service('loggedInStatus', function($cookieStore){
 	  var username="";

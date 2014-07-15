@@ -17,45 +17,21 @@
               <code>La hora de llamada es 11:00 am</code>
               <br />
             </div>
+			</br>
+			<h3>Today's Menu</h3>
             <div class="table-responsive">
               <table class="table">
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Pescado empanizado.</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Pescado al ajillo.</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Filete de pollo a la plancha</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Pollo sudado.</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Bistec de res encebollado.</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Carne desmechada (Mexicana)</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>Carne en trocitos.</td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>Costilla de cerdo frita.</td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>Arroz con pollo. (Opcional, Preguntar)</td>
-                  </tr>
+				<tr>
+                    <td>#</td>
+                    <td></td>
+					<td>Price</td>
+                  </tr>  
+                  <tr ng-repeat="menu in datamenu.menu">
+                    <td>{{$index + 1}}</td>
+                    <td>{{menu.menuname}}</td>
+					<td>{{menu.price}}</td>
+                  </tr>                  
                 </tbody>
               </table>
             </div>

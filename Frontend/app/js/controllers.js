@@ -14,9 +14,8 @@ var app= angular.module('myApp.controllers', [])
 	$scope.logged=loggedInStatus.getLoggedIn(); 	
 	
 	if($scope.logged==false)
-		{				
-		alert($scope.logged);
-		$location.path('/welcome');
+		{						
+		$location.path('/login');
 		}
 			
 	$scope.PanelLogin = function(status){
@@ -26,7 +25,7 @@ var app= angular.module('myApp.controllers', [])
 	
 }])
 
- .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', function($scope, ValidateUser, $location, loggedInStatus, $http) {
+ .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', 'JsonService' , function($scope, ValidateUser, $location, loggedInStatus, $http, JsonService) {
  
 	
 	$http.defaults.useXDomain = true;
@@ -34,6 +33,12 @@ var app= angular.module('myApp.controllers', [])
 	$scope.username;
 	$scope.password;
 	$scope.statusMessage="Welcome User";
+	
+	$scope.newUserModel={};
+	$scope.newUserModel.username="";
+	$scope.newUserModel.password="";
+	$scope.newUserModel.email="";
+	
 
 	//user.username="Jose";
 	//user.password;
@@ -60,14 +65,27 @@ var app= angular.module('myApp.controllers', [])
 		}
 	  });
 	 // product.reviews.push($scope.review);
-     // $scope.review = {};	  
+     // $scope.review = {};	 
+
     };
+	
+	$scope.RegisterUser = function(){
+	JsonService.save($scope.newUserModel, function(response){
+	if (response)alert("User registered successfully..");
+	else {alert("guardado");}
+	
+	});	
+	};
 	
     	  
   }])
 
-    .controller('IndexCtrl', ['$scope', 'AngularIssues', 'loggedInStatus' , '$location', function($scope, AngularIssues, loggedInStatus, $location) {
+    .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', function($scope, JsonServiceMenu, loggedInStatus, $location) {
 	
+	$scope.datamenu = {};   
+    JsonServiceMenu.query(function(response) {
+      $scope.datamenu.menu = response;
+    });	
 	
 	//alert(loggedInStatus.getUsername());
 	$scope.username = loggedInStatus.getUsername();
@@ -140,16 +158,37 @@ app.controller("testCtrl3", function () {
 
 });
 
-/*
-app.controller('tasksController', function($scope, $http) {
-  getTask(); // Load all available tasks
+
+
+app.controller('tasksController', ['$scope','JsonServiceList', function($scope, JsonServiceList) {
+ 
+ 
+ // getTask(); // Load all available tasks
   getMenu(); // Load all countries with capitals
+  getList();
   $scope.date = new Date();
 
+  function getMenu(){
+  //$scope.datamenu = {};   
+    JsonServiceList.query(function(response) {
+      $scope.menu = response;
+    });	
+	}
+  
+  function getList(){
+    //$scope.datalist = {};   
+    JsonServiceList.query(function(response) {
+      $scope.tasks = response;
+    });
+  };
+  
+  
   setInterval(function(){
-    getTask();
+    getList();
   },5000);
 
+  /*
+  
   function getMenu(){
     $http.get("ajax/getMenu.php").success(function(data){
       $scope.menu = data;
@@ -176,35 +215,37 @@ app.controller('tasksController', function($scope, $http) {
       $scope.taskInput = "";
     });
   };
+   */
   $scope.deleteTask = function (task) {
     $scope.hour = new Date();
-    if ($scope.hour.getHours()<=11) {
-      if(confirm("Are you sure to delete this line?")){
-        $http.post("ajax/deleteTask.php?taskID="+task).success(function(data){
-          getTask();
-        });
-      }
+    if ($scope.hour.getHours()>=11) {	
+      if(confirm("Are you sure to delete your lunch?")){
+        alert("delete task code for taskId:"+ task);
+		//$http.post("ajax/deleteTask.php?taskID="+task).success(function(data){
+          getList();
+        };
+      
     }else{
-      getTask();
+      getList();
     }
   };
+ 
   $scope.checkTime = function () {
     $scope.hour = new Date();
-    //console.log($scope.hour.getHours());
-    if ($scope.hour.getHours()>=11) {
+    if ($scope.hour.getHours()<=11) {
       return false;
     };
     return true;
   };
-
+/*
   $scope.toggleStatus = function(item, status, task) {
     if(status=='2'){status='0';}else{status='2';}
     $http.post("ajax/updateTask.php?taskID="+item+"&status="+status).success(function(data){
       getTask();
     });
   };
-
-});
 */
+}]);
+
 
 })();
