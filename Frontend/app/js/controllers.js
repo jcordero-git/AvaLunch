@@ -2,22 +2,23 @@
 
 /* Controllers */
 (function(){
-1
+
 //var user = [];
 //var username1;
 //var username2="hola 2777";
 
-app= angular.module('myApp.controllers', [])  
+var app= angular.module('myApp.controllers', [])  
 
-.controller('TemplateCtrl',['$scope','loggedInStatus',function($scope,loggedInStatus){
+.controller('TemplateCtrl',['$scope','loggedInStatus', '$location',function($scope,loggedInStatus, $location){
 	$scope.panelLogin=true;
 	$scope.logged=loggedInStatus.getLoggedIn(); 	
 	
-	$scope.LogOut = function(){
-		$scope.logged=false;
-		loggedInStatus.setLoggedIn(false);
-		//alert($scope.logged);
-		};
+	if($scope.logged==false)
+		{				
+		alert($scope.logged);
+		$location.path('/welcome');
+		}
+			
 	$scope.PanelLogin = function(status){
 		$scope.panelLogin=status;
 		};
@@ -51,7 +52,7 @@ app= angular.module('myApp.controllers', [])
 		{				
 		loggedInStatus.setUsername(response.username);
 		loggedInStatus.setLoggedIn(true);
-		$location.path('/welcome');
+		$location.path('/index');
 		}
 		else
 		{
@@ -65,11 +66,22 @@ app= angular.module('myApp.controllers', [])
     	  
   }])
 
-    .controller('WelcomeCtrl', ['$scope', 'AngularIssues', 'loggedInStatus', function($scope, AngularIssues, loggedInStatus) {
+    .controller('IndexCtrl', ['$scope', 'AngularIssues', 'loggedInStatus' , '$location', function($scope, AngularIssues, loggedInStatus, $location) {
 	
 	
 	//alert(loggedInStatus.getUsername());
-	$scope.username = loggedInStatus.getUsername(); 	
+	$scope.username = loggedInStatus.getUsername();
+	$scope.logged=loggedInStatus.getLoggedIn(); 
+	
+	$scope.username
+	
+	$scope.LogOut = function(){
+		$scope.logged=false;
+		loggedInStatus.setLoggedIn(false);
+		$location.path('/login');
+		//alert($scope.logged);
+		};
+ 	
   
   }])
   
@@ -128,5 +140,71 @@ app.controller("testCtrl3", function () {
 
 });
 
+/*
+app.controller('tasksController', function($scope, $http) {
+  getTask(); // Load all available tasks
+  getMenu(); // Load all countries with capitals
+  $scope.date = new Date();
+
+  setInterval(function(){
+    getTask();
+  },5000);
+
+  function getMenu(){
+    $http.get("ajax/getMenu.php").success(function(data){
+      $scope.menu = data;
+    });
+  };
+  function getTask(){
+    $http.post("ajax/getTask.php").success(function(data){
+      $scope.tasks = data;
+
+    });
+  };
+  $scope.addTask = function (task) {
+    var dishName;
+
+    if(typeof task == 'object'){
+      dishName = task.platillo;
+    }else{
+      dishName = task;
+    }
+
+    $http.post("ajax/addTask.php?task="+dishName).success(function(data){
+      getTask();
+      console.log(task);
+      $scope.taskInput = "";
+    });
+  };
+  $scope.deleteTask = function (task) {
+    $scope.hour = new Date();
+    if ($scope.hour.getHours()<=11) {
+      if(confirm("Are you sure to delete this line?")){
+        $http.post("ajax/deleteTask.php?taskID="+task).success(function(data){
+          getTask();
+        });
+      }
+    }else{
+      getTask();
+    }
+  };
+  $scope.checkTime = function () {
+    $scope.hour = new Date();
+    //console.log($scope.hour.getHours());
+    if ($scope.hour.getHours()>=11) {
+      return false;
+    };
+    return true;
+  };
+
+  $scope.toggleStatus = function(item, status, task) {
+    if(status=='2'){status='0';}else{status='2';}
+    $http.post("ajax/updateTask.php?taskID="+item+"&status="+status).success(function(data){
+      getTask();
+    });
+  };
+
+});
+*/
 
 })();

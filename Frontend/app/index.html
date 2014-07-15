@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
-1
+
 <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
@@ -15,28 +15,31 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
   <link rel="stylesheet" href="css/app.css"/>
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+  
+   <link href="assets/css/bootstrap.css" rel="stylesheet" />
+   
+    <link href="css/navbar-fixed-top.css" rel="stylesheet">
+  
 </head>
+
+ <body >
 <body ng-controller="TemplateCtrl">
-	
+	<!--
   <ul class="menu" style="text-align: right;position: relative;">
-	<li ng-show="logged" ng-click="LogOut()"><a  href="#/login">Log out</a></li>
-    <li ng-hide="logged"><a  href="#/login">Login</a></li>
-	<li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>	
-  </ul>
+	<li ng-show="logged" ng-click="LogOut()"><a  href="#/login">Log out</a></li>  -->
+    <!-- <li ng-hide="logged"><a  href="#/login">Login</a></li> -->
+	<!-- <li><a href="#/view1">view1</a></li> -->
+    <!-- <li><a href="#/view2">view2</a></li> -->	 
+  <!-- </ul>  -->
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <div ng-view>
-  
-  
-  
+  <div ng-view>  
   
   </div>
  
-  
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
@@ -53,4 +56,6 @@
    <script src="https://dl.dropboxusercontent.com/u/100321571/ANGULAR/angular_resource.js"></script>
    <script src="https://dl.dropboxusercontent.com/u/100321571/ANGULAR/angular-cookies.js"></script>
 </body>
+
+
 </html>

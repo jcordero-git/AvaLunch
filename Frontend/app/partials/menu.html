@@ -1,0 +1,48 @@
+<script type="text/ng-template" id="customTemplate.html">
+<a>
+<span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+<i>({{match.model.detalle}})</i>
+</a>
+</script>
+<div class="widget-box" id="recent-box" >
+<div class="widget-header header-color-blue">
+<div class="row">
+<div class="col-sm-6">
+<h4 class="bigger lighter">
+<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
+Lista
+</h4>
+
+</div>
+<div class="col-sm-6">
+<input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filtrar datos">
+</div>
+</div>
+</div>
+<div class="widget-body ">
+<form ng-init="addNewClicked=false; " id="newTaskForm" class="add-task">
+<div class="form-actions">
+<div class="input-group">
+<input type="text" ng-model="taskInput" placeholder="Digite..." name="comment" typeahead="c as c.platillo for c in menu | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' typeahead-template-url="customTemplate.html" class="form-control" ng-required="taskInput" required>
+
+<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
+<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
+<div class="input-group-btn">
+<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? addTask(taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
+</div>
+</div>
+</div>
+<br>
+<div class="alert alert-warning" ng-show="!taskInput.length">
+<a href="#" class="close" data-dismiss="alert">&times;</a>
+<strong>Advertencia!</strong> Por favor has tu elección! y luego escribe tu nombre!.
+</div>
+</form>
+<div class="task" >
+<label class="checkbox" ng-animate="animate" ng-repeat="task in tasks | filter : filterTask">
+<span>{{task.TASK}} </span>
+<a ng-show="checkTime()" ng-click="deleteTask(task.ID)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+</label>
+</div>
+</div>
+</div>
