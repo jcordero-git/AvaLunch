@@ -1,42 +1,42 @@
 
 <div class="widget-box" id="recent-box"  ng-controller="tasksController">
-<div class="widget-header header-color-blue">
-<div class="row">
-<div class="col-sm-6">
-<h4 class="bigger lighter">
-<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
-Lista {{ val}}
-</h4>
+	<div class="widget-header header-color-blue">
+		<div class="row">
+			<div class="col-sm-6">
+				<h4 class="bigger lighter">
+					<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
+					Lista {{ val}}
+				</h4>
 
-</div>
-<div class="col-sm-6">
-<input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filtrar datos">
-</div>
-</div>
-</div>
-<div class="widget-body ">
-<form ng-init="addNewClicked=false; " id="newTaskForm" class="add-task">
-<div class="form-actions">
-<div class="input-group">
-<input type="text" ng-model="taskInput" placeholder="Digite..." name="comment" typeahead="c as c.menuname for c in menu | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' class="form-control" ng-required="taskInput" required>
+			</div>
+			<div class="col-sm-6">
+				<input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filtrar datos">
+			</div>
+		</div>
+	</div>
+	<div class="widget-body ">
+		<form ng-init="addNewClicked=false; " id="newTaskForm" class="add-task">
+			<div class="form-actions">
+				<div class="input-group">
+					<input type="text" ng-model="taskInput" placeholder="Digite..." name="comment" typeahead="c as c.menuname for c in menu | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' class="form-control" ng-required="taskInput" required>
 
-<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
-<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
-<div class="input-group-btn">
-<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? RegisterList(username,taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
-</div>
-</div>
-</div>
-<br>
-<div class="alert alert-warning" ng-show="!taskInput.length">
-<strong>Advertencia!</strong> Por favor has tu elección!. 
-</div>
-</form>
-<div class="task" >
-<label class="checkbox" ng-animate="animate" ng-repeat="task in tasks | filter : filterTask">
-<span>{{task.menuname}} - {{task.username}} - {{task.date}} </span>
-<a ng-show="checkTime()" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
-</label>
-</div>
-</div>
+					<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
+					<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
+					<div class="input-group-btn">
+						<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? RegisterList(username,taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="alert alert-warning" ng-show="!taskInput.length">
+				<strong>Advertencia!</strong> Por favor has tu elección!. 
+			</div>
+		</form>
+		<div class="task" >
+			<label class="checkbox" ng-animate="animate" ng-repeat="task in tasks | filter : filterTask">
+				<span>{{task.menuname}} - {{task.username}} - {{task.date}} </span>
+				<a ng-show="checkTime()" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+			</label>
+		</div>
+	</div>
 </div>
