@@ -1,13 +1,8 @@
 'use strict';
 
 /* Controllers */
-(function(){
 
-//var user = [];
-//var username1;
-//var username2="hola 2777";
-
-var app= angular.module('myApp.controllers', [])  
+var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
 .controller('TemplateCtrl',['$scope','loggedInStatus', '$location',function($scope,loggedInStatus, $location){
 	$scope.panelLogin=true;
@@ -160,8 +155,13 @@ app.controller("testCtrl3", function () {
 
 
 
-app.controller('tasksController', ['$scope','JsonServiceList', function($scope, JsonServiceList) {
+app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu','$filter', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,$filter) {
  
+  $scope.newListModel={};
+  $scope.newListModel.username="";
+  $scope.newListModel.menuname="";
+  $scope.newListModel.date="";  
+  
  
  // getTask(); // Load all available tasks
   getMenu(); // Load all countries with capitals
@@ -170,8 +170,9 @@ app.controller('tasksController', ['$scope','JsonServiceList', function($scope, 
 
   function getMenu(){
   //$scope.datamenu = {};   
-    JsonServiceList.query(function(response) {
+    JsonServiceMenu.query(function(response) {
       $scope.menu = response;
+	  
     });	
 	}
   
@@ -187,6 +188,28 @@ app.controller('tasksController', ['$scope','JsonServiceList', function($scope, 
     getList();
   },5000);
 
+  $scope.RegisterList = function(username,menuname){
+	var dishName;
+	
+	var day = new Date();   
+    var dayFormat= $filter('date')(day,'dd-MM-yyyy HH:MM');   
+		
+    if(typeof menuname == 'object'){
+      dishName = menuname.menuname;
+    }else{
+      dishName = menuname;
+    }	
+	
+	$scope.newListModel.username=username;
+	$scope.newListModel.menuname=dishName;
+	$scope.newListModel.date=dayFormat;	
+	
+	JsonServiceList.save($scope.newListModel, function(response){
+	if (response)getList();
+	else {alert("error");}
+	
+	});	
+	};
   /*
   
   function getMenu(){
@@ -219,10 +242,24 @@ app.controller('tasksController', ['$scope','JsonServiceList', function($scope, 
   $scope.deleteTask = function (task) {
     $scope.hour = new Date();
     if ($scope.hour.getHours()>=11) {	
-      if(confirm("Are you sure to delete your lunch?")){
-        alert("delete task code for taskId:"+ task);
+      if(confirm("Are you sure to delete your lunch?")){        
+		JsonServiceListDeleteById.delete({'id': task})
+		getList();
+		/*, function(response)
+			{
+			alert(1);
+			getList();
+			if (response)
+			{
+			alert("User deleted successfully..");			
+			}
+			else {alert("error");}
+			}
+			)
+			*/
+			
 		//$http.post("ajax/deleteTask.php?taskID="+task).success(function(data){
-          getList();
+          
         };
       
     }else{
@@ -247,5 +284,3 @@ app.controller('tasksController', ['$scope','JsonServiceList', function($scope, 
 */
 }]);
 
-
-})();

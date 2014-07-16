@@ -31,7 +31,18 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	port: ':3000'
 	}
    );
-  }) 
+  })
+
+   .factory('JsonServiceListDeleteById', function($resource){
+  return $resource('http://localhost:port/list/:id',
+	{
+	port: ':3000',
+	id:'@id'
+	},
+	{}
+  );
+  })
+  
   
   .factory('JsonServiceMenu', function($resource) {
    return $resource('http://localhost:port/menu/', 

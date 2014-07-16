@@ -1,8 +1,9 @@
+'use strict';
 /* --- Made by justgoscha and licensed under MIT license --- */
 
-var app = angular.module('autocomplete', []);
+var app= angular.module('myApp.autocomplete', [])
 
-app.directive('autocomplete', function() {
+.directive('autocomplete', function() {
   var index = -1;
 
   return {
@@ -239,9 +240,9 @@ ng-bind-html="suggestion | highlight:searchParam"></li>\
 </ul>\
 </div>'
   };
-});
+})
 
-app.filter('highlight', ['$sce', function ($sce) {
+.filter('highlight', ['$sce', function ($sce) {
   return function (input, searchParam) {
     if (typeof input === 'function') return '';
     if (searchParam) {
@@ -256,9 +257,9 @@ app.filter('highlight', ['$sce', function ($sce) {
     }
     return $sce.trustAsHtml(input);
   };
-}]);
+}])
 
-app.directive('suggestion', function(){
+.directive('suggestion', function(){
   return {
     restrict: 'A',
     require: '^autocomplete', // ^look for controller on parents element

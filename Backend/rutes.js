@@ -11,6 +11,36 @@ module.exports = function(app){
 	});	
 	};
 	
+	registerList=function(req, res){
+	var list = new listVa(
+		{
+		menuname: req.body.menuname,
+		username: req.body.username,
+		date: req.body.date
+		});
+	console.log("List: "+list);
+		list.save(function(err){
+			if (!err) console.log('list saved');
+			else console.log('error'+ err);
+		});
+		res.send(list);
+	};
+	
+	
+	deleteListById=function(req, res){
+	listVa.findById(req.params.id,function(err,list)
+		{
+		console.log("menu to delete: "+list);
+		list.remove
+			(function(err)
+				{
+				if(!err) console.log('List Item Removed');
+				else console.log('Error'+ err);
+				}
+			)		
+		});	
+	};
+			
 	findAllMenu=function(req, res){
 	menuVa.find(function(err,menu){
 	console.log("menu: "+menu);
@@ -62,7 +92,9 @@ module.exports = function(app){
 		res.send(user);
 	};
 	
+app.post('/list',registerList);
 app.get('/list',findAllList);
+app.delete('/list/:id',deleteListById);
 app.get('/menu',findAllMenu);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);

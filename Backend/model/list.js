@@ -2,8 +2,8 @@ var mongoose = require ('mongoose');
 var Schema = mongoose.Schema;
 
 var listSh = new Schema({
-	idMenu: String,
-	idUser: String,
+	menuname: String,
+	username: String,
 	date: String
 });
 

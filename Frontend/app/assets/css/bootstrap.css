@@ -5035,12 +5035,13 @@ a.list-group-item-danger.active:focus {
   border-bottom-color: #ebccd1;
 }
 .panel-avantica {
-  border-color: #AA2222;
+  border-color: #CCC;
+  
 }
 .panel-avantica > .panel-heading {
   color: #ffffff;
-  background-color: #AA2222;
-  border-color: #AA2222;
+  background-color: #d9534f;
+  border-color: #d9534f;
 }
 .well {
   min-height: 20px;
