@@ -24,7 +24,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	}
    );
   }) 
-
+  
     .factory('JsonServiceList', function($resource) {
    return $resource('http://localhost:port/list/', 
 	{
@@ -63,6 +63,15 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   );
   })
   
+    .factory('ForgotPassword', function($resource){
+  return $resource('http://localhost:port/user/:email',
+	{
+	port: ':3000',
+	email:'@email'
+	},
+	{}
+  );
+  })
 
   
   .service('loggedInStatus', function($cookieStore){

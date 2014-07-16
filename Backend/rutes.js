@@ -1,11 +1,18 @@
 module.exports = function(app){
+
+	app.all('*', function(req, res, next) {
+	  res.header("Access-Control-Allow-Origin", "*");
+	  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	  next();
+	 });
+
 	var userVa= require('./model/user');
 	var menuVa= require('./model/menu');
 	var listVa= require('./model/list');
 	
 	findAllList=function(req, res){
 	listVa.find(function(err,list){
-	console.log("menu: "+list);
+	//console.log("menu: "+list);
 		if(!err) res.json(list);
 		else console.log('Error'+ err);
 	});	
@@ -31,13 +38,21 @@ module.exports = function(app){
 	listVa.findById(req.params.id,function(err,list)
 		{
 		console.log("menu to delete: "+list);
-		list.remove
+		list.remove		
 			(function(err)
-				{
-				if(!err) console.log('List Item Removed');
-				else console.log('Error'+ err);
-				}
-			)		
+				{	
+				console.log("Function");				
+				if(!err) 
+					{
+					console.log('List Item Removed');
+					}
+				else 
+					{
+					console.log('Error'+ err);
+					}
+				}				
+			)
+		res.send(list);			
 		});	
 	};
 			
@@ -77,6 +92,12 @@ module.exports = function(app){
 		else console.log('Error '+err);
 		});
 	};
+	findUserByEmail=function(req, res){
+	userVa.findOne({email:req.params.email}, function(err,user){
+		if(!err) res.send(user);
+		else console.log('Error '+err);
+		});
+	};
 	registerUser=function(req, res){
 	var user = new userVa(
 		{
@@ -100,6 +121,7 @@ app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
 app.get('/user/:username/:password',validateUser);
+app.get('/user/:email',findUserByEmail);
 	
 };
 

@@ -2,10 +2,13 @@
 
 /* Controllers */
 
+
 var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
 .controller('TemplateCtrl',['$scope','loggedInStatus', '$location',function($scope,loggedInStatus, $location){
 	$scope.panelLogin=true;
+	$scope.panelSingUp=false;
+	$scope.panelForgot=false;
 	$scope.logged=loggedInStatus.getLoggedIn(); 	
 	
 	if($scope.logged==false)
@@ -13,41 +16,38 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		$location.path('/login');
 		}
 			
-	$scope.PanelLogin = function(status){
-		$scope.panelLogin=status;
+	$scope.ShowPanels = function(login,singUp,forgot){
+		$scope.panelLogin=login;
+		$scope.panelSingUp=singUp;
+		$scope.panelForgot=forgot;
 		};
+		/*
+	$scope.ShowPanelSingUp = function(){
+		$scope.panelLogin=false;
+		$scope.panelSingUp=true;
+		$scope.panelForgot=false;
+		};
+	$scope.ShowPanelForgot = function(){
+		$scope.panelLogin=false;
+		$scope.panelSingUp=false;
+		$scope.panelForgot=true;
+		};
+		*/
 	
 	
 }])
 
- .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', 'JsonService' , function($scope, ValidateUser, $location, loggedInStatus, $http, JsonService) {
- 
-	
-	$http.defaults.useXDomain = true;
+ .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', 'JsonService', 'ForgotPassword' , function($scope, ValidateUser, $location, loggedInStatus, $http, JsonService, ForgotPassword) {
  	
-	$scope.username;
-	$scope.password;
-	$scope.statusMessage="Welcome User";
-	
+	$http.defaults.useXDomain = true; 	
+	$scope.statusMessage="*****";	
 	$scope.newUserModel={};
 	$scope.newUserModel.username="";
 	$scope.newUserModel.password="";
 	$scope.newUserModel.email="";
 	
-
-	//user.username="Jose";
-	//user.password;
-	
-	//$scope.Validate = function(product){
 	$scope.Validate = function(){
-	//alert($scope.username);
-	//alert($scope.password);
-	
-    ValidateUser.get({'username': $scope.username,'password': $scope.password}, function(response){
-	  // $scope.UserId=response.Id;
-	  // $scope.value=response.Id;
-	 // alert("hola");
-	 
+    ValidateUser.get({'username': $scope.newUserModel.username,'password': $scope.newUserModel.password}, function(response){	  
 	   if(response.username)
 		{				
 		loggedInStatus.setUsername(response.username);
@@ -56,20 +56,34 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		}
 		else
 		{
-		$scope.statusMessage="Password and Username does not match";
+		$scope.statusMessage="El usuario y la contraseña no coinciden";
 		}
 	  });
-	 // product.reviews.push($scope.review);
-     // $scope.review = {};	 
-
     };
 	
 	$scope.RegisterUser = function(){
 	JsonService.save($scope.newUserModel, function(response){
-	if (response)alert("User registered successfully..");
-	else {alert("guardado");}
+	if (response)
+		{
+		alert("Usuario registrado exitosamente");
+		$scope.Validate();
+		}
+	else {alert("error");}
 	
 	});	
+	};
+	
+	$scope.ForgotPassword = function(){
+	 ForgotPassword.get({'email': $scope.newUserModel.email}, function(response){	  
+	   if(response.username)
+		{			
+		alert("Usuario: "+response.username);
+		}
+		else
+		{
+		$scope.statusMessage="Email no registrado.";
+		}
+	  });
 	};
 	
     	  
@@ -85,9 +99,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	//alert(loggedInStatus.getUsername());
 	$scope.username = loggedInStatus.getUsername();
 	$scope.logged=loggedInStatus.getLoggedIn(); 
-	
-	$scope.username
-	
+		
 	$scope.LogOut = function(){
 		$scope.logged=false;
 		loggedInStatus.setLoggedIn(false);
@@ -205,7 +217,11 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
 	$scope.newListModel.date=dayFormat;	
 	
 	JsonServiceList.save($scope.newListModel, function(response){
-	if (response)getList();
+	if (response)
+		{
+		getList();
+		$scope.taskInput = "";
+		}
 	else {alert("error");}
 	
 	});	
@@ -242,7 +258,7 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
   $scope.deleteTask = function (task) {
     $scope.hour = new Date();
     if ($scope.hour.getHours()>=11) {	
-      if(confirm("Are you sure to delete your lunch?")){        
+      if(confirm("Está seguro de querer borrar su pedido?")){        
 		JsonServiceListDeleteById.delete({'id': task})
 		getList();
 		/*, function(response)
@@ -260,8 +276,7 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
 			
 		//$http.post("ajax/deleteTask.php?taskID="+task).success(function(data){
           
-        };
-      
+        }      
     }else{
       getList();
     }
