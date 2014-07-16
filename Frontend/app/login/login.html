@@ -15,167 +15,169 @@
 	<link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
 	<link rel="stylesheet" href="css/app.css"/>
 	<script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
-	-->
-	
-	
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page: Food Providers</title>
-	<!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FONTAWESOME STYLES-->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
-        <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
-     <!-- GOOGLE FONTS-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+-->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AvaLunchs</title>
+<!-- BOOTSTRAP STYLES-->
+<link href="assets/css/bootstrap.css" rel="stylesheet" />
+<!-- FONTAWESOME STYLES-->
+<link href="assets/css/font-awesome.css" rel="stylesheet" />
+<!-- CUSTOM STYLES-->
+<link href="assets/css/custom.css" rel="stylesheet" />
+<!-- GOOGLE FONTS-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+<!-- ANIMATED -->
+<link rel="stylesheet" href="../css/animate.css">
 </head>
-<body>
-	<div class="container">    
-        <div id="loginbox"       ng-show="panelLogin" style="margin-top:40px;" class="mainbox col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2"> 
-            <div class="panel panel-avantica">
-                    <div class="panel-heading">
-                        <div class="panel-title">Iniciar sesión en Avaluchs</div>                       
-                    </div>     										
-                    <div  class="panel-body" >					 					
-                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-						<form id="loginform" class="form-horizontal" role="form" ng-submit="Validate()">
-							<img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
-								<div style="margin-bottom: 20px;text-align: center;"> 
-								<h5> {{statusMessage}} </h5> 
-								</div>
-                            <div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="nombre de usuario" ng-model="newUserModel.username">                                        
-                                    </div>
-                                
-                            <div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login-password" type="password" class="form-control" name="password" placeholder="contraseña" ng-model="newUserModel.password">
-                                    </div>
-                                    
+<body  class="animated bounceInDown">
 
-                                
+    <div class="container"> <!-- container -->
+
+        <div class="starter-template"> <!-- logo -->
+            <div class="animated bounceInDown">
+               <h4 class="logo">
+                  <i class="glyphicon glyphicon glyphicon glyphicon-list"></i>
+                  <span>Ava</span>Lunchs
+                  <small> 1.3 Alfa</small>
+              </h4>
+              <br>             
+          </div>
+      </div> <!-- /logo -->
+
+
+
+      <!-- login -->
+<div class="animated bounceInUp">
+
+    <div id="loginbox" ng-show="panelLogin" class="mainbox col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-2">  
+
+        <form role="form" id="loginform" class="form-horizontal" role="form" ng-submit="Validate()">
+
+                        <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
+                        <div class="form-group">
+                                <div class="animated bounce">
+                                   <span class="label label-success">{{statusMessage}}</span>
+                                </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="input-group">
-                                      <div class="checkbox">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username" ng-model="newUserModel.username">                                        
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password" ng-model="newUserModel.password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-10 col-md-9">       
+                                    <div class="checkbox">
                                         <label>
-                                          <input id="login-remember" type="checkbox" name="remember" value="1"> Recordar mis credenciales
+                                            <input id="login-remember" type="checkbox" name="remember" value="1"> Recordarme
                                         </label>
-                                      </div>
                                     </div>
-
-
-                                <div style="margin-top:10px" class="form-group">
-                                    <!-- Button -->
-
-                                    <div class="col-md-offset-8 col-md-8" class="col-sm-12 controls">
-									<button  type="submit"class="btn  btn-sm btn-success btn-small">
+                                </div>
+                                <div class="col-xs-10 col-md-3">
+                                   	<button  type="submit"class="btn  btn-sm btn-success btn-small">
 										<i class="glyphicon glyphicon-log-in"></i> 
 										Iniciar
 									</button>
-
-                                    </div>
                                 </div>
-								
-								<div style="margin-top:10px" class="form-group">
-                                    <div class="col-md-offset-8 col-md-8" class="col-sm-12 controls">
-                                      <div style="float:right; font-size: 80%; position: relative; top:-5px; left:-225px"><a href="#" ng-Click="ShowPanels(false,false,true)">Olvidé mi contraseña</a></div>
+                            </div>
+                        </div>
+                         <div class="form-group">
+							<div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+								<div class="row">
+                                    <div class="col-xs-12 col-sm-10 col-md-7">       
+                                        No tienes cuenta!<a href="#" ng-Click="ShowPanels(false,true,false)"> Registrase ahora!</a>
                                     </div>
-                                </div>
-								
-
-								 
-
-                                <div class="form-group">
-                                    <div class="col-md-12 control">
-                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-                                            No tengo cuenta aun! 
-                                       <!-- <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
-                                            Sign Up Here
-                                        </a>
-										-->
-										<a href="#" ng-Click="ShowPanels(false,true,false)">
-                                            Registrarse
-                                        </a>
-                                        </div>
+                                    <div class="col-xs-10 col-md-5">
+                                        <a href="#" ng-Click="ShowPanels(false,false,true)">Olvidé mi contraseña?</a>
                                     </div>
-                                </div>    
-                            </form>     
+								</div>
+							</div>
+						</div>                     
+        </form>
+
+    </div>
 
 
+<div id="signupbox" ng-show="panelSingUp" class="mainbox col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-2">
+    <div class="panel panel-avantica">
+        <div class="panel-heading">
+            <div class="panel-title">Avalunchs App</div>                          
+        </div>  
+        <div class="panel-body" >
+            <form id="signupform" class="form-horizontal" role="form" ng-submit="RegisterUser()">
 
-                        </div>                     
-                    </div>  
-        </div>
-        <div id="signupbox"      ng-show="panelSingUp" style="margin-top:40px" class="mainbox col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
-            <div class="panel panel-avantica">
-                        <div class="panel-heading">
-                            <div class="panel-title">Registrarse en Avalunchs</div>                          
-                        </div>  
-                        <div class="panel-body" >
-                            <form id="signupform" class="form-horizontal" role="form" ng-submit="RegisterUser()">
-                                
-                                <div id="signupalert" style="display:none" class="alert alert-danger">
-                                    <p>Error:</p>
-                                    <span></span>
-                                </div>                                
-                                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
-							    <div style="margin-bottom: 20px;text-align: center;"> 
+                <div id="signupalert" style="display:none" class="alert alert-danger">
+                    <p>Error:</p>
+                    <span></span>
+                </div> 
+            <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
+ 		<div style="margin-bottom: 20px;text-align: center;"> 
 								<h5> {{statusMessage}} </h5> 
-								</div>     
-								
-								<div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="nombre de usuario" ng-model="newUserModel.username">                                        
-                                </div>
-								<div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                        <input id="login-email" type="text" class="form-control" name="email" value="" placeholder="Email" ng-model="newUserModel.email">                                        
-                                </div>
-								<div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-										
-                                        <input id="login-password" type="password" class="form-control" name="password" value="" placeholder="contraseña" ng-model="newUserModel.password"> 
-										
-                                </div>
-								
-								<div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login-password" type="password" class="form-control" name="confpassword" value="" placeholder="confirmar contraseña">                                        
-                                </div>
-                                                                     
-                                <div class="form-group">
-                                    <!-- Button -->                                        
-                                    <div class="col-md-offset-8 col-md-8">
-                                       <!-- <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i>  Sign Up</button>  -->  										
-										<button  type="submit"class="btn  btn-sm btn-info btn-small" ng-Click="ShowPanels(true,false,false)">
-											<i class="glyphicon glyphicon-ok-sign"></i> 
-											Aceptar
-										</button>
-									
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <div class="col-md-12 control">
-                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-                                            Ya poseo una cuenta registrada                                         
+								</div>  
+
+
+        <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Username" ng-model="newUserModel.username">                                        
+        </div>
+        <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input id="login-email" type="text" class="form-control" name="email" value="" placeholder="Email" ng-model="newUserModel.email">                                        
+        </div>
+        <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input id="login-password" type="text" class="form-control" name="password" value="" placeholder="Password" ng-model="newUserModel.password">                                        
+        </div>
+
+        <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input id="login-password" type="text" class="form-control" name="confpassword" value="" placeholder="Confirm Password">                                        
+        </div>
+
+        <div class="form-group">
+            <!-- Button -->                                        
+            <div class="col-md-offset-8 col-md-8">
+               <!-- <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i>  Sign Up</button>  -->  
+              <button  type="submit"class="btn  btn-sm btn-info btn-small" ng-Click="ShowPanels(true,false,false)">
+				<i class="glyphicon glyphicon-ok-sign"></i> 
+				Aceptar
+				</button>           
+			</div>
+       </div>
+
+       <div class="form-group">
+        <div class="col-md-12 control">
+            <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                Ya poseo una cuenta registrada                                            
 										<!--
 										<a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a>
-										-->
-										<a href="#" ng-Click="ShowPanels(true,false,false)">
-                                            Iniciar sesión
-                                        </a>
-                                        </div>
-                                    </div>
-                                </div>  
-                                
-                                
-                                
-                            </form>
-                         </div>
-                    </div>
-         </div> 
-		<div id="forgotPassword" ng-show="panelForgot" style="margin-top:40px" class="mainbox col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
+                                  -->
+                                  <a href="#" ng-Click="ShowPanels(true,false,false)">
+                                    Iniciar sesión
+                                </a>
+                            </div>
+                        </div>
+                    </div>  
+
+
+
+                </form>
+            </div>
+        </div>
+</div> 
+
+
+<div id="forgotPassword" ng-show="panelForgot" class="mainbox col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-2">
             <div class="panel panel-avantica">
                         <div class="panel-heading">
                             <div class="panel-title">Recuperación de contraseña</div>                          
@@ -224,24 +226,26 @@
    
          </div> 
    
-	</div>
-    
+</div>
 
-            
-             <!-- /. PAGE INNER  -->
-    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-    <!-- JQUERY SCRIPTS -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-      <!-- BOOTSTRAP SCRIPTS -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- METISMENU SCRIPTS -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-      <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
-    
-	<script src="bower_components/angular/angular.js"></script> 
-    <script src="bower_components/angular-route/angular-route.js"></script>
- <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>-->
+
+<!-- <div class="spinner"></div> -->
+
+
+<!-- /. PAGE INNER  -->
+<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+<!-- JQUERY SCRIPTS -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- METISMENU SCRIPTS -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- CUSTOM SCRIPTS -->
+<script src="assets/js/custom.js"></script>
+
+<script src="bower_components/angular/angular.js"></script> 
+<script src="bower_components/angular-route/angular-route.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>-->
   <!--
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
@@ -249,6 +253,6 @@
     <script src="js/filters.js"></script>
     <script src="js/directives.js"></script>
     <script src="https://dl.dropboxusercontent.com/u/100321571/ANGULAR/angular_resource.js"></script>
-   -->
+-->
 </body>
 </html>

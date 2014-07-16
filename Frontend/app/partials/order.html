@@ -1,42 +1,42 @@
  <div class="col-sm-8">
-          <div class="animated bounceInLeft">
-            <div>
-              <h4>Instrucciones de Uso</h4>
-              <p>Seleccione el plato que desea <code>Importante!</code>, si no desea el platilo borrelo haciendo click sobre el icono respectivo.<br>
-                <small>
-                 El registro será guardado con la fecha y hora: {{date | date:'yyyy-MM-dd HH:mm'}} </small>
-				  <code>La hora de llamada es 11:00 am</code>
-				 </p>
-               </div>
-             </div>
-             <div class="animated bounceIn" ng-include src="'partials/menu.html'"></div>
-           </div>
+  <div class="animated bounceInLeft">
+    <div>
+      <h4>Instrucciones de Uso</h4>
+      <p>Seleccione el plato que desea <code>Importante!</code>, si no desea el platilo borrelo haciendo click sobre el icono respectivo.<br>
+        <small>
+         El registro será guardado con la fecha y hora: {{date | date:'yyyy-MM-dd HH:mm'}} </small>
+         <code>La hora de llamada es 11:00 am</code>
+       </p>
+     </div>
+   </div>
+   <div class="animated bounceIn" ng-include src="'partials/menu.html'"></div>
+ </div>
  <div class="col-sm-4">
-            <div class="animated bounceInRight">
-             <div>
-              <h4>Menú del almuerzo!</h4>
-              <p>Telefono: <a class="danger">8703-1359</a>, Este es el número de "Mi comida Express".</p>             
-            </div>
-			<div class="panel panel-avantica">			
-			<div class="panel-heading">
-                        <div class="panel-title" style="font-weight: bold;">Menú del día</div>                       
-            </div> 
-            <div class="table-responsive">
-              <table class="table">
-                <tbody>
-				<tr>
-                    <td>#</td>
-                    <td></td>
-					<td>Precio</td>
-                  </tr>  
-                  <tr ng-repeat="menu in datamenu.menu">
-                    <td>{{$index + 1}}</td>
-                    <td>{{menu.menuname}}</td>
-					<td>{{menu.price}}</td>
-                  </tr>                  
-                </tbody>
-              </table>
-            </div>
-			</div>
-          </div>
-        </div>
+  <div class="animated bounceInRight">
+   <div>
+    <h4>Menú del almuerzo!</h4>
+    <p>Telefono: <a class="danger">8703-1359</a>, Este es el número de "Mi comida Express".</p>             
+  </div>
+  <div class="panel panel-avantica">			
+   <div class="panel-heading">
+    <div class="panel-title" style="font-weight: bold;">Menú del día</div>                       
+  </div> 
+  <div class="table-responsive">
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>#</td>
+          <td></td>
+          <td>Precio</td>
+        </tr>  
+        <tr ng-repeat="menu in datamenu.menu">
+          <td>{{$index + 1}}</td>
+          <td>{{menu.menuname}}</td>
+          <td>{{menu.price}}</td>
+        </tr>                  
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</div>
