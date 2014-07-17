@@ -86,6 +86,14 @@ module.exports = function(app){
 		});	
 	};
 	
+	findMenuByName=function(req, res){
+	menuVa.findOne({menuname:req.params.name},function(err,menu)
+		{
+		console.log("menu found: "+menu);		
+		res.json(menu);			
+		});	
+	};
+	
 	registerMenu=function(req, res){
 	var menu = new menuVa(
 		{
@@ -139,6 +147,7 @@ app.post('/list',registerList);
 app.get('/list',findAllList);
 app.delete('/list/:id',deleteListById);
 app.get('/menu',findAllMenu);
+app.get('/menu/:menuname',findMenuByName);
 app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);

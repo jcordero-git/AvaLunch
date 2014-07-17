@@ -64,6 +64,15 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   );
   })
   
+   .factory('JsonServiceMenuFindByName', function($resource){
+  return $resource('http://'+ipServer+':port/menu/:menuname',
+	{
+	port: ':3000',
+	id:'@id'
+	}
+  );
+  })
+  
   .factory('ValidateUser', function($resource){
   return $resource('http://'+ipServer+':port/user/:username/:password',
 	{
@@ -87,6 +96,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 
   .service('ValuesBetweenCtrl', function(){
 	  var valueString="";
+	  var valueObject={};
 	  
 	  var setValueString = function(value){
 	  valueString = value;	  
@@ -94,10 +104,21 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	  
 	  var getvalueString = function(){	    
 	  return valueString;
-	  }	  
+	  }	 
+
+	var setValueObject = function(value){
+	  valueObject = value;	  
+	  }  
+	  
+	  var getvalueObject = function(){	    
+	  return valueObject;
+	  }	
+		
 	  return{
 	  setValueString: setValueString,
-	  getvalueString: getvalueString
+	  getvalueString: getvalueString,
+	  setValueObject: setValueObject,
+	  getvalueObject: getvalueObject
 	  };	  	  
 })
   

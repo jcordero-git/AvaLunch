@@ -3,7 +3,7 @@
 /* Controllers */
 (function(){
 
-var DueHour=24;
+var DueHour=20;
 
 var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
@@ -79,7 +79,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	 ForgotPassword.get({'email': $scope.newUserModel.email}, function(response){	  
 	   if(response.username)
 		{			
-		alert("Usuario: "+response.password);
+		alert("Su contraseña es: "+response.password);
 		}
 		else
 		{
@@ -109,6 +109,22 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		};
 		
 	
+  $scope.checkTime = function (currentUser,listUser) {
+    $scope.hour = new Date();
+    if ($scope.hour.getHours()>=DueHour) {
+      return false;
+    }
+	else{		
+		if(currentUser==listUser)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}		
+		}    
+  };
  	
   
   }])
@@ -164,15 +180,15 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
 
 
-app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl) {
+app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
 
   $scope.newListModel={};
   $scope.newListModel.username="";
   $scope.newListModel.menuname="";
   $scope.newListModel.date="";  
   
-  $rootScope.$on('loadSelectedMenuItem', function(event, data){	
-	$scope.taskInput=ValuesBetweenCtrl.getvalueString();
+  $rootScope.$on('loadSelectedMenuItem', function(event, data){	  
+	$scope.taskInput=ValuesBetweenCtrl.getvalueObject();
 	});
   
  
@@ -211,29 +227,71 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDe
   
   $scope.RegisterList = function(username,menuname){
 	var dishName;
+	var idMenu=0;
+	var existMenu=false;
 	
 	var day = new Date();   
     var dayFormat= $filter('date')(day,'dd-MM-yyyy HH:MM');   
 		
     if(typeof menuname == 'object'){
       dishName = menuname.menuname;
+	  idMenu   = menuname._id;
     }else{
       dishName = menuname;
     }	
 	
 	$scope.newListModel.username=username;
 	$scope.newListModel.menuname=dishName;
-	$scope.newListModel.date=dayFormat;	
+	$scope.newListModel.date=dayFormat;
+
+	//select by ID Menus
 	
-	JsonServiceList.save($scope.newListModel, function(response){
-	if (response)
-		{
-		getList();
-		$scope.taskInput = "";		
-		}
-	else {alert("error");}
+	if(idMenu==0)
+	{
+	/*JsonServiceMenuFindByName.get({'menuname': dishName},function(response){
+		alert(response._id);
+				if (response!='undefined')
+					{
+					existMenu=true;
+					alert(1);
+					
+					JsonServiceList.save($scope.newListModel, function(response){
+					if (response)
+						{
+						getList();
+						$scope.taskInput = "";		
+						}
+					else {alert("error");}
+					
+					});	
+					
+					}
+				else {
+					alert(2);
+					 }
+			if(existMenu==false)
+				{*/
+				alert("El plato seleccionado aun no ha sido registrado");
+				/*}
+				
+			});*/
+	}
+	else
+	{
+			JsonServiceList.save($scope.newListModel, function(response){
+					if (response)
+						{
+						getList();
+						$scope.taskInput = "";		
+						}
+					else {alert("error");}
+					
+					});	
+	}
+					
 	
-	});	
+	
+	
 	};
   /*
   
@@ -291,7 +349,7 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDe
         }        
   };
   */   
- 
+ /*
   $scope.checkTime = function (currentUser,listUser) {
     $scope.hour = new Date();
     if ($scope.hour.getHours()>=DueHour) {
@@ -308,6 +366,7 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDe
 			}		
 		}    
   };
+  */
 /*
   $scope.toggleStatus = function(item, status, task) {
     if(status=='2'){status='0';}else{status='2';}
@@ -331,18 +390,14 @@ app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDe
     });		
 	};
 	
-	
-	   
-    
-	
   setInterval(function(){
     getMenu();
 	
 	//getMenu();
   },5000);
 	
-	  $scope.SelectMenu = function(menuname){
-		ValuesBetweenCtrl.setValueString(menuname);
+	  $scope.SelectMenu = function(menuname){	  
+		ValuesBetweenCtrl.setValueObject(menuname);
 		$rootScope.$broadcast('loadSelectedMenuItem');	
 		};
 		

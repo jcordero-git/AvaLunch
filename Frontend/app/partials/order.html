@@ -1,22 +1,18 @@
 
-
- <div class="col-sm-7">
+<div class="row">
+ <div class="col-sm-12 col-md-12 col-lg-7 ">
   <div class="animated bounceInLeft">
     <div>
       <h4>Instrucciones de Uso</h4>
-      <p>Seleccione el plato que desea, si no desea el platilo borrelo haciendo click sobre el icono respectivo.<br>
-        <small>
-         El registro será guardado con la fecha y hora: {{date | date:'yyyy-MM-dd HH:mm'}} </small>
-		 <p>
-         <code>La hora de llamada es {{DueHour}}:00 am</code>
-		 </p>
-       </p>
+      <p>
+	  Seleccione el plato que desea, si no desea el platilo borrelo haciendo click sobre el icono respectivo.<br>       		
+      </p>
      </div>
    </div>
    <div class="animated bounceInLeft" ng-include src="'partials/list.html'"></div>
  </div>
  
-  <div class="col-sm-5"> 
+  <div class="col-sm-12 col-md-12 col-lg-5  "> 
 	<div class="animated bounceInRight" ng-include src="'partials/menu.html'"></div> 
 </div>
-
+</div>
