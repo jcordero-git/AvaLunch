@@ -18,7 +18,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	//return $resource('http://localhost:3000/user/', {})
   })
   .factory('JsonService', function($resource) {
-   return $resource('http://localhost:port/user/', 
+   return $resource('http://192.168.0.124:port/user/', 
 	{
 	port: ':3000'
 	}
@@ -26,7 +26,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   }) 
   
     .factory('JsonServiceList', function($resource) {
-   return $resource('http://localhost:port/list/', 
+   return $resource('http://192.168.0.124:port/list/', 
 	{
 	port: ':3000'
 	}
@@ -34,7 +34,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
 
    .factory('JsonServiceListDeleteById', function($resource){
-  return $resource('http://localhost:port/list/:id',
+  return $resource('http://192.168.0.124:port/list/:id',
 	{
 	port: ':3000',
 	id:'@id'
@@ -45,7 +45,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   
   
   .factory('JsonServiceMenu', function($resource) {
-   return $resource('http://localhost:port/menu/', 
+   return $resource('http://192.168.0.124:port/menu/', 
 	{
 	port: ':3000'
 	}
@@ -53,7 +53,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   }) 
   
   .factory('ValidateUser', function($resource){
-  return $resource('http://localhost:port/user/:username/:password',
+  return $resource('http://192.168.0.124:port/user/:username/:password',
 	{
 	port: ':3000',
 	username:'@username',
@@ -64,7 +64,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
     .factory('ForgotPassword', function($resource){
-  return $resource('http://localhost:port/user/:email',
+  return $resource('http://192.168.0.124:port/user/:email',
 	{
 	port: ':3000',
 	email:'@email'

@@ -1,17 +1,19 @@
- <div class="col-sm-8">
+ <div class="col-sm-7">
   <div class="animated bounceInLeft">
     <div>
       <h4>Instrucciones de Uso</h4>
-      <p>Seleccione el plato que desea <code>Importante!</code>, si no desea el platilo borrelo haciendo click sobre el icono respectivo.<br>
+      <p>Seleccione el plato que desea, si no desea el platilo borrelo haciendo click sobre el icono respectivo.<br>
         <small>
          El registro será guardado con la fecha y hora: {{date | date:'yyyy-MM-dd HH:mm'}} </small>
-         <code>La hora de llamada es 11:00 am</code>
+		 <p>
+         <code>La hora de llamada es {{DueHour}}:00 am</code>
+		 </p>
        </p>
      </div>
    </div>
    <div class="animated bounceIn" ng-include src="'partials/menu.html'"></div>
  </div>
- <div class="col-sm-4">
+ <div class="col-sm-5">
   <div class="animated bounceInRight">
    <div>
     <h4>Menú del almuerzo!</h4>
@@ -19,24 +21,72 @@
   </div>
   <div class="panel panel-avantica">			
    <div class="panel-heading">
-    <div class="panel-title" style="font-weight: bold;">Menú del día</div>                       
+    <div class="panel-title" style="font-weight: bold;">Menú del día </div>                       
   </div> 
-  <div class="table-responsive">
+  <div class="table-responsive" style="overflow: auto;height: 400px;">
     <table class="table">
       <tbody>
         <tr>
-          <td>#</td>
           <td></td>
+          <td>Plato</td>
           <td>Precio</td>
+		  <td colspan="2">Opción</td>
         </tr>  
         <tr ng-repeat="menu in datamenu.menu">
-          <td>{{$index + 1}}</td>
+          <td>
+		  <a  class="pull-left" ng-click="SelectMenu(menu.menuname)">
+		  <i class="glyphicon glyphicon-check"> </i>
+		  </a>
+		  </td>
           <td>{{menu.menuname}}</td>
           <td>{{menu.price}}</td>
+		  <td><a ng-show="true" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-edit"></i></a>
+		  </td>
+		  <td><a ng-show="true" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+		  </td>
         </tr>                  
       </tbody>
     </table>
+
   </div>
+  
+  <div ng-controller="ModalCtrl">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Agregar Platillo</h3>
+			</div>
+			<div class="modal-body">				
+				 <div class="row">
+					  <div class="col-lg-6">
+						<div class="input-group">
+						  <span class="input-group-addon">
+							Nombre
+						  </span>
+						  <input type="text" ng-model="newMenu.menuname" placeholder="Digite el nombre" class="form-control" ng-required="newMenu.menuname" required>
+						</div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+					  <div class="col-lg-6">
+						<div class="input-group">
+						  <span class="input-group-addon">
+							Precio ₡
+						  </span>
+						  <input type="text" ng-model="newMenu.price" placeholder="Digite el precio" class="form-control" ng-required="newMenu.price" required>
+						  <span class="input-group-addon">.00</span>
+						</div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->				
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
+				<button class="btn btn-warning btn-sm" ng-click="cancel()">Cancelar</button>
+			</div>
+		</script>
+		<a class="btn btn-right btn-sm btn-warning nav-button-margin navbar-right" ng-click="open('sm')"> 
+			<i class="glyphicon glyphicon-plus">
+			</i>&nbsp;Agregar un platillo
+		</a>		
+		</div>
+  
 </div>
 </div>
 </div>

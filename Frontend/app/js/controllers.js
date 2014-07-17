@@ -1,7 +1,9 @@
 'use strict';
 
 /* Controllers */
+(function(){
 
+var DueHour=11;
 
 var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
@@ -91,6 +93,8 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
     .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', function($scope, JsonServiceMenu, loggedInStatus, $location) {
 	
+	$scope.DueHour=DueHour;
+	
 	$scope.datamenu = {};   
     JsonServiceMenu.query(function(response) {
       $scope.datamenu.menu = response;
@@ -105,6 +109,11 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		loggedInStatus.setLoggedIn(false);
 		$location.path('/login');
 		//alert($scope.logged);
+		};
+		
+	$scope.SelectMenu = function(menuname){
+		//alert(menuname);
+		$scope.taskInput=menuname;		
 		};
  	
   
@@ -169,6 +178,8 @@ app.controller("testCtrl3", function () {
 
 app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu','$filter', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,$filter) {
  
+ 
+ 
   $scope.newListModel={};
   $scope.newListModel.username="";
   $scope.newListModel.menuname="";
@@ -221,6 +232,7 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
 		{
 		getList();
 		$scope.taskInput = "";
+		$scope.taskInput=null;
 		}
 	else {alert("error");}
 	
@@ -257,7 +269,7 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
    */
   $scope.deleteTask = function (task) {
     $scope.hour = new Date();
-    if ($scope.hour.getHours()>=11) {	
+    if ($scope.hour.getHours()>=DueHour) {	
       if(confirm("Está seguro de querer borrar su pedido?")){        
 		JsonServiceListDeleteById.delete({'id': task})
 		getList();
@@ -282,12 +294,21 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
     }
   };
  
-  $scope.checkTime = function () {
+  $scope.checkTime = function (currentUser,listUser) {
     $scope.hour = new Date();
-    if ($scope.hour.getHours()<=11) {
+    if ($scope.hour.getHours()<=DueHour) {
       return false;
-    };
-    return true;
+    }
+	else{		
+		if(currentUser==listUser)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}		
+		}    
   };
 /*
   $scope.toggleStatus = function(item, status, task) {
@@ -297,5 +318,63 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
     });
   };
 */
-}]);
+}])
 
+
+app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', function($scope, $modal,$log,JsonServiceMenu) {
+
+  $scope.items = ['item1', 'item2', 'item3'];
+
+  $scope.newMenu={};
+  $scope.newMenu.menuname="";
+  $scope.newMenu.price="";
+  
+  
+  $scope.open = function (size) {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'myModalContent.html',
+      controller: ModalInstanceCtrl,
+      size: size,
+      resolve: {
+        newMenu: function () {
+          return $scope.newMenu;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {      
+	  $scope.newMenu= selectedItem;
+	  alert($scope.newMenu.menuname);
+	  JsonServiceMenu.save($scope.newMenu, function(response){
+			if (response)
+				{				
+				alert("Registrado");
+				JsonServiceMenu.query(function(response) {
+				  $scope.datamenu.menu = response;
+				  
+				});
+				}
+			else {alert("error");}
+			
+			});	
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+}])
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu) {
+
+  $scope.newMenu = newMenu;
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.newMenu);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+})();
