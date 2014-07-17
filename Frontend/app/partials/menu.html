@@ -14,7 +14,7 @@
           <td></td>
           <td>Plato</td>
           <td>Precio</td>
-		  <td colspan="2">Opción</td>
+		  <td class="pull-right">Opción</td>
         </tr>  
         <tr ng-repeat="menu in datamenu.menu">
           <td>
@@ -24,8 +24,6 @@
 		  </td>
           <td>{{menu.menuname}}</td>
           <td>{{menu.price}}</td>
-		  <td><a ng-show="true" ng-click="editMenu(menu._id)" class="pull-right"><i class="glyphicon glyphicon-edit"></i></a>
-		  </td>
 		  <td><a ng-show="true" ng-click="deleteMenu(menu._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
 		  </td>
         </tr>                  

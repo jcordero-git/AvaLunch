@@ -79,7 +79,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	 ForgotPassword.get({'email': $scope.newUserModel.email}, function(response){	  
 	   if(response.username)
 		{			
-		alert("Usuario: "+response.username);
+		alert("Usuario: "+response.password);
 		}
 		else
 		{
@@ -354,7 +354,7 @@ app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDe
 				if (response)
 					{
 					getMenu();
-					alert(response);
+					//alert(response);
 					}
 				else {alert("error");}
 				
@@ -390,7 +390,7 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
 
     modalInstance.result.then(function (selectedItem) {      
 	  $scope.newMenu= selectedItem;
-	  alert($scope.newMenu.menuname);
+	  //alert($scope.newMenu.menuname);
 	  JsonServiceMenu.save($scope.newMenu, function(response){
 			if (response)
 				{				
