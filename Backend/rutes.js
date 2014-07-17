@@ -37,7 +37,7 @@ module.exports = function(app){
 	deleteListById=function(req, res){
 	listVa.findById(req.params.id,function(err,list)
 		{
-		console.log("menu to delete: "+list);
+		console.log("list to delete: "+list);
 		list.remove		
 			(function(err)
 				{	
@@ -62,6 +62,28 @@ module.exports = function(app){
 		if(!err) res.json(menu);
 		else console.log('Error'+ err);
 	});	
+	};
+	
+	deleteMenuById=function(req, res){
+	menuVa.findById(req.params.id,function(err,menu)
+		{
+		console.log("menu to delete: "+menu);
+		menu.remove		
+			(function(err)
+				{	
+				console.log("Function");				
+				if(!err) 
+					{
+					console.log('List Item Removed');
+					}
+				else 
+					{
+					console.log('Error'+ err);
+					}
+				}				
+			)
+		res.send(menu);			
+		});	
 	};
 	
 	registerMenu=function(req, res){
@@ -117,6 +139,7 @@ app.post('/list',registerList);
 app.get('/list',findAllList);
 app.delete('/list/:id',deleteListById);
 app.get('/menu',findAllMenu);
+app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);

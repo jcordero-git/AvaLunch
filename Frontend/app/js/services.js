@@ -54,6 +54,16 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
    );
   }) 
   
+    .factory('JsonServiceMenuDeleteById', function($resource){
+  return $resource('http://'+ipServer+':port/menu/:id',
+	{
+	port: ':3000',
+	id:'@id'
+	},
+	{}
+  );
+  })
+  
   .factory('ValidateUser', function($resource){
   return $resource('http://'+ipServer+':port/user/:username/:password',
 	{
@@ -75,6 +85,21 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   );
   })
 
+  .service('ValuesBetweenCtrl', function(){
+	  var valueString="";
+	  
+	  var setValueString = function(value){
+	  valueString = value;	  
+	  }  
+	  
+	  var getvalueString = function(){	    
+	  return valueString;
+	  }	  
+	  return{
+	  setValueString: setValueString,
+	  getvalueString: getvalueString
+	  };	  	  
+})
   
   .service('loggedInStatus', function($cookieStore){
 	  var username="";

@@ -3,7 +3,7 @@
 /* Controllers */
 (function(){
 
-var DueHour=11;
+var DueHour=24;
 
 var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
@@ -95,10 +95,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
 	$scope.DueHour=DueHour;
 	
-	$scope.datamenu = {};   
-    JsonServiceMenu.query(function(response) {
-      $scope.datamenu.menu = response;
-    });	
+	
 	
 	//alert(loggedInStatus.getUsername());
 	$scope.username = loggedInStatus.getUsername();
@@ -111,10 +108,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		//alert($scope.logged);
 		};
 		
-	$scope.SelectMenu = function(menuname){
-		//alert(menuname);
-		$scope.taskInput=menuname;		
-		};
+	
  	
   
   }])
@@ -166,38 +160,35 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
 	
   }]);
-  
-app.controller("testCtrl3", function () {
-
-	alert("view 1");
-  
-
-});
 
 
 
-app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu','$filter', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,$filter) {
- 
- 
- 
+
+app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl) {
+
   $scope.newListModel={};
   $scope.newListModel.username="";
   $scope.newListModel.menuname="";
   $scope.newListModel.date="";  
   
+  $rootScope.$on('loadSelectedMenuItem', function(event, data){	
+	$scope.taskInput=ValuesBetweenCtrl.getvalueString();
+	});
+  
  
  // getTask(); // Load all available tasks
-  getMenu(); // Load all countries with capitals
+  getMenuAutoCompleter(); // Load all countries with capitals
   getList();
   $scope.date = new Date();
 
-  function getMenu(){
-  //$scope.datamenu = {};   
+ 
+  function getMenuAutoCompleter(){   
     JsonServiceMenu.query(function(response) {
-      $scope.menu = response;
+      $scope.menu1 = response;
 	  
     });	
 	}
+	
   
   function getList(){
     //$scope.datalist = {};   
@@ -206,11 +197,18 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
     });
   };
   
+  /*
+  $scope.SelectMenu = function(menuname){
+		alert(menuname);	
+		$scope.taskInput=menuname;		
+		};
+*/
   
   setInterval(function(){
     getList();
+	getMenuAutoCompleter();
   },5000);
-
+  
   $scope.RegisterList = function(username,menuname){
 	var dishName;
 	
@@ -231,8 +229,7 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
 	if (response)
 		{
 		getList();
-		$scope.taskInput = "";
-		$scope.taskInput=null;
+		$scope.taskInput = "";		
 		}
 	else {alert("error");}
 	
@@ -269,34 +266,35 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
    */
   $scope.deleteTask = function (task) {
     $scope.hour = new Date();
-    if ($scope.hour.getHours()>=DueHour) {	
+    if ($scope.hour.getHours()<=DueHour) {	
       if(confirm("Está seguro de querer borrar su pedido?")){        
-		JsonServiceListDeleteById.delete({'id': task})
-		getList();
-		/*, function(response)
-			{
-			alert(1);
-			getList();
-			if (response)
-			{
-			alert("User deleted successfully..");			
-			}
-			else {alert("error");}
-			}
-			)
-			*/
-			
-		//$http.post("ajax/deleteTask.php?taskID="+task).success(function(data){
-          
+		//JsonServiceListDeleteById.delete({'id': task})
+		JsonServiceListDeleteById.delete({'id': task},function(response){
+				if (response)
+					{
+					getList();
+					}
+				else {alert("error");}
+			});				
         }      
     }else{
       getList();
     }
   };
+  /*
+   $scope.deleteMenu = function (menu) {
+   alert(1);
+    $scope.hour = new Date();	
+      if(confirm("Está seguro de querer borrar el platillo?")){        
+	  JsonServiceMenuDeleteById.delete({'id': menu});
+		getMenu();		
+        }        
+  };
+  */   
  
   $scope.checkTime = function (currentUser,listUser) {
     $scope.hour = new Date();
-    if ($scope.hour.getHours()<=DueHour) {
+    if ($scope.hour.getHours()>=DueHour) {
       return false;
     }
 	else{		
@@ -321,15 +319,62 @@ app.controller('tasksController', ['$scope','JsonServiceList', 'JsonServiceListD
 }])
 
 
-app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', function($scope, $modal,$log,JsonServiceMenu) {
 
-  $scope.items = ['item1', 'item2', 'item3'];
+app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl) {
+
+	$scope.datamenu = {};
+	getMenu();
+	
+	function getMenu(){   
+    JsonServiceMenu.query(function(response) {
+      $scope.datamenu.menu = response;
+    });		
+	};
+	
+	
+	   
+    
+	
+  setInterval(function(){
+    getMenu();
+	
+	//getMenu();
+  },5000);
+	
+	  $scope.SelectMenu = function(menuname){
+		ValuesBetweenCtrl.setValueString(menuname);
+		$rootScope.$broadcast('loadSelectedMenuItem');	
+		};
+		
+   $scope.deleteMenu = function (menu) {
+    $scope.hour = new Date();	
+      if(confirm("Está seguro de querer borrar el platillo?")){        
+	  JsonServiceMenuDeleteById.delete({'id': menu});			
+				JsonServiceMenuDeleteById.delete({'id': menu},function(response){
+				if (response)
+					{
+					getMenu();
+					alert(response);
+					}
+				else {alert("error");}
+				
+				});	
+		getMenu();					
+        }        
+  };
+  
+
+}])
+
+
+
+
+app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', function($scope, $modal,$log,JsonServiceMenu) {
 
   $scope.newMenu={};
   $scope.newMenu.menuname="";
   $scope.newMenu.price="";
-  
-  
+    
   $scope.open = function (size) {
 
     var modalInstance = $modal.open({
@@ -349,17 +394,17 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
 	  JsonServiceMenu.save($scope.newMenu, function(response){
 			if (response)
 				{				
-				alert("Registrado");
 				JsonServiceMenu.query(function(response) {
 				  $scope.datamenu.menu = response;
-				  
+				  $scope.newMenu.menuname="";
+				  $scope.newMenu.price="";
 				});
 				}
 			else {alert("error");}
 			
 			});	
     }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
+      $log.info('Modal Cerrada el: ' + new Date());
     });
   };
 }])

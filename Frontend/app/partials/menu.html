@@ -1,57 +1,73 @@
+ <div ng-controller="menuController">
+   <div>
+    <h4>Menú del almuerzo!</h4>
+    <p>Telefono: <a class="danger">8703-1359</a>, Este es el número de "Mi comida Express".</p>             
+  </div>
+  <div class="panel panel-avantica">			
+   <div class="panel-heading">
+    <div class="panel-title" style="font-weight: bold;">Menú del día </div>                       
+  </div> 
+  <div class="table-responsive" style="overflow: auto;height: 400px;">
+    <table class="table">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>Plato</td>
+          <td>Precio</td>
+		  <td colspan="2">Opción</td>
+        </tr>  
+        <tr ng-repeat="menu in datamenu.menu">
+          <td>
+		  <a  class="pull-left" ng-click="SelectMenu(menu.menuname)">
+		  <i class="glyphicon glyphicon-check"> </i>
+		  </a>
+		  </td>
+          <td>{{menu.menuname}}</td>
+          <td>{{menu.price}}</td>
+		  <td><a ng-show="true" ng-click="editMenu(menu._id)" class="pull-right"><i class="glyphicon glyphicon-edit"></i></a>
+		  </td>
+		  <td><a ng-show="true" ng-click="deleteMenu(menu._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+		  </td>
+        </tr>                  
+      </tbody>
+    </table>
 
-<div class="widget-box" id="recent-box"  ng-controller="tasksController" >
-	<div class="widget-header header-color-blue">
-		<div class="row">
-			<div class="col-sm-6">
-				<h4 class="bigger lighter">
-					<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
-					Lista
-				</h4>
-
+  </div>
+  
+  <div ng-controller="ModalCtrl">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Agregar Platillo</h3>
 			</div>
-			<div class="col-sm-6">
-				<input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filtrar datos">
+			<div class="modal-body">				
+				 <div class="row">
+					  <div class="col-lg-6">
+						<div class="input-group">
+						  <span class="input-group-addon">
+							Nombre
+						  </span>
+						  <input type="text" ng-model="newMenu.menuname" placeholder="Digite el nombre" class="form-control" ng-required="newMenu.menuname" required>
+						</div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+					  <div class="col-lg-6">
+						<div class="input-group">
+						  <span class="input-group-addon">
+							Precio ₡
+						  </span>
+						  <input type="text" ng-model="newMenu.price" placeholder="Digite el precio" class="form-control" ng-required="newMenu.price" required>
+						  <span class="input-group-addon">.00</span>
+						</div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->				
 			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
+				<button class="btn btn-warning btn-sm" ng-click="cancel()">Cancelar</button>
+			</div>
+		</script>
+		<a class="btn btn-right btn-sm btn-warning nav-button-margin navbar-right" ng-click="open('sm')"> 
+			<i class="glyphicon glyphicon-plus">
+			</i>&nbsp;Agregar un platillo
+		</a>		
 		</div>
-	</div>
-	<div class="widget-body ">
-		<form ng-init="addNewClicked=false; " id="newTaskForm" class="add-task">
-			<div class="form-actions">
-				<div class="input-group">
-					<input ng-disabled="!checkTime()" type="text" ng-model="taskInput" placeholder="Digite..." name="comment" typeahead="c as c.menuname for c in menu | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' class="form-control" ng-required="taskInput" required>
-
-					<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
-					<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
-					<div class="input-group-btn">
-						<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? RegisterList(username,taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
-					</div>
-				</div>
-			</div>
-			<br>
-			<div class="alert alert-warning" ng-show="!taskInput.length">
-				<strong>Advertencia!</strong> Por favor has tu elección!. 
-			</div>
-		</form>
-		<div class="task" >		
-		  <div class="table-responsive">
-			<table class="table" ng-animate="animate">
-			  <tbody>
-				<tr>
-				  <td>Plato</td>
-				  <td>Nombre</td>
-				  <td>Fecha / Hora</td>
-				  <td style="text-align:right">Opción</td>
-				</tr>  
-				<tr ng-repeat="task in tasks | filter : filterTask">
-				  <td>{{task.menuname}}</td>
-				  <td>{{task.username}}</td>
-				  <td>{{task.date}}</td>
-				  <td><a ng-show="checkTime(username,task.username)" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
-				  </td>				  
-				</tr>                  
-			  </tbody>
-			</table>
-		 </div>			
-		</div>
-	</div>
-</div>
+  
