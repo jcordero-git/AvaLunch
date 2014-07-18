@@ -5,3 +5,11 @@ node install
 
 To Install http Server
 npm install node-http-server
+
+To install bcrypt
+is mandatory to have pyton installed: https://www.python.org/downloads/windows/
+run npm install bcrypt-nodejs on backend folder
+
+How to use bcrypt
+http://devsmash.com/blog/password-authentication-with-mongoose-and-bcrypt
+https://www.npmjs.org/package/bcrypt-nodejs

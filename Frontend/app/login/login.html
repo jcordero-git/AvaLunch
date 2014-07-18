@@ -114,7 +114,7 @@
             <div class="panel-title">Registro de nuevo usuario</div>                          
         </div>  
         <div class="panel-body" >
-            <form id="signupform" class="form-horizontal" role="form" ng-submit="RegisterUser()">
+            <form name="signupform" id="signupform" class="form-horizontal" role="form" ng-submit="RegisterUser()">
 
                 <div id="signupalert" style="display:none" class="alert alert-danger">
                     <p>Error:</p>
@@ -122,35 +122,32 @@
                 </div> 
             <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
 						<div class="form-group" style="text-align: center;">
-                                
-                                   <span class="label label-success">{{statusMessage}}</span>
-                               
+                           <span class="label label-success">{{statusMessage}}</span>						  
                         </div> 
-
-
+	
         <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Username" ng-model="newUserModel.username">                                        
+            <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Username" ng-model="newUserModel.username" required> </input>                                       
         </div>
         <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input id="login-email" type="text" class="form-control" name="email" value="" placeholder="Email" ng-model="newUserModel.email">                                        
-        </div>
+            <input id="login-email" type="email" class="form-control" name="email" value="" placeholder="Email" ng-model="newUserModel.email" required>				
+        </div>		
         <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-            <input id="login-password" type="text" class="form-control" name="password" value="" placeholder="Password" ng-model="newUserModel.password">                                        
+            <input id="login-password" type="password" class="form-control" name="password" value="" placeholder="Password" data-ng-model='newUserModel.password' required>                                        
         </div>
 
         <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-            <input id="login-password" type="text" class="form-control" name="confpassword" value="" placeholder="Confirm Password">                                        
+            <input id="login-password" type="password" class="form-control" name="confpasswordName" value="" placeholder="Confirm Password" ng-model="newUserModel.confPassword" data-password-verify="newUserModel.password" required>                                        
         </div>
 
         <div class="form-group">
             <!-- Button -->                                        
             <div class="col-md-offset-8 col-md-8">
                <!-- <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i>  Sign Up</button>  -->  
-              <button  type="submit"class="btn  btn-sm btn-info btn-small" ng-Click="ShowPanels(true,false,false)">
+              <button  ng-disabled="signupform.username.$error.required||signupform.email.$error.required||!signupform.email.$valid||signupform.password.$error.required||signupform.confpasswordName.$error.required||signupform.confpasswordName.$error.passwordVerify" type="submit"class="btn  btn-sm btn-info btn-small" ng-Click="ShowPanels(true,false,false)">
 				<i class="glyphicon glyphicon-ok-sign"></i> 
 				Aceptar
 				</button>           
@@ -171,7 +168,23 @@
                         </div>
                     </div>  
 
-
+		<div class="row alert alert-danger" ng-show="signupform.username.$error.required||signupform.email.$error.required||!signupform.email.$valid||signupform.password.$error.required||signupform.confpasswordName.$error.required||signupform.confpasswordName.$error.passwordVerify">
+			<div class="col-sm-12">
+				<span class="error " ng-show="signupform.username.$error.required">Nombre de usuario requerido.</span>
+			 </div>			
+			<div class="col-sm-12">
+				<span class="error " ng-show="signupform.email.$error.required">Email requerido.</span>
+			</div>
+			<div class="col-sm-12">
+				<span class="error " ng-show="!signupform.email.$error.required&& !signupform.email.$valid">Email invalido.</span>
+			</div>
+			<div class="col-sm-12">
+				<span class="error " ng-show="signupform.password.$error.required">Contraseña requerida.</span>
+			</div>
+			<div class="col-sm-12">
+				<span class="error " ng-show="signupform.confpasswordName.$error.passwordVerify">Contraseñas no coinciden.</span>
+			</div>			
+		</div>
 
                 </form>
             </div>
@@ -185,7 +198,7 @@
                             <div class="panel-title">Recuperación de contraseña</div>                          
                         </div>  
                         <div class="panel-body" >
-                            <form id="forgotform" class="form-horizontal" role="form" ng-submit="ForgotPassword()">
+                            <form id="forgotform" name="forgotform" class="form-horizontal" role="form" ng-submit="ForgotPassword()">
                                 
                                 <div id="signupalert" style="display:none" class="alert alert-danger">
                                     <p>Error:</p>
@@ -199,11 +212,11 @@
 								</div>                             
 								<div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                        <input id="login-email" type="text" class="form-control" name="email" value="" placeholder="Email" ng-model="newUserModel.email">                                        
+                                        <input id="login-email" type="email" class="form-control" name="email" value="" placeholder="Email" ng-model="newUserModel.email" required>                                        
                                 </div>					              
                                 <div class="form-group">                                  
                                     <div class="col-md-offset-8 col-md-8"> 										
-										<button  type="submit"class="btn  btn-sm btn-info btn-small">
+										<button ng-disabled="!forgotform.email.$valid" type="submit"class="btn  btn-sm btn-info btn-small">
 											<i class="glyphicon glyphicon-ok-sign"></i> 
 											Enviar
 										</button>
@@ -224,6 +237,20 @@
                                     </div>
                                 </div>  
                                 
+								<div class="row alert alert-danger" ng-show="forgotform.email.$error.required||!forgotform.email.$valid">
+								
+								<div class="col-sm-12">
+									<span class="error " ng-show="forgotform.email.$error.required">
+									Email requerido.
+									</span>
+								</div>
+								
+								<div class="col-sm-12">								
+									<span class="error " ng-show="!forgotform.email.$error.required&& !forgotform.email.$valid">Email invalido.
+									</span>
+								</div>			
+							    </div>
+								
                             </form>
                          </div>
             <!--</div>-->
@@ -231,7 +258,7 @@
          </div> 
    
 </div>
-
+</div>
 
 <!-- <div class="spinner"></div> -->
 

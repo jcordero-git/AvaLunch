@@ -68,8 +68,7 @@ module.exports = function(app){
 	
 	findListByDate=function(req, res){
 	var re = new RegExp(req.params.date, 'i');
-	listVa.find({date: {$regex: re}},function(err,list){
-	console.log("menu: "+list);
+	listVa.find({date: {$regex: re}},function(err,list){	
 		if(!err) {
 				res.json(list);
 				}
@@ -130,6 +129,35 @@ module.exports = function(app){
 		else console.log('Error'+ err);
 	});	
 	};
+	validateUserPassEncrypt=function(req, res){
+	userVa.findOne({username:req.params.username}, function(err,user){
+	
+		user.comparePassword(req.params.password, function(err, isMatch){
+			if(!err)
+			{
+			console.log('Password: '+ isMatch );
+			if(isMatch==true)
+				{
+				res.send(user);
+				}
+			else{
+				console.log('Intento fallido de inicio de sesion por parte de: '+req.params.username+' usando el Password: '+ req.params.password );
+				res.send(null);
+				}
+			
+			}
+			else{
+				throw err;	
+			}
+		});			
+		//if(!err)
+		//else console.log('Error '+err);
+		});
+	};
+	
+	
+	
+	
 	validateUser=function(req, res){
 	userVa.findOne({username:req.params.username,password:req.params.password}, function(err,user){
 		if(!err) res.send(user);
@@ -167,7 +195,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUser);
+app.get('/user/:username/:password',validateUserPassEncrypt);
 app.get('/user/:email',findUserByEmail);
 	
 };

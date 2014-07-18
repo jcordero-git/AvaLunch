@@ -1,6 +1,11 @@
 'use strict';
 
+
 /* Controllers */
+
+
+
+
 (function(){
 
 var DueHour=23;
@@ -39,13 +44,14 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
 }])
 
- .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', 'JsonService', 'ForgotPassword' , function($scope, ValidateUser, $location, loggedInStatus, $http, JsonService, ForgotPassword) {
+ .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', 'JsonService', 'ForgotPassword', function($scope, ValidateUser, $location, loggedInStatus, $http, JsonService, ForgotPassword) {
  	
 	$http.defaults.useXDomain = true; 	
 	$scope.statusMessage="*****";	
 	$scope.newUserModel={};
 	$scope.newUserModel.username="";
 	$scope.newUserModel.password="";
+	$scope.newUserModel.confPassword="";
 	$scope.newUserModel.email="";
 	
 	$scope.Validate = function(){
@@ -63,7 +69,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	  });
     };
 	
-	$scope.RegisterUser = function(){
+	$scope.RegisterUser = function(){	
 	JsonService.save($scope.newUserModel, function(response){
 	if (response)
 		{
@@ -112,6 +118,8 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
   $scope.checkTime = function (currentUser,listUser) {
     $scope.hour = new Date();
     if ($scope.hour.getHours()>=DueHour) {
+		
+		
       return false;
     }
 	else{		
