@@ -58,7 +58,7 @@ module.exports = function(app){
 			
 	findAllMenu=function(req, res){
 	menuVa.find(function(err,menu){
-	console.log("menu: "+menu);
+	//console.log("menu: "+menu);
 		if(!err) {
 				res.json(menu);
 				}
