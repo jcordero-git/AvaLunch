@@ -1,0 +1,7 @@
+
+To instal node server
+node install
+
+
+To Install http Server
+npm install node-http-server
