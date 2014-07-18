@@ -59,10 +59,24 @@ module.exports = function(app){
 	findAllMenu=function(req, res){
 	menuVa.find(function(err,menu){
 	console.log("menu: "+menu);
-		if(!err) res.json(menu);
+		if(!err) {
+				res.json(menu);
+				}
 		else console.log('Error'+ err);
 	});	
 	};
+	
+	findListByDate=function(req, res){
+	var re = new RegExp(req.params.date, 'i');
+	listVa.find({date: {$regex: re}},function(err,list){
+	console.log("menu: "+list);
+		if(!err) {
+				res.json(list);
+				}
+		else console.log('Error'+ err);
+	});	
+	};
+	
 	
 	deleteMenuById=function(req, res){
 	menuVa.findById(req.params.id,function(err,menu)
@@ -87,7 +101,7 @@ module.exports = function(app){
 	};
 	
 	findMenuByName=function(req, res){
-	menuVa.findOne({menuname:req.params.name},function(err,menu)
+	menuVa.findOne({menuname:req.params.menuname},function(err,menu)
 		{
 		console.log("menu found: "+menu);		
 		res.json(menu);			
@@ -147,6 +161,7 @@ app.post('/list',registerList);
 app.get('/list',findAllList);
 app.delete('/list/:id',deleteListById);
 app.get('/menu',findAllMenu);
+app.get('/list/:date',findListByDate);
 app.get('/menu/:menuname',findMenuByName);
 app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);

@@ -34,6 +34,14 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	}
    );
   })
+  
+  .factory('JsonServiceListByDate', function($resource) {
+   return $resource('http://'+ipServer+':port/list/:date', 
+	{
+	port: ':3000'
+	}
+   );
+  })
 
    .factory('JsonServiceListDeleteById', function($resource){
   return $resource('http://'+ipServer+':port/list/:id',

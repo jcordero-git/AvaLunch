@@ -3,7 +3,7 @@
 /* Controllers */
 (function(){
 
-var DueHour=20;
+var DueHour=23;
 
 var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
@@ -180,22 +180,31 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
 
 
-app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
+app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListByDate', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListByDate, JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
 
   $scope.newListModel={};
   $scope.newListModel.username="";
   $scope.newListModel.menuname="";
-  $scope.newListModel.date="";  
+  $scope.newListModel.date="";
+  $scope.date = new Date(); 
+  
+  
   
   $rootScope.$on('loadSelectedMenuItem', function(event, data){	  
 	$scope.taskInput=ValuesBetweenCtrl.getvalueObject();
 	});
+	
+	
+	$rootScope.$on('applyFilterByDate', function(event, data){	  
+	 $scope.date=ValuesBetweenCtrl.getvalueString();
+	 getList();
+	});
   
  
  // getTask(); // Load all available tasks
-  getMenuAutoCompleter(); // Load all countries with capitals
-  getList();
+  getMenuAutoCompleter(); // Load all countries with capitals  
   $scope.date = new Date();
+  getList();
 
  
   function getMenuAutoCompleter(){   
@@ -207,11 +216,19 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDe
 	
   
   function getList(){
-    //$scope.datalist = {};   
-    JsonServiceList.query(function(response) {
+    //$scope.datalist = {}; 
+    var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy'); 
+    JsonServiceListByDate.query({'date': dateFormat}, function(response) {
       $scope.tasks = response;
     });
   };
+  
+  
+   setInterval(function(){
+    getList();
+	getMenuAutoCompleter();
+  },5000);
+   
   
   /*
   $scope.SelectMenu = function(menuname){
@@ -220,10 +237,7 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListDe
 		};
 */
   
-  setInterval(function(){
-    getList();
-	getMenuAutoCompleter();
-  },5000);
+
   
   $scope.RegisterList = function(username,menuname){
 	var dishName;
@@ -421,9 +435,50 @@ app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDe
 
 }])
 
+app.controller('DatepickerDemoCtrl', ['$scope', '$filter', '$rootScope', 'ValuesBetweenCtrl', function($scope, $filter,$rootScope, ValuesBetweenCtrl) {
+	$scope.today = function() {
+    $scope.dt = new Date();
+  };
+  $scope.today();
 
+  $scope.clear = function () {
+    $scope.dt = null;
+  };
+  
+   $scope.dateChange = function () {
+   var filterDateFormat= $filter('date')($scope.dt,'dd-MM-yyyy'); 
+   ValuesBetweenCtrl.setValueString(filterDateFormat);  
+	$rootScope.$broadcast('applyFilterByDate');	    	
+  };
 
+  // Disable weekend selection
+  $scope.disabled = function(date, mode) {
+    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+  };
 
+  $scope.toggleMin = function() {
+    $scope.minDate = $scope.minDate ? null : new Date();
+  };
+  $scope.toggleMin();
+
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.opened = true;
+  };
+
+  $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1,
+  };
+
+  $scope.initDate = new Date('2016-15-20');
+  $scope.formats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+
+}])
+ 
 app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', function($scope, $modal,$log,JsonServiceMenu) {
 
   $scope.newMenu={};
