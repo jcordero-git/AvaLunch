@@ -1,0 +1,60 @@
+
+<div class="widget-box" id="recent-box"  ng-controller="listController" >
+	<div class="widget-header header-color-blue">
+		<div class="row">
+			<div class="col-sm-6">
+				<h4 class="bigger lighter">
+					<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
+					Lista
+				</h4>
+
+			</div>
+			<div class="col-sm-6">
+				<input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filtrar datos">
+			</div>
+		</div>
+	</div>
+	<div class="widget-body ">
+		<form ng-init="addNewClicked=false; " id="newTaskForm" class="add-task">
+			<div class="form-actions">
+				<div class="input-group">
+					<input ng-disabled="!checkTime()" type="text" ng-model="taskInput" placeholder="Digite..." name="comment" typeahead="c as c.menuname for c in menu1 | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' class="form-control" ng-required="taskInput" required>
+
+					<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
+					<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
+					<div class="input-group-btn">
+						<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? RegisterList(username,taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="alert alert-warning" ng-show="!taskInput.length && checkTime()">
+				<strong>Advertencia!</strong> Por favor has tu elección!. 
+			</div>
+			<div class="alert alert-danger" ng-show="!checkTime()">
+				<strong>Información!</strong> La suscripción al pedido se ha cerrado!. 
+			</div>
+		</form>
+		<div class="task" >		
+		  <div class="table-responsive">
+			<table class="table" ng-animate="animate">
+			  <tbody>
+				<tr class="danger">
+				  <td>Plato</td>
+				  <td>Nombre</td>
+				  <td>Fecha / Hora</td>
+				  <td style="text-align:right">Opción</td>
+				</tr>  
+				<tr ng-repeat="task in tasks | filter : filterTask">
+				  <td>{{task.menuname}}</td>
+				  <td>{{task.username}}</td>
+				  <td>{{task.date}}</td>
+				  <td><a ng-show="checkTime(username,task.username)" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+				  </td>				  
+				</tr>                  
+			  </tbody>
+			</table>
+		 </div>			
+		</div>
+	</div>
+</div>
