@@ -8,7 +8,8 @@
 
 (function(){
 
-var DueHour=23;
+var DueHour=11;
+var updateList_MenuInterval=5000;
 
 var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
 
@@ -85,7 +86,8 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	 ForgotPassword.get({'email': $scope.newUserModel.email}, function(response){	  
 	   if(response.username)
 		{			
-		alert("Su contraseña es: "+response.password);
+		alert("Una nueva contraseña ha sido enviada a su correo electronico.");
+		$scope.statusMessage="Email enviado exitosamente.";
 		}
 		else
 		{
@@ -97,11 +99,12 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     	  
   }])
 
-    .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', function($scope, JsonServiceMenu, loggedInStatus, $location) {
+ .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter) {
 	
-	$scope.DueHour=DueHour;
-	
-	
+	$scope.DueHour=DueHour;	
+	$scope.usersTemp={};
+	$scope.generatedList={};
+	$scope.ListCount=0;
 	
 	//alert(loggedInStatus.getUsername());
 	$scope.username = loggedInStatus.getUsername();
@@ -114,17 +117,15 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		//alert($scope.logged);
 		};
 		
-	
-  $scope.checkTime = function (currentUser,listUser) {
+  $scope.checkTime = function (currentUser,listUser){
     $scope.hour = new Date();
-    if ($scope.hour.getHours()>=DueHour) {
-		
-		
-      return false;
-    }
+    if ($scope.hour.getHours()>=DueHour) 
+		{
+		return false;		
+		}
 	else{		
 		if(currentUser==listUser)
-			{
+			{			
 				return true;
 			}
 			else
@@ -133,11 +134,77 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 			}		
 		}    
   };
- 	
   
+  function generateList(){
+  var listTemp={};
+  var countListemp=0;
+  
+  //alert($scope.usersTemp);
+  //alert($scope.listTemp);
+     
+   $.each($scope.usersTemp, function(u, valueUser) {
+		$.each($scope.listTemp, function(l, valueList) {
+			if($scope.usersTemp[u].username===$scope.listTemp[l].username)
+				{
+				
+				$scope.generatedList[countListemp]=$scope.usersTemp[u];	
+				//alert("posicion: "+ countListemp+" user: "+$scope.generatedList[countListemp].username);
+				countListemp++;				
+				}
+		});		   	   
+     });
+	 $scope.ListCount=countListemp;
+	  countListemp=0;	 
+	 
+  }
+  
+  function getUsers(){	
+    JsonService.query(function(response) {
+      $scope.usersTemp = response;   
+    });	
+	}		
+	
+	setInterval(function(){       
+    $scope.date = new Date();
+    if ($scope.date.getHours()>=DueHour) 
+		{
+		updateList_MenuInterval=3000000;
+		getUsers();			
+		$scope.listTemp=ValuesBetweenCtrl.getList();	
+		generateList();
+   	   /* $.each($scope.generatedList, function(u, valueUser) {
+		  alert("posicion new: "+ u+" user: "+$scope.generatedList[u].email);
+		  });
+		  */
+		var listEmailUsers="";
+		var caller="";
+		var date=$filter('date')($scope.date,'dd-MM-yyyy'); 
+		
+		caller=$scope.generatedList[Math.floor(Math.random() * $scope.ListCount)].username;			
+		
+		//alert(caller);
+		
+		 $.each($scope.generatedList, function(u, valueUser) {
+		  listEmailUsers+=$scope.generatedList[u].email+",";
+		  //alert(listEmailUsers);
+		  });
+		
+		SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': date}, function(response) {			 
+			 //alert(response);							  
+			});
+		  
+		return false;		
+		}
+	else{		
+		updateList_MenuInterval=5000;
+		}      
+	
+  },20000);
+
+	
   }])
   
-  .controller('MyCtrl1', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
+ .controller('MyCtrl1', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
 	$scope.data = {};   
     AngularIssues.query(function(response) {
       // Assign the response INSIDE the callback
@@ -147,7 +214,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
   
   }])
   
-  .controller('MyCtrl2', ['$scope', 'JsonService', function($scope, JsonService) {
+ .controller('MyCtrl2', ['$scope', 'JsonService', function($scope, JsonService) {
 
 	$scope.datau = {};   
     JsonService.query(function(response) {
@@ -184,9 +251,6 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
 	
   }]);
-
-
-
 
 app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListByDate', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListByDate, JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
 
@@ -228,6 +292,8 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListBy
     var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy'); 
     JsonServiceListByDate.query({'date': dateFormat}, function(response) {
       $scope.tasks = response;
+	  ValuesBetweenCtrl.setList($scope.tasks);
+	  	  	  	  	  
     });
   };
   
@@ -235,7 +301,7 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListBy
    setInterval(function(){
     getList();
 	getMenuAutoCompleter();
-  },5000);
+  },updateList_MenuInterval);
    
   
   /*
@@ -399,8 +465,6 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListBy
 */
 }])
 
-
-
 app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', function($scope, JsonServiceList,JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl) {
 
 	$scope.datamenu = {};
@@ -409,6 +473,7 @@ app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDe
 	function getMenu(){   
     JsonServiceMenu.query(function(response) {
       $scope.datamenu.menu = response;
+	  ValuesBetweenCtrl.setMenu($scope.datamenu.menu);
     });		
 	};
 	
@@ -416,7 +481,7 @@ app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDe
     getMenu();
 	
 	//getMenu();
-  },5000);
+  },updateList_MenuInterval);
 	
 	  $scope.SelectMenu = function(menuname){	  
 		ValuesBetweenCtrl.setValueObject(menuname);

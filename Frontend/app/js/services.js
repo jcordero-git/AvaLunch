@@ -19,6 +19,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
     return $resource('https://api.github.com/repos/angular/angular.js/issues', {});
 	//return $resource('http://localhost:3000/user/', {})
   })
+  
   .factory('JsonService', function($resource) {
    return $resource('http://'+ipServer+':port/user/', 
 	{
@@ -52,7 +53,6 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	{}
   );
   })
-  
   
   .factory('JsonServiceMenu', function($resource) {
    return $resource('http://'+ipServer+':port/menu/', 
@@ -92,6 +92,18 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   );
   })
   
+   .factory('SendEmailNotification', function($resource){
+  return $resource('http://'+ipServer+':port/sendemail/:listuser/:caller/:date',
+	{
+	port: ':3000',
+	listuser:'@listuser',
+	caller: '@caller',
+	date: '@date'
+	},
+	{}
+  );
+  })
+  
     .factory('ForgotPassword', function($resource){
   return $resource('http://'+ipServer+':port/user/:email',
 	{
@@ -105,6 +117,8 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   .service('ValuesBetweenCtrl', function(){
 	  var valueString="";
 	  var valueObject={};
+	  var menu={};
+	  var list={};
 	  
 	  var setValueString = function(value){
 	  valueString = value;	  
@@ -114,19 +128,38 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	  return valueString;
 	  }	 
 
-	var setValueObject = function(value){
+	  var setValueObject = function(value){
 	  valueObject = value;	  
 	  }  
 	  
 	  var getvalueObject = function(){	    
 	  return valueObject;
 	  }	
+	  
+	  var setMenu = function(value){
+	  menu = value;	  
+	  }  
+	  
+	  var getMenu = function(){	    
+	  return menu;
+	  }	
+	  var setList = function(value){
+	  list = value;	  
+	  }  
+	  
+	  var getList = function(){	    
+	  return list;
+	  }	
 		
 	  return{
 	  setValueString: setValueString,
 	  getvalueString: getvalueString,
 	  setValueObject: setValueObject,
-	  getvalueObject: getvalueObject
+	  getvalueObject: getvalueObject,
+	  setMenu: setMenu,
+	  getMenu: getMenu,
+	  setList: setList,
+	  getList: getList
 	  };	  	  
 })
   
@@ -161,4 +194,5 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	  };
 	  	  
 })
+  
   .value('version', '0.1');
