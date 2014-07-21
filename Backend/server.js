@@ -30,6 +30,7 @@ app.configure(function ($httpProvider) {
 
 
 
+//require('./rutes/rutes')(app);
 require('./rutes')(app);
 
 

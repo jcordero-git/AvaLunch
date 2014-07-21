@@ -650,4 +650,58 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu) {
   };
 };
 
+app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonService', function($scope, $modal,$log,JsonService) {
+
+  $scope.user={};
+  $scope.user.username="";
+  $scope.user.email="";
+    
+  $scope.open = function (size) {
+
+    var modalInstanceMyAcount = $modal.open({
+      templateUrl: 'myModalContentAcount.html',
+      controller: ModalInstanceCtrlMyAcount,
+      size: size,
+      resolve: {
+        user: function () {
+          return $scope.user;
+        }
+      }
+    });
+
+    modalInstanceMyAcount.result.then(function (selectedItem) {      
+	  $scope.user= selectedItem;
+	  alert($scope.user.username);
+	  JsonService.save($scope.user, function(response){
+			if (response)
+				{				
+				JsonService.query(function(response) {
+				 // $scope.datamenu.menu = response;
+				  //$scope.user.username="";
+				  //$scope.user.email="";
+				});
+				}
+			else {alert("error");}
+			
+			});	
+    }, function () {
+      $log.info('Modal Cerrada el: ' + new Date());
+    });
+  };
+}])
+
+var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user) {
+
+  $scope.user = user;
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.user);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+
 })();
