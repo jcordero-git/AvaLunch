@@ -8,6 +8,7 @@
 
 (function(){
 
+var StartHour=10;
 var DueHour=11;
 var updateList_MenuInterval=5000;
 
@@ -99,12 +100,17 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     	  
   }])
 
- .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter) {
+ .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', '$rootScope', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter, $rootScope) {
 	
 	$scope.DueHour=DueHour;	
 	$scope.usersTemp={};
 	$scope.generatedList={};
 	$scope.ListCount=0;
+	
+	$scope.emailSent=false;
+	
+	var sendEmail;
+	var VerifyHourToSendEmail;
 	
 	//alert(loggedInStatus.getUsername());
 	$scope.username = loggedInStatus.getUsername();
@@ -117,7 +123,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		//alert($scope.logged);
 		};
 		
-  $scope.checkTime = function (currentUser,listUser){
+	$scope.checkTime = function (currentUser,listUser){
     $scope.hour = new Date();
     if ($scope.hour.getHours()>=DueHour) 
 		{
@@ -135,9 +141,10 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		}    
   };
   
-  function generateList(){
+	function generateList(){
   var listTemp={};
   var countListemp=0;
+  
   
   //alert($scope.usersTemp);
   //alert($scope.listTemp);
@@ -158,49 +165,88 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	 
   }
   
-  function getUsers(){	
+	function getUsers(){	
     JsonService.query(function(response) {
       $scope.usersTemp = response;   
     });	
-	}		
+	}
 	
-	setInterval(function(){       
-    $scope.date = new Date();
-    if ($scope.date.getHours()>=DueHour) 
-		{
-		updateList_MenuInterval=3000000;
-		getUsers();			
-		$scope.listTemp=ValuesBetweenCtrl.getList();	
-		generateList();
-   	   /* $.each($scope.generatedList, function(u, valueUser) {
-		  alert("posicion new: "+ u+" user: "+$scope.generatedList[u].email);
-		  });
-		  */
-		var listEmailUsers="";
-		var caller="";
-		var date=$filter('date')($scope.date,'dd-MM-yyyy'); 
+	
+	
+	/*
+	startVerifyHourToSendEmail();
+	
+	function startVerifyHourToSendEmail(){
+		VerifyHourToSendEmail=setInterval(function()
+			{			
+			$scope.date = new Date();
+			console.log($scope.date.getHours());
+			if ($scope.date.getHours()>=StartHour && $scope.date.getHours()<DueHour)
+				{				
+				startSendEmailInterval();
+								
+				}
+			},20000);
+		//clearInterval(VerifyHourToSendEmail);	
 		
-		caller=$scope.generatedList[Math.floor(Math.random() * $scope.ListCount)].username;			
-		
-		//alert(caller);
-		
-		 $.each($scope.generatedList, function(u, valueUser) {
-		  listEmailUsers+=$scope.generatedList[u].email+",";
-		  //alert(listEmailUsers);
-		  });
-		
-		SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': date}, function(response) {			 
-			 //alert(response);							  
-			});
-		  
-		return false;		
 		}
-	else{		
-		updateList_MenuInterval=5000;
-		}      
+		*/
+		
+	function sendEmailNotiFunction(){
+		$scope.date = new Date();
+		if($scope.date.getHours()==DueHour-1)$scope.emailSent=false;
+		if ($scope.date.getHours()==DueHour && $scope.emailSent==false) 
+			{
+			updateList_MenuInterval=3000000;
+			getUsers();			
+			$scope.listTemp=ValuesBetweenCtrl.getList();	
+			generateList();
+			var listEmailUsers="";
+			var caller="";
+			var date=$filter('date')($scope.date,'dd-MM-yyyy'); 
+			
+			//alert("CAntidad de users: "+ $scope.ListCount);
+			//alert($scope.ListCount);
+			if($scope.ListCount>0)
+			{
+			caller=$scope.generatedList[Math.floor(Math.random() * $scope.ListCount)].username;		
+			
+			 $.each($scope.generatedList, function(u, valueUser) {
+			  listEmailUsers+=$scope.generatedList[u].email+",";
+			  });			
+			SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': date}, function(response) {
+				if(response)
+				{
+				//alert("envio email");
+				$scope.emailSent=true;
+				//stopSendEmail();
+				}
+				});
+			}			  
+			//return false;		
+			}
+		else{
+			
+			updateList_MenuInterval=5000;
+			}    
+		}
+		
+	//function startSendEmailInterval(){
+			sendEmail=setInterval(function(){					
+			sendEmailNotiFunction();  
+			console.log("startSendEmailInterval");
+			//clearInterval(VerifyHourToSendEmail);				
+			},20000);
+	//		};			
 	
-  },20000);
-
+/*	
+	function stopSendEmail(){	
+		alert("envio email detenido");	
+		clearInterval(sendEmail);
+		//startVerifyHourToSendEmail();
+		};
+		*/
+		
 	
   }])
   
@@ -260,8 +306,6 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListBy
   $scope.newListModel.date="";
   $scope.date = new Date(); 
   
-  
-  
   $rootScope.$on('loadSelectedMenuItem', function(event, data){	  
 	$scope.taskInput=ValuesBetweenCtrl.getvalueObject();
 	});
@@ -297,11 +341,12 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListBy
     });
   };
   
-  
+  //$rootScope.$on('StarUpdatingList', function(event, data){	 
    setInterval(function(){
     getList();
 	getMenuAutoCompleter();
   },updateList_MenuInterval);
+  //});
    
   
   /*

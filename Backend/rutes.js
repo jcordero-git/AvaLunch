@@ -166,6 +166,7 @@ module.exports = function(app){
 	});	
 	};
 	
+	/*
 	validateUserPassEncrypt=function(req, res){
 	userVa.findOne({username:req.params.username}, function(err,user){
 	if(user)
@@ -197,6 +198,7 @@ module.exports = function(app){
 		//else console.log('Error '+err);
 		});
 	};
+	*/
 	
 	validateUser=function(req, res){
 	userVa.findOne({username:req.params.username,password:req.params.password}, function(err,user){
@@ -349,7 +351,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUserPassEncrypt);
+app.get('/user/:username/:password',validateUser);
 app.get('/user/:email',findUserByEmail);
 //app.get('/sendemail',sendEmail);
 app.get('/sendemail/:listuser/:caller/:date',sendEmailNotification);
