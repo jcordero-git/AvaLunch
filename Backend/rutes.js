@@ -263,6 +263,31 @@ module.exports = function(app){
 		res.send(user);
 	};
 	
+	updateUserById=function(req, res){
+	userVa.findById(req.params.id,function(err,user)
+		{
+		console.log("menu to update: "+user);
+		user.username=req.body.username;
+		user.email=req.body.email;
+		user.password=req.body.password;
+		user.save
+			(function(err)
+				{	
+				console.log("Function");				
+				if(!err) 
+					{
+					console.log('User updated');
+					}
+				else 
+					{
+					console.log('Error'+ err);
+					}
+				}				
+			)
+		res.send(user);			
+		});	
+	};
+	
 	/*
 	function findEmailSent(date){		
 		emailSentVa.findOne({date:date}, function(err,emailSent){
@@ -353,6 +378,7 @@ app.get('/user',findAllUsers);
 app.post('/user',registerUser);
 app.get('/user/:username/:password',validateUser);
 app.get('/user/:email',findUserByEmail);
+app.put('/user/:id',updateUserById);
 //app.get('/sendemail',sendEmail);
 app.get('/sendemail/:listuser/:caller/:date',sendEmailNotification);
 	

@@ -27,6 +27,26 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	}
    );
   }) 
+  /*
+   .factory('JsonServiceUpdateUser', function($resource) {
+   return $resource('http://'+ipServer+':port/user/', 
+	{
+	port: ':3000'
+	
+	}
+   );
+  })
+  */
+  
+  .factory('JsonServiceUpdateUser', ['$resource', function($resource) {
+   return $resource('http://'+ipServer+':port/user/:id', null,
+       {
+			
+           'update': { method:'PUT' },
+		   port: ':3000'
+       });
+   }])
+  
   
     .factory('JsonServiceList', function($resource) {
    return $resource('http://'+ipServer+':port/list/', 
@@ -164,16 +184,28 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 })
   
   .service('loggedInStatus', function($cookieStore){
+	  
+	  var user={};
 	  var username="";
 	  var loggedIn=false;
-			  
+
+	  var setUser = function(userParam){
+	  user = userParam;	  
+	  $cookieStore.put('loggedUser', user);
+	  }  
+	  
+	  var getUser = function(){	  
+	  user = $cookieStore.get('loggedUser');  
+	  return user;
+	  }
+		
 	  var setUsername = function(usernameParam){
 	  username = usernameParam;	  
-	  $cookieStore.put('loggedUser', username);
+	  //$cookieStore.put('loggedUser', username);
 	  }  
 	  
 	  var getUsername = function(){	  
-	  username = $cookieStore.get('loggedUser');  
+	 // username = $cookieStore.get('loggedUser');  
 	  return username;
 	  }
 	  
@@ -187,6 +219,8 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	  }
 	  
 	  return{
+	  setUser: setUser,
+	  getUser: getUser,
 	  setUsername: setUsername,
 	  getUsername: getUsername,
 	  setLoggedIn: setLoggedIn,

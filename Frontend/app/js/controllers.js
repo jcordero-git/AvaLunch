@@ -60,8 +60,9 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     ValidateUser.get({'username': $scope.newUserModel.username,'password': $scope.newUserModel.password}, function(response){	  
 	   if(response.username)
 		{				
-		loggedInStatus.setUsername(response.username);
+		//loggedInStatus.setUsername(response.username);
 		loggedInStatus.setLoggedIn(true);
+		loggedInStatus.setUser(response);
 		$location.path('/index');
 		}
 		else
@@ -113,7 +114,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	var VerifyHourToSendEmail;
 	
 	//alert(loggedInStatus.getUsername());
-	$scope.username = loggedInStatus.getUsername();
+	$scope.username = loggedInStatus.getUser().username;
 	$scope.logged=loggedInStatus.getLoggedIn(); 
 		
 	$scope.LogOut = function(){
@@ -650,11 +651,13 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu) {
   };
 };
 
-app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonService', function($scope, $modal,$log,JsonService) {
+app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdateUser','loggedInStatus', function($scope, $modal, $log, JsonServiceUpdateUser, loggedInStatus) {
 
-  $scope.user={};
-  $scope.user.username="";
-  $scope.user.email="";
+  $scope.user=loggedInStatus.getUser();
+  //$scope.user.id=$scope.user._id;
+  //$scope.user.username=$scope.user.username;
+  //$scope.user.email=$scope.user.email;
+  //$scope.user.password="";
     
   $scope.open = function (size) {
 
@@ -669,21 +672,24 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonService', fu
       }
     });
 
-    modalInstanceMyAcount.result.then(function (selectedItem) {      
-	  $scope.user= selectedItem;
+    modalInstanceMyAcount.result.then(function (user) {      
+	  $scope.user= user;
 	  alert($scope.user.username);
-	  JsonService.save($scope.user, function(response){
-			if (response)
-				{				
-				JsonService.query(function(response) {
+	  JsonServiceUpdateUser.update({$id:$scope.user._id}, $scope.user );//, function(response){
+	           
+			//if (response)
+				//{				
+				//JsonService.query(function(response) {
 				 // $scope.datamenu.menu = response;
 				  //$scope.user.username="";
 				  //$scope.user.email="";
-				});
-				}
-			else {alert("error");}
+				//});
+				//}				
+			//else {
+			//alert("error");
+			//}
 			
-			});	
+			//});	
     }, function () {
       $log.info('Modal Cerrada el: ' + new Date());
     });
