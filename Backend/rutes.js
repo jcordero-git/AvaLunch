@@ -331,9 +331,9 @@ module.exports = function(app){
 				var mailOptions1 = {
 									from: 'AvaLunchs <jocorbre@gmail.com>', // sender address
 									to: lisUsers, // list of receivers
-									subject: 'AvaLunchs - Pedido del 12/04/2014', // Subject line
+									subject: 'AvaLunchs - Pedido del '+date, // Subject line
 									text: 'Pedido', // plaintext body
-									html: '<p><b>El seleccionado para realizar la llamada del dia de hoy es: '+caller+'</b></p><p>La lista se encuentra en el sitio web: <a target="_black" href="http:192.168.0.124:8080/app"> http:192.168.0.124:8080/app <a></p></br></br><p><b>AvaLunchs SQA Project Liberia 2014</b><p>' // html body
+									html: '<p><b>El seleccionado para realizar la llamada del dia de hoy es: '+caller+'</b></p><p>La lista se encuentra en el sitio web: <a target="_black" href="http:192.168.0.124:8080/app"> http:192.168.49.115:8080/app <a></p></br></br><p><b>AvaLunchs SQA Project Liberia 2014</b><p>' // html body
 									};
 									
 					sendEmail(mailOptions1);	

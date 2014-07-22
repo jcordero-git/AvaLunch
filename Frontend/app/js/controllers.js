@@ -337,9 +337,14 @@ app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListBy
     var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy'); 
     JsonServiceListByDate.query({'date': dateFormat}, function(response) {
       $scope.tasks = response;
-	  ValuesBetweenCtrl.setList($scope.tasks);
-	  	  	  	  	  
+	  //ValuesBetweenCtrl.setList($scope.tasks);	  	  	  	  	  
     });
+	$scope.currentDate = new Date();
+	 var currentDateFormat= $filter('date')($scope.currentDate,'dd-MM-yyyy'); 
+     JsonServiceListByDate.query({'date': currentDateFormat}, function(response) {
+	 ValuesBetweenCtrl.setList($scope.tasks);	  	  	  	  	  
+    });
+	
   };
   
   //$rootScope.$on('StarUpdatingList', function(event, data){	 
@@ -674,22 +679,7 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
 
     modalInstanceMyAcount.result.then(function (user) {      
 	  $scope.user= user;
-	  alert($scope.user.username);
-	  JsonServiceUpdateUser.update({$id:$scope.user._id}, $scope.user );//, function(response){
-	           
-			//if (response)
-				//{				
-				//JsonService.query(function(response) {
-				 // $scope.datamenu.menu = response;
-				  //$scope.user.username="";
-				  //$scope.user.email="";
-				//});
-				//}				
-			//else {
-			//alert("error");
-			//}
-			
-			//});	
+	  JsonServiceUpdateUser.update({'id': $scope.user._id}, $scope.user);	
     }, function () {
       $log.info('Modal Cerrada el: ' + new Date());
     });

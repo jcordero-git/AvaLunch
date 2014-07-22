@@ -38,14 +38,12 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   */
   
-  .factory('JsonServiceUpdateUser', ['$resource', function($resource) {
-   return $resource('http://'+ipServer+':port/user/:id', null,
-       {
-			
-           'update': { method:'PUT' },
-		   port: ':3000'
-       });
-   }])
+  .factory('JsonServiceUpdateUser', function($resource) {
+   return $resource('http://'+ipServer+':port/user/:id',{port: ':3000'},{
+	   update: {method:'PUT', params: {entryId: '@id'}}
+	   }
+	   );
+   })
   
   
     .factory('JsonServiceList', function($resource) {
