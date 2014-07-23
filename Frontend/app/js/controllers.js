@@ -12,7 +12,28 @@ var StartHour=10;
 var DueHour=11;
 var updateList_MenuInterval=5000;
 
-var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap'])  
+var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap', 'flow'])  
+
+.config(['flowFactoryProvider',  function (flowFactoryProvider) {
+  flowFactoryProvider.defaults = {
+    target: '/test/',
+    permanentErrors: [404, 500, 501],
+    maxChunkRetries: 1,
+    chunkRetryInterval: 5000,
+    simultaneousUploads: 4
+  };
+  flowFactoryProvider.on('catchAll', function (event) {
+    console.log('catchAll', arguments);
+  });
+  
+ 
+  
+  // Can be used with different implementations of Flow.js
+  // flowFactoryProvider.factory = fustyFlowFactory;
+}])
+
+
+
 
 .controller('TemplateCtrl',['$scope','loggedInStatus', '$location',function($scope,loggedInStatus, $location){
 	$scope.panelLogin=true;
@@ -20,10 +41,12 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	$scope.panelForgot=false;
 	$scope.logged=loggedInStatus.getLoggedIn(); 	
 	
+	/*
 	if($scope.logged==false)
 		{						
 		$location.path('/login');
 		}
+		*/
 			
 	$scope.ShowPanels = function(login,singUp,forgot){
 		$scope.panelLogin=login;
