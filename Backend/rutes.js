@@ -13,6 +13,43 @@ module.exports = function(app){
 	var nodemailer = require('nodemailer');
 	
 	
+	var fs = require('fs');
+	var path = require("path");
+	
+	
+	upload=function(req, res){	
+		  setTimeout(			
+			function () {
+			    
+				res.setHeader('Content-Type', 'text/html');
+				if (req.files.length == 0 || req.files.file.size == 0)
+					res.send({ msg: 'No file uploaded at ' + new Date().toString() });
+				else {
+					var file = req.files.file;					
+					console.log(file);
+					var newImageLocation = path.join(__dirname, '/images', file.name);
+					fs.readFile(file.path, function(err, data) {
+						if (err)
+							throw err;
+						else{							
+							fs.writeFile(newImageLocation, data, function(err) {
+								res.json(200, { 
+								src: 'images/' + file.name,
+								size: file.size								
+								});
+								console.log(file.name);
+							});
+							//res.end("Hello");
+							res.send({ msg: '<b>"' + file.name + '"</b> uploaded to the server at ' + new Date().toString() });							
+						}
+					});
+				}
+			},
+			(req.param('delay', 'yes') == 'yes') ? 2000 : -1
+		);
+	};
+	
+	
 	var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -381,6 +418,8 @@ app.get('/user/:email',findUserByEmail);
 app.put('/user/:id',updateUserById);
 //app.get('/sendemail',sendEmail);
 app.get('/sendemail/:listuser/:caller/:date',sendEmailNotification);
+
+app.post('/upload',upload);
 	
 };
 

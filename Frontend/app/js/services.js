@@ -9,7 +9,33 @@
 
 var ipServer="localhost";
 
-angular.module('myApp.services', ['ngResource','ngCookies'])
+angular.module('myApp.services', ['ngResource','ngCookies', 'flow'])
+  
+  
+  
+  
+.config(['flowFactoryProvider',  function (flowFactoryProvider) {
+  
+  
+  flowFactoryProvider.defaults = {
+    target: 'http://localhost:3000/upload',
+    permanentErrors: [404, 500, 501],
+    maxChunkRetries: 1,
+    chunkRetryInterval: 5000,
+    simultaneousUploads: 4,
+	
+  };
+  flowFactoryProvider.on('catchAll', function (event) {
+    console.log('catchAll', arguments);
+  });
+  
+ 
+  
+  // Can be used with different implementations of Flow.js
+  // flowFactoryProvider.factory = fustyFlowFactory;
+}])
+
+  
   .config(function($routeProvider,
   $httpProvider){
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -19,6 +45,15 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
     return $resource('https://api.github.com/repos/angular/angular.js/issues', {});
 	//return $resource('http://localhost:3000/user/', {})
   })
+  
+   .factory('UpdateService', function($resource) {
+   return $resource('http://'+ipServer+':port/upload/', 
+	{
+	port: ':3000'
+	}
+   );
+  })
+  
   
   .factory('JsonService', function($resource) {
    return $resource('http://'+ipServer+':port/user/', 

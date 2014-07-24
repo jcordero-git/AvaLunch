@@ -12,28 +12,85 @@ var StartHour=10;
 var DueHour=11;
 var updateList_MenuInterval=5000;
 
-var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap', 'flow'])  
 
-.config(['flowFactoryProvider',  function (flowFactoryProvider) {
-  flowFactoryProvider.defaults = {
-    target: '/test/',
-    permanentErrors: [404, 500, 501],
-    maxChunkRetries: 1,
-    chunkRetryInterval: 5000,
-    simultaneousUploads: 4
+var fs = require('fs');
+var path = require("path");
+
+	
+
+
+
+var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap','angular-files-model', 'angularFileUpload' ])  
+
+
+.post('/upload', function (req, res) {	
+		  setTimeout(			
+			function () {
+			    
+				res.setHeader('Content-Type', 'text/html');
+				if (req.files.length == 0 || req.files.file.size == 0)
+					res.send({ msg: 'No file uploaded at ' + new Date().toString() });
+				else {
+					var file = req.files.file;					
+					console.log(file);
+					var newImageLocation = path.join(__dirname, '/images', file.name);
+					fs.readFile(file.path, function(err, data) {
+						if (err)
+							throw err;
+						else{							
+							fs.writeFile(newImageLocation, data, function(err) {
+								res.json(200, { 
+								src: 'images/' + file.name,
+								size: file.size								
+								});
+								console.log(file.name);
+							});
+							//res.end("Hello");
+							res.send({ msg: '<b>"' + file.name + '"</b> uploaded to the server at ' + new Date().toString() });							
+						}
+					});
+				}
+			},
+			(req.param('delay', 'yes') == 'yes') ? 2000 : -1
+		);
+	})
+
+.controller('MyCtrl',['$scope', '$upload' ,function($scope,$upload ){
+
+$scope.onFileSelect = function($files) {
+    //$files: an array of files selected, each file has name, size, and type.
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: 'upload/', //upload.php script, node.js route, or servlet url
+        //method: 'POST' or 'PUT',
+        //headers: {'header-key': 'header-value'},
+        //withCredentials: true,
+        data: {myObj: $scope.myModelObj},
+        file: file, // or list of files ($files) for html5 only
+        //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+        // customize file formData name ('Content-Desposition'), server side file variable name. 
+        //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file' 
+        // customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+        //formDataAppender: function(formData, key, val){}
+      }).progress(function(evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function(data, status, headers, config) {
+        // file is uploaded successfully
+        console.log(data);
+      });
+      //.error(...)
+      //.then(success, error, progress); 
+      // access or attach event listeners to the underlying XMLHttpRequest.
+      //.xhr(function(xhr){xhr.upload.addEventListener(...)})
+    }
+    /* alternative way of uploading, send the file binary with the file's content-type.
+       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
+       It could also be used to monitor the progress of a normal http post/put request with large data*/
+    // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
   };
-  flowFactoryProvider.on('catchAll', function (event) {
-    console.log('catchAll', arguments);
-  });
-  
- 
-  
-  // Can be used with different implementations of Flow.js
-  // flowFactoryProvider.factory = fustyFlowFactory;
+
 }])
-
-
-
 
 .controller('TemplateCtrl',['$scope','loggedInStatus', '$location',function($scope,loggedInStatus, $location){
 	$scope.panelLogin=true;
@@ -320,9 +377,9 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     ];
 	
 	
-  }]);
+  }])
 
-app.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListByDate', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListByDate, JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
+.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListByDate', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListByDate, JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
 
   $scope.newListModel={};
   $scope.newListModel.username="";
@@ -681,11 +738,26 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu) {
 
 app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdateUser','loggedInStatus', function($scope, $modal, $log, JsonServiceUpdateUser, loggedInStatus) {
 
+
+ $scope.foo = "Hello World";
+            $scope.disabled = false;
+            $scope.bar = function(content) {
+              if (console) console.log(content);
+              $scope.uploadResponse = content.msg;
+            }
+
+
+
+
+
+
   $scope.user=loggedInStatus.getUser();
   //$scope.user.id=$scope.user._id;
   //$scope.user.username=$scope.user.username;
   //$scope.user.email=$scope.user.email;
   //$scope.user.password="";
+  
+  
     
   $scope.open = function (size) {
 
@@ -709,9 +781,10 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
   };
 }])
 
-var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user) {
+var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateService) {
 
   $scope.user = user;
+  $scope.wrap={};
 
   $scope.ok = function () {
     $modalInstance.close($scope.user);
@@ -720,6 +793,27 @@ var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user) {
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+  
+  
+  $scope.upload = function (form1) {
+  
+ // var fd = new FormData()
+ // fd.append('file', $scope.wrap);
+    	  
+	alert(form1);
+	UpdateService.save(form1, function(response){
+	if (response)
+		{
+		alert("File Uploaded");
+		}
+	else {alert("error");}
+	
+	});	
+    //$scope.fileModel // This is where the file is linked to.
+			
+        };
+  
+  
 };
 
 

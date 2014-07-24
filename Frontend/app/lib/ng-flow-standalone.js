@@ -280,7 +280,7 @@
       // metadata and determine if there's even a point in continuing.
       var found = false;
       if (this.opts.prioritizeFirstAndLastChunk) {
-        each(this.files, function (file) {
+	       each(this.files, function (file) {
           if (!file.paused && file.chunks.length &&
             file.chunks[0].status() === 'pending' &&
             file.chunks[0].preprocessState === 0) {
