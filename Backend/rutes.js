@@ -49,6 +49,39 @@ module.exports = function(app){
 		);
 	};
 	
+	uploadDish=function(req, res){	
+		  setTimeout(			
+			function () {
+			    
+				res.setHeader('Content-Type', 'text/html');
+				if (req.files.length == 0 || req.files.file.size == 0)
+					res.send({ msg: 'No file uploaded at ' + new Date().toString() });
+				else {
+					var file = req.files.file;	
+					var newImageLocation = path.join(__dirname, 'public/images/Dish', file.name);
+					console.log(newImageLocation);
+					fs.readFile(file.path, function(err, data) {
+						if (err)
+							throw err;
+						else{							
+							fs.writeFile(newImageLocation, data, function(err) {
+								res.json(200, { 
+								src: 'images/Dish/' + file.name,
+								size: file.size								
+								});
+								console.log(file.name);
+							});
+							//res.end("Hello");
+							res.send({ msg: '<b>"' + file.name + '"</b> uploaded to the server at ' + new Date().toString() });							
+						}
+					});
+				}
+			},
+			(req.param('delay', 'yes') == 'yes') ? 2000 : -1
+		);
+	};
+	
+	
 	GetUserImage=function(req, res){	
 		  setTimeout(			
 			function () {			    
@@ -461,6 +494,7 @@ app.get('/sendemail/:listuser/:caller/:date',sendEmailNotification);
 app.get('/getuserimg', GetUserImage);
 
 app.post('/upload',upload);
+app.post('/uploadDish',uploadDish);
 	
 };
 

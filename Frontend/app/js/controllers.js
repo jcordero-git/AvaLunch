@@ -297,7 +297,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
   }])
   
-.controller('MyCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
+.controller('UploadCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
 
  $scope.username = loggedInStatus.getUser().username;
  $scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
@@ -348,10 +348,54 @@ $scope.onFileSelect = function($files) {
 	  
     });	
   }
-  
-  
 
 }])
+  
+.controller('UploadDishCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
+
+ //$scope.menuid = loggedInStatus.getUser().username;
+ //$scope.imgDish= 'http://localhost:3000/images/Dish/'+$scope.menuid+'.jpg?updated=' + Math.random(); 
+
+$scope.onFileSelect = function($files, idMenu) {
+    //$files: an array of files selected, each file has name, size, and type.
+    
+	for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];	  
+	  
+      $scope.upload = $upload.upload({
+        url: 'http://localhost:3000/uploadDish', //upload.php script, node.js route, or servlet url
+        method: 'POST',// or 'PUT',
+        //headers: {'header-key': 'header-value'},
+        //withCredentials: true,
+        data: {myObj: $scope.myModelObj},
+        file: file, // or list of files ($files) for html5 only
+        fileName: idMenu+".jpg" //or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+        // customize file formData name ('Content-Desposition'), server side file variable name. 
+        //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file' 
+        // customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+        //formDataAppender: function(formData, key, val){}
+      }).progress(function(evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function(data, status, headers, config) {
+        // file is uploaded successfully
+		$scope.imgDish= 'http://localhost:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
+        console.log(data);
+      });
+      //.error(...)
+      //.then(success, error, progress); 
+      // access or attach event listeners to the underlying XMLHttpRequest.
+      //.xhr(function(xhr){xhr.upload.addEventListener(...)})
+    }
+    /* alternative way of uploading, send the file binary with the file's content-type.
+       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
+       It could also be used to monitor the progress of a normal http post/put request with large data*/
+    // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
+	
+  };
+
+}])
+ 
+  
   
  .controller('MyCtrl1', ['$scope', 'AngularIssues', function($scope, AngularIssues) {
 	$scope.data = {};   
@@ -439,6 +483,7 @@ $scope.onFileSelect = function($files) {
     var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy'); 
     JsonServiceListByDate.query({'date': dateFormat}, function(response) {
       $scope.tasks = response;
+	 // $scope.imgUserName= 'http://localhost:3000/images/'+$scope.tasks.username+'.jpg?updated=' + Math.random();
 	  //ValuesBetweenCtrl.setList($scope.tasks);	  	  	  	  	  
     });
 	$scope.currentDate = new Date();
@@ -710,6 +755,7 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
   $scope.newMenu={};
   $scope.newMenu.menuname="";
   $scope.newMenu.price="";
+  $scope.DishSaved=false;
     
   $scope.open = function (size) {
 
@@ -723,8 +769,12 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
         }
       }
     });
+	
+	
 
     modalInstance.result.then(function (selectedItem) {      
+	  
+	  /*
 	  $scope.newMenu= selectedItem;
 	  //alert($scope.newMenu.menuname);
 	  JsonServiceMenu.save($scope.newMenu, function(response){
@@ -733,25 +783,106 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
 				JsonServiceMenu.query(function(response) {
 				  $scope.datamenu.menu = response;
 				  $scope.newMenu.menuname="";
-				  $scope.newMenu.price="";
+				  $scope.newMenu.price="";				 
 				});
 				}
 			else {alert("error");}
 			
 			});	
+			*/
+			
     }, function () {
       $log.info('Modal Cerrada el: ' + new Date());
     });
   };
+  
+ 
+ 
+ $scope.openImgModel = function (size, idMenu) {
+	$scope.idMenu=idMenu;
+    var modalInstance = $modal.open({
+      templateUrl: 'imgModal.html',
+      controller: ModalInstanceImgMenuCtrl,
+      size: size,
+      resolve: {
+        idMenu: function () {
+          return $scope.idMenu;
+        }
+      }
+    });
+	
+	
+
+    modalInstance.result.then(function (selectedItem) {      
+	  
+	  /*
+	  $scope.newMenu= selectedItem;
+	  //alert($scope.newMenu.menuname);
+	  JsonServiceMenu.save($scope.newMenu, function(response){
+			if (response)
+				{				
+				JsonServiceMenu.query(function(response) {
+				  $scope.datamenu.menu = response;
+				  $scope.newMenu.menuname="";
+				  $scope.newMenu.price="";				 
+				});
+				}
+			else {alert("error");}
+			
+			});	
+			*/
+			
+    }, function () {
+      $log.info('Modal Cerrada el: ' + new Date());
+    });
+  };
+  
+  
 }])
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu) {
+var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMenu) {
 
   $scope.newMenu = newMenu;
 
   $scope.ok = function () {
-    $modalInstance.close($scope.newMenu);
+    
+	 JsonServiceMenu.save($scope.newMenu, function(response){
+			if (response)
+				{	
+				$scope.idMenu=response._id;
+				$scope.DishSaved=true;	
+				$scope.OnlyAceptClicked=true;
+				}
+			else {alert("error");}
+			
+			});	
   };
+  
+  $scope.okAndClose = function () {
+  
+  JsonServiceMenu.save($scope.newMenu, function(response){
+			if (response)
+				{	
+				$modalInstance.close($scope.newMenu);	
+				}
+			else {alert("error");}
+			
+			});	  
+    
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+var ModalInstanceImgMenuCtrl = function ($scope, $modalInstance, idMenu, JsonServiceMenu) {
+
+  $scope.idMenu = idMenu;
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.idMenu);
+  };  
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');

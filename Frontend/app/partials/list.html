@@ -57,15 +57,17 @@
 		  <div class="table-responsive">
 			<table class="table" ng-animate="animate">
 			  <tbody>
-				<tr class="danger">
-				  <td>Plato</td>
+				<tr class="danger">	
+				  <td></td>
 				  <td>Nombre</td>
+				  <td>Plato</td>
 				  <td>Fecha / Hora</td>
 				  <td style="text-align:right">Opción</td>
 				</tr>  
-				<tr ng-repeat="task in tasks | filter : filterTask">
-				  <td>{{task.menuname}}</td>
+				<tr ng-repeat="task in tasks | filter : filterTask">				  
+				  <td><img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://localhost:3000/images/{{task.username}}.jpg"/></td>
 				  <td>{{task.username}}</td>
+				  <td>{{task.menuname}}</td>				  
 				  <td>{{task.date}}</td>
 				  <td><a ng-show="checkTime(username,task.username)" ng-click="deleteTask(task._id)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
 				  </td>				  

@@ -27,15 +27,27 @@
 							<div class="modal-body">				
 								 <div class="row">
 									  <div class="col-lg-6 ">
-										<div class="input-group">
+										<div class="row" ng-controller="UploadDishCtrl">			
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">				  
+								            <img class="thumbnail img-responsive" style="width: 100%; height:250px" ng-src="{{imgDish}}"/>											  
+											</div>											
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">											
+											 <input ng-show="DishSaved" class="nav-button-margin" style="width: 100%;" type="file" ng-file-select="onFileSelect($files, idMenu)">
+											
+											</div>
+												
+										</div>	
+									  </div><!-- /.col-lg-6 -->
+									  <div class="col-lg-6">
+									  <div class="input-group header-elements-margin">
 										  <span class="input-group-addon">
 											Platillo
 										  </span>
 										  <input type="text" ng-model="newMenu.menuname" placeholder="Digite..." class="form-control" ng-required="newMenu.menuname" required>
 										</div><!-- /input-group -->
-									  </div><!-- /.col-lg-6 -->
-									  <div class="col-lg-6">
-										<div class="input-group">
+									  
+									  
+										<div class="input-group header-elements-margin">
 										  <span class="input-group-addon">
 											Precio ₡
 										  </span>
@@ -46,8 +58,9 @@
 									</div><!-- /.row -->				
 							</div>
 							<div class="modal-footer">
-								<button class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
-								<button class="btn btn-warning btn-sm" ng-click="cancel()">Cancelar</button>
+								<button  class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
+								<button ng-disabled="OnlyAceptClicked" class="btn btn-primary btn-sm" ng-click="okAndClose()">Aceptar y Cerrar</button>
+								<button class="btn btn-warning btn-sm" ng-click="cancel()">Cerrar</button>
 							</div>
 						</script>
 						<a class="btn btn-right btn-sm btn-warning header-elements-margin" ng-click="open('sm')"> 
@@ -58,7 +71,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="widget-body ">	
+	<div class="widget-body">	
 	
 		<div class="task" >		
 		  <div class="table-responsive">
@@ -66,6 +79,7 @@
 		  <table class="table">
 			  <tbody>
 				<tr class="warning">
+				  <td></td>
 				  <td></td>
 				  <td>Plato</td>
 				  <td>Precio</td>
@@ -76,6 +90,40 @@
 				  <a ng-show="checkTime()" class="pull-left" ng-click="SelectMenu(menu)">
 				  <i class="glyphicon glyphicon-check"> </i>
 				  </a>
+				  </td>
+				  <td>				  
+				  <div ng-controller="ModalCtrl">
+					<script type="text/ng-template" id="imgModal.html">
+						<div class="modal-header">
+							<h3 class="modal-title">Imagen del Platillo</h3>
+							</div>
+							<div class="modal-body">				
+								 <div class="row">	
+									
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">				  
+								            <img class="thumbnail img-responsive" style="width: 100%; height:100%" ng-src="http://localhost:3000/images/Dish/{{idMenu}}.jpg"/>											  
+											</div>			
+									</div><!-- /.row -->				
+							</div>
+							<div class="modal-footer">
+								<button  class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
+							</div>
+						</script>
+						<a class="" ng-click="openImgModel('sm', menu._id )"> 
+						<i class="glyphicon glyphicon-eye-open">
+						</i>
+						</a>		
+				</div>
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
 				  </td>
 				  <td>{{menu.menuname}}</td>
 				  <td>{{menu.price}}</td>
@@ -90,6 +138,20 @@
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</div>
+	
+	
+	
+	
+	
 </div>
 </div>
