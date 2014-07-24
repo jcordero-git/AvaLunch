@@ -7,10 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	$chunkDir = $tempDir . DIRECTORY_SEPARATOR . $_GET['flowIdentifier'];
 	$chunkFile = $chunkDir.'/chunk.part'.$_GET['flowChunkNumber'];
 	if (file_exists($chunkFile)) {
-		header("HTTP/1.0 200 Ok");
+		header("HTTP/1.0 200 Ok ERERGERGER");
 	} else {
 		header("HTTP/1.0 404 Not Found");
 	}
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
+	header("HTTP/1.0 200 Ok");
+	
 }
 // Just imitate that the file was stored.
 echo json_encode([

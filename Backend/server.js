@@ -27,6 +27,8 @@ app.configure(function ($httpProvider) {
     
 });
 
+app.use(express.static(process.cwd() + '/public'));
+
 
 
 

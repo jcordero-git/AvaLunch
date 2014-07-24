@@ -9,11 +9,11 @@
 
 var ipServer="localhost";
 
-angular.module('myApp.services', ['ngResource','ngCookies', 'flow'])
+angular.module('myApp.services', ['ngResource','ngCookies'])
   
   
   
-  
+  /*
 .config(['flowFactoryProvider',  function (flowFactoryProvider) {
   
   
@@ -28,13 +28,13 @@ angular.module('myApp.services', ['ngResource','ngCookies', 'flow'])
   flowFactoryProvider.on('catchAll', function (event) {
     console.log('catchAll', arguments);
   });
-  
+ 
  
   
   // Can be used with different implementations of Flow.js
   // flowFactoryProvider.factory = fustyFlowFactory;
 }])
-
+ */
   
   .config(function($routeProvider,
   $httpProvider){
@@ -48,6 +48,14 @@ angular.module('myApp.services', ['ngResource','ngCookies', 'flow'])
   
    .factory('UpdateService', function($resource) {
    return $resource('http://'+ipServer+':port/upload/', 
+	{
+	port: ':3000'
+	}
+   );
+  })
+  
+   .factory('getUserImgService', function($resource) {
+   return $resource('http://'+ipServer+':port/getuserimg/', 
 	{
 	port: ':3000'
 	}
