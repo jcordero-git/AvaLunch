@@ -147,7 +147,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     	  
   }])
 
- .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', '$rootScope', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter, $rootScope) {
+ .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', '$rootScope', 'GetServerHour', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter, $rootScope, GetServerHour) {
 	
 	$scope.DueHour=DueHour;	
 	$scope.usersTemp={};
@@ -158,7 +158,13 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
 	var sendEmail;
 	var VerifyHourToSendEmail;
+	var serverHour={};
 	
+	 var date={};
+	
+	getServerHour();
+	
+		
 	//alert(loggedInStatus.getUsername());
 	$scope.username = loggedInStatus.getUser().username;
 	$scope.logged=loggedInStatus.getLoggedIn(); 
@@ -172,6 +178,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		
 	$scope.checkTime = function (currentUser,listUser){
     $scope.hour = new Date();
+	
     if ($scope.hour.getHours()>=DueHour) 
 		{
 		return false;		
@@ -188,7 +195,33 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		}    
   };
   
-	function generateList(){
+ 
+  
+  function getServerHour(){
+  GetServerHour.query(function(response) {
+      //var data = form.XHR.response;
+	 // var parsed = JSON.parse(response);
+	 if(response){
+	 response.hour;
+	var foo = JSON.stringify(response);
+	//alert(foo.hour);
+	
+      //alert(response.error);
+	  
+	  serverHour=response.date;
+	   //	alert(serverHour); 
+		//alert(JSON.stringify(response));
+   }
+	
+	else{
+	alert("error");
+	}
+	 });
+  }
+  
+  
+  
+  function generateList(){
   var listTemp={};
   var countListemp=0;
   
@@ -240,8 +273,10 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		*/
 		
 	function sendEmailNotiFunction(){
-		$scope.date = new Date();
+		$scope.date = new Date();		
+	
 		if($scope.date.getHours()==DueHour-1)$scope.emailSent=false;
+		
 		if ($scope.date.getHours()==DueHour && $scope.emailSent==false) 
 			{
 			updateList_MenuInterval=3000000;
@@ -279,7 +314,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		}
 		
 	//function startSendEmailInterval(){
-			sendEmail=setInterval(function(){					
+			sendEmail=setInterval(function(){			
 			sendEmailNotiFunction();  
 			console.log("startSendEmailInterval");
 			//clearInterval(VerifyHourToSendEmail);				
@@ -609,8 +644,9 @@ $scope.onFileSelect = function($files, idMenu) {
   };
    */
   $scope.deleteTask = function (task) {
-    $scope.hour = new Date();
-    if ($scope.hour.getHours()<=DueHour) {	
+    //$scope.hour = new Date();
+   // if ($scope.hour.getHours()<=DueHour) {
+	
       if(confirm("Está seguro de querer borrar su pedido?")){        
 		//JsonServiceListDeleteById.delete({'id': task})
 		JsonServiceListDeleteById.delete({'id': task},function(response){
@@ -621,9 +657,12 @@ $scope.onFileSelect = function($files, idMenu) {
 				else {alert("error");}
 			});				
         }      
-    }else{
+    /*
+	}else{
       getList();
     }
+	*/
+	
   };
   /*
    $scope.deleteMenu = function (menu) {
@@ -755,11 +794,14 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
   $scope.newMenu={};
   $scope.newMenu.menuname="";
   $scope.newMenu.price="";
-  $scope.DishSaved=false;
+  $scope.DishSaved=false;  
     
-  $scope.open = function (size) {
-
-    var modalInstance = $modal.open({
+  $scope.open = function (size) { 
+  $scope.newMenu={};
+  $scope.newMenu.menuname="";
+  $scope.newMenu.price="";
+  
+    var modalInstance = $modal.open({	 
       templateUrl: 'myModalContent.html',
       controller: ModalInstanceCtrl,
       size: size,
@@ -842,32 +884,60 @@ app.controller('ModalCtrl', ['$scope','$modal', '$log','JsonServiceMenu', functi
 
 var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMenu) {
 
+  $scope.idMenu=0;
+  $scope.imageTab=false;
+  $scope.modalTitle="Agregar Platillo";
   $scope.newMenu = newMenu;
 
-  $scope.ok = function () {
-    
+  $scope.next = function (idMenu) { 
+	//alert();
+	if($scope.newMenu.menuname!="" && $scope.newMenu.price!=""){	
+    if(idMenu==0){
 	 JsonServiceMenu.save($scope.newMenu, function(response){
 			if (response)
 				{	
 				$scope.idMenu=response._id;
 				$scope.DishSaved=true;	
 				$scope.OnlyAceptClicked=true;
+				$scope.imageTab=true;
+				$scope.infoTab=false;
+				$scope.modalTitle="Modificar Platillo";
+				alert("Plato Registrado Existosamente");
 				}
 			else {alert("error");}
 			
-			});	
+			});
+	}
+	else{
+		alert("Aqui codigo para update platillo (Aun no desarrollado)");
+		}		
+	}	
+	else{
+	alert("Error en el registro, verifique...");
+	}
   };
   
-  $scope.okAndClose = function () {
-  
+  $scope.ok = function (idMenu) {
+  if($scope.newMenu.menuname!="" && $scope.newMenu.price!=""){   
+  if(idMenu==0){
   JsonServiceMenu.save($scope.newMenu, function(response){
 			if (response)
-				{	
+				{
+				alert("Plato Registrado Existosamente");
 				$modalInstance.close($scope.newMenu);	
 				}
 			else {alert("error");}
 			
-			});	  
+			});	
+	}	
+	else{
+	alert("Aqui codigo para update platillo (Aun no desarrollado)");
+	$modalInstance.close($scope.newMenu);
+	}	
+  }
+  else{
+	alert("Error en el registro, verifique...");
+	}
     
   };
 
@@ -891,29 +961,22 @@ var ModalInstanceImgMenuCtrl = function ($scope, $modalInstance, idMenu, JsonSer
 
 app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdateUser','loggedInStatus', function($scope, $modal, $log, JsonServiceUpdateUser, loggedInStatus) {
 
-
+/*
  $scope.foo = "Hello World";
             $scope.disabled = false;
             $scope.bar = function(content) {
               if (console) console.log(content);
               $scope.uploadResponse = content.msg;
             }
-
-
-
-
-
-
-  $scope.user=loggedInStatus.getUser();
+  */ 
   //$scope.user.id=$scope.user._id;
   //$scope.user.username=$scope.user.username;
   //$scope.user.email=$scope.user.email;
   //$scope.user.password="";
-  
-  
     
   $scope.open = function (size) {
-
+	$scope.user=loggedInStatus.getUser();
+    $scope.user.password = "";
     var modalInstanceMyAcount = $modal.open({
       templateUrl: 'myModalContentAcount.html',
       controller: ModalInstanceCtrlMyAcount,
@@ -926,8 +989,15 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
     });
 
     modalInstanceMyAcount.result.then(function (user) {      
-	  $scope.user= user;
-	  JsonServiceUpdateUser.update({'id': $scope.user._id}, $scope.user);	
+	  var updatePass=false;
+	  $scope.user= user;	  
+	  if($scope.user.password!="")	  
+		updatePass=true;
+	  
+	  JsonServiceUpdateUser.update({'id': $scope.user._id,'updatePass':updatePass}, $scope.user);
+	  loggedInStatus.setUser($scope.user);
+	  alert("Usuario actualizado exitosamente");
+	  
     }, function () {
       $log.info('Modal Cerrada el: ' + new Date());
     });

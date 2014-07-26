@@ -1,10 +1,14 @@
 module.exports = function(app){
 
+	
+
 	app.all('*', function(req, res, next) {
 	  res.header("Access-Control-Allow-Origin", "*");
 	  res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	  next();
 	 });
+	 
+	
 
 	var userVa= require('./model/user');
 	var menuVa= require('./model/menu');
@@ -16,6 +20,7 @@ module.exports = function(app){
 	var fs = require('fs');
 	var path = require("path");
 	
+			
 	
 	upload=function(req, res){	
 		  setTimeout(			
@@ -81,44 +86,20 @@ module.exports = function(app){
 		);
 	};
 	
+	var Server = function (date, hour) {
+    this.date = date;
+	this.hour = hour;
+	};
 	
-	GetUserImage=function(req, res){	
-		  setTimeout(			
-			function () {			    
-				res.setHeader('Content-Type', 'text/html');
-				//if (req.files.length == 0 || req.files.file.size == 0)
-				//	res.send({ msg: 'No file uploaded at ' + new Date().toString() });
-			//	else {
-					var file = req.files.file;					
-					
-					var location=path.join(__dirname, 'public/images', 'jose.cordero.jpg');
-					console.log(location);
-					//var newImageLocation = path.join(__dirname, '/images', file.name);
-					fs.readFile(location, function(err, data) {
-						if (err)
-							throw err;
-						else{	
-							/*					
-							fs.writeFile(newImageLocation, data, function(err) {
-								res.json(200, { 
-								src: 'images/' + file.name,
-								size: file.size								
-								});
-								
-								
-								console.log(file.name);
-							});
-							*/
-							console.log("get name img: "+data.name);
-							res.send(data);
-							//res.end("Hello");
-							//res.send({ msg: '<b>"' + file.name + '"</b> uploaded to the server at ' + new Date().toString() });							
-						}
-					});
-				//}
-			},
-			(req.param('delay', 'yes') == 'yes') ? 2000 : -1
-		);
+	GetServerHour=function(req, res){
+		 
+		 var date=new Date;
+		 var hour=date.getHours();
+
+		 var server = new Server(date, hour);	
+		 console.log(server);
+		 res.autoEtag();
+		 res.json(server);
 	};
 	
 	
@@ -234,7 +215,7 @@ module.exports = function(app){
 				console.log("Function");				
 				if(!err) 
 					{
-					console.log('List Item Removed');
+					console.log('Menu Removed');
 					}
 				else 
 					{
@@ -374,12 +355,21 @@ module.exports = function(app){
 	};
 	
 	updateUserById=function(req, res){
+	
+	var updatePass=req.params.updatePass;
+	
 	userVa.findById(req.params.id,function(err,user)
-		{
-		console.log("menu to update: "+user);
+		{		
+		console.log("password sin update 1: "+user.password);
 		user.username=req.body.username;
+		console.log("password sin update 2: "+user.password);
 		user.email=req.body.email;
-		user.password=req.body.password;
+		
+		if(updatePass=="false"){}
+		else{user.password=req.body.password;}	
+		
+		console.log("User to update: "+user+", updatePass: "+req.params.updatePass);
+		
 		user.save
 			(function(err)
 				{	
@@ -396,6 +386,8 @@ module.exports = function(app){
 			)
 		res.send(user);			
 		});	
+		
+		
 	};
 	
 	/*
@@ -488,10 +480,10 @@ app.get('/user',findAllUsers);
 app.post('/user',registerUser);
 app.get('/user/:username/:password',validateUser);
 app.get('/user/:email',findUserByEmail);
-app.put('/user/:id',updateUserById);
+app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);
 app.get('/sendemail/:listuser/:caller/:date',sendEmailNotification);
-app.get('/getuserimg', GetUserImage);
+app.get('/serverhour', GetServerHour);
 
 app.post('/upload',upload);
 app.post('/uploadDish',uploadDish);

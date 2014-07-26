@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose=require('mongoose');
 var app = express();
 
+app.use(require('connect-dyncache')());
 
 mongoose.connect('mongodb://admin:admin@kahana.mongohq.com:10058/foodproviders', function(err,res){
 	if(err) console.log('Error en la conexion con Mongo'+ err);

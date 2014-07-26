@@ -46,6 +46,14 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	//return $resource('http://localhost:3000/user/', {})
   })
   
+    .factory('GetServerHour', function($resource) {
+   return $resource('http://'+ipServer+':port/serverhour/', 
+	{
+	port: ':3000'
+	}
+   );
+  })
+  
    .factory('UpdateService', function($resource) {
    return $resource('http://'+ipServer+':port/upload/', 
 	{
@@ -82,8 +90,8 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   */
   
   .factory('JsonServiceUpdateUser', function($resource) {
-   return $resource('http://'+ipServer+':port/user/:id',{port: ':3000'},{
-	   update: {method:'PUT', params: {entryId: '@id'}}
+   return $resource('http://'+ipServer+':port/user/:id/:updatePass',{port: ':3000'},{
+	   update: {method:'PUT', params: {entryId: '@id', updatePas: '@updatePass'}}
 	   }
 	   );
    })
