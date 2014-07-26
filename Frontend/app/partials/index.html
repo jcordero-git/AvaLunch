@@ -16,33 +16,32 @@
         </small>
       </a>
     </div>
-    <div class="navbar-collapse collapse">
-       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown">( {{username}} ) <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu" ng-controller="ModalCtrlMyAcount">
-		  <li><a ng-click="open('sm')"> <i class="glyphicon glyphicon-user"></i> Mi Cuenta</a></li>	  		  
-            <!--<li><a> <i class="glyphicon glyphicon-user"></i> Mi Cuenta</a></li>	-->
-			
-            <li class="divider"></li>
-            <li><a  ng-click="LogOut()"> <i class="glyphicon glyphicon-off"></i> Salir</a></li>
-          </ul>
-        </li>
-      </ul>  	 
-	  
+		 	  	 
+	  <div class="navbar-collapse collapse">    	 	
+	
       <ul class="nav navbar-nav navbar-right">
         <div class="navbar-header pull-right" role="navigation">
           <a target="_blank" href="https://github.com/jcordero-git/Food-Providers/issues" class="btn btn-sm btn-warning nav-button-margin"> <i class="glyphicon glyphicon-plus"></i>&nbsp;Issues</a>
           <a target="_blank" href="https://github.com/jcordero-git/Food-Providers/" class="btn btn-sm btn-danger nav-button-margin"> <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;GIT</a>
-          <!--<a  ng-click="LogOut()" class="btn btn-sm btn-danger nav-button-margin"> <i class="glyphicon glyphicon-off"></i>&nbsp;Salir ( {{username}} )  </a>-->
-		  
-        </div>
+          <!--<a  ng-click="LogOut()" class="btn btn-sm btn-danger nav-button-margin"> <i class="glyphicon glyphicon-off"></i>&nbsp;Salir ( {{username}} )  </a>-->		 
+       
+		<div class="btn-group nav-button-margin" ng-controller="ModalCtrlMyAcount">
+			  <button type="button" class="btn btn-sm btn-primary" ng-click="open('sm')"><i class="glyphicon glyphicon-user"></i> ( {{username}} )</button>
+			  <button type="button" class="btn btn-sm btn-primary dropdown-toggle">
+				<span class="caret"></span>
+				<span class="sr-only">Split</span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu" >
+				<!--<li><a ng-click="open('sm')"> <i class="glyphicon glyphicon-user"></i> Mi Cuenta</a></li>-->				
+				<li><a  ng-click="LogOut()"> <i class="glyphicon glyphicon-off"></i> Salir</a></li>				
+			  </ul>
+		</div>
+	   </div>	    
       </ul>
-	  
-	 
-	  
-    </div><!--/.nav-collapse -->
-  </div>
+
+	   </div><!--/.nav-collapse -->
+	   	  
+	</div>
 </div>
 <!--/.nav-bar -->
 

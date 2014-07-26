@@ -7,7 +7,7 @@
 // In this case it is a simple value service.
 //angular.module('myApp.services', []).value('version', '0.1');
 
-var ipServer="localhost";
+var ipServer="192.168.0.124";
 
 angular.module('myApp.services', ['ngResource','ngCookies'])
   

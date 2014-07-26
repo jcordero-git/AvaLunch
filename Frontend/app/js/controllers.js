@@ -335,7 +335,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 .controller('UploadCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
 
  $scope.username = loggedInStatus.getUser().username;
- $scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
+ $scope.imgUserName= 'http://192.168.0.124:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
@@ -343,7 +343,7 @@ $scope.onFileSelect = function($files) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://localhost:3000/upload', //upload.php script, node.js route, or servlet url
+        url: 'http://192.168.0.124:3000/upload', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -358,7 +358,7 @@ $scope.onFileSelect = function($files) {
         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
-		$scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random();
+		$scope.imgUserName= 'http://192.168.0.124:3000/images/'+$scope.username+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -398,7 +398,7 @@ $scope.onFileSelect = function($files, idMenu) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://localhost:3000/uploadDish', //upload.php script, node.js route, or servlet url
+        url: 'http://192.168.0.124:3000/uploadDish', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -413,7 +413,7 @@ $scope.onFileSelect = function($files, idMenu) {
         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
-		$scope.imgDish= 'http://localhost:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
+		$scope.imgDish= 'http://192.168.0.124:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -902,18 +902,18 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMe
 				$scope.imageTab=true;
 				$scope.infoTab=false;
 				$scope.modalTitle="Modificar Platillo";
-				alert("Plato Registrado Existosamente");
+				//alert("Plato Registrado Existosamente");
 				}
 			else {alert("error");}
 			
 			});
 	}
 	else{
-		alert("Aqui codigo para update platillo (Aun no desarrollado)");
+		//alert("Aqui codigo para update platillo (Aun no desarrollado)");
 		}		
 	}	
 	else{
-	alert("Error en el registro, verifique...");
+	//alert("Error en el registro, verifique...");
 	}
   };
   
@@ -923,7 +923,7 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMe
   JsonServiceMenu.save($scope.newMenu, function(response){
 			if (response)
 				{
-				alert("Plato Registrado Existosamente");
+				//alert("Plato Registrado Existosamente");
 				$modalInstance.close($scope.newMenu);	
 				}
 			else {alert("error");}
@@ -931,12 +931,12 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMe
 			});	
 	}	
 	else{
-	alert("Aqui codigo para update platillo (Aun no desarrollado)");
+	//alert("Aqui codigo para update platillo (Aun no desarrollado)");
 	$modalInstance.close($scope.newMenu);
 	}	
   }
   else{
-	alert("Error en el registro, verifique...");
+	//alert("Error en el registro, verifique...");
 	}
     
   };

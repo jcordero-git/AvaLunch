@@ -30,19 +30,29 @@
 								<tabset>								
 								<tab heading="Información del Platillo">
 								<form>
-									  <div class="col-lg-6">
-									  <div class="input-group header-elements-margin">
-										  <span class="input-group-addon">
-											Platillo
-										  </span>
-										  <input type="text" ng-model="newMenu.menuname" placeholder="Digite..." class="form-control" ng-required="newMenu.menuname" required>
-										</div><!-- /input-group -->		  									  
+									  <div class="col-lg-4" style="height:275px">
+									  	<img class="thumbnail img-responsive" style="width: 100%; height:300px" ng-src="http://192.168.0.124:8080/app/img/logoLunch.png"/>	
 									  </div><!-- /.col-lg-6 -->
 									  
-									  <div class="col-lg-6">
+									  <div class="col-lg-8">
+									   <div class="input-group header-elements-margin">
+										  <span class="input-group-addon">
+											Vendedor
+										  </span>
+										    <select class="form-control">
+												<option value="one">Mi comida Express</option>
+												<option value="two">Doña Alexandra</option>
+											</select>
+									   </div><!-- /input-group -->
 									  <div class="input-group header-elements-margin">
 										  <span class="input-group-addon">
-											Precio ₡
+											Platillo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										  </span>
+										  <input type="text" ng-model="newMenu.menuname" placeholder="Digite..." class="form-control" ng-required="newMenu.menuname" required>
+									   </div><!-- /input-group -->
+									  <div class="input-group header-elements-margin">
+										  <span class="input-group-addon">
+											Precio ₡&nbsp;&nbsp;&nbsp;
 										  </span>
 										  <input type="text" ng-model="newMenu.price" placeholder="Digite..." class="form-control" ng-required="newMenu.price" required>
 										  <span class="input-group-addon">.00</span>
@@ -52,13 +62,29 @@
 								</form>
 								</tab>
 								<tab select="next(idMenu)" active=imageTab heading="Cargar Imagen">
-									  <div class="col-lg-12 ">						
+									  <div class="col-lg-12" style="height:275px">						
 										<div class="row" ng-controller="UploadDishCtrl">			
-											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">				  
-								            <img class="thumbnail img-responsive" style="width: 100%; height:250px" ng-src="{{imgDish}}"/>											  
-											</div>											
+											
+											<div class="row">
+												<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
+												
+												</div>	
+												<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" >				  
+												<img class="thumbnail img-responsive" style="width: 100%; height:250px" ng-src="{{imgDish}}"/>
+												</div>
+												<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
+												
+												</div>
+											</div>	
+
+											
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">											
 											 <input ng-show="DishSaved" class="nav-button-margin" style="width: 100%;" type="file" ng-file-select="onFileSelect($files, idMenu)">
+											<div class="row alert alert-danger header-elements-margin" ng-show="!DishSaved">
+											 <div class="col-sm-12">
+												<span class="error ">Para cargar una imagen primero debes de registrar los datos del platillo.</span>
+											 </div>	
+											</div>
 											
 											</div>
 												
@@ -90,7 +116,9 @@
 		<div class="task" >		
 		  <div class="table-responsive">
 		  
-		  <table class="table">
+		  <tabset>								
+			<tab heading="Mi Comida Express">		  
+			<table class="table">
 			  <tbody>
 				<tr class="warning">
 				  <td></td>
@@ -115,7 +143,7 @@
 								 <div class="row">	
 									
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">				  
-								            <img class="thumbnail img-responsive" style="width: 100%; height:100%" ng-src="http://localhost:3000/images/Dish/{{idMenu}}.jpg"/>											  
+								            <img class="thumbnail img-responsive" style="width: 100%; height:100%" ng-src="http://192.168.0.124:3000/images/Dish/{{idMenu}}.jpg"/>											  
 											</div>			
 									</div><!-- /.row -->				
 							</div>
@@ -129,15 +157,6 @@
 						</a>		
 				</div>
 				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
 				  </td>
 				  <td>{{menu.menuname}}</td>
 				  <td>{{menu.price}}</td>
@@ -146,6 +165,15 @@
 				</tr>                  
 			  </tbody>
 			</table>		
+		    </tab>
+			<tab heading="Doña Alexandra">
+			
+			</tab>
+			<tab heading="Todos">
+			
+			</tab>
+		  </tabset>
+		  
 					
 		 </div>			
 		</div>
