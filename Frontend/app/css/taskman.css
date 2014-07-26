@@ -71,6 +71,7 @@ div.task label.checkbox{
 }
 .header-elements-margin {
 	margin: 5px;
+	margin-left: 0px;
 }
 .add-task{
 	margin-top: 10px;

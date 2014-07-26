@@ -11,108 +11,24 @@
 <div class="widget-box" id="recent-box" >
 	<div class="widget-header header-color-blue">
 		<div class="row">
-			<div class="col-xs-8 col-sm-9 col-md-10 col-lg-7 ">
+			<div class="col-xs-8 col-sm-9 col-md-10 col-lg-8 ">
 				<h4 class="bigger lighter">
 					<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
 					Menú del día
 				</h4>
 
 			</div>
-			<div class="col-xs-4 col-sm-3 col-md-2 col-lg-5">
-				  <div ng-controller="ModalCtrl">
-					<script type="text/ng-template" id="myModalContent.html">
-						<div class="modal-header">
-							<h3 class="modal-title">{{modalTitle}}</h3>
-							</div>
-							<div class="modal-body">	
-							
-								 <div class="row">								 
-								<tabset>								
-								<tab heading="Información del Platillo">
-								<form>
-									  <div class="col-lg-4" style="height:275px">
-									  	<img class="thumbnail img-responsive" style="width: 100%; height:300px" ng-src="http://192.168.0.124:8080/app/img/logoLunch.png"/>	
-									  </div><!-- /.col-lg-6 -->
-									  
-									  <div class="col-lg-8">
-									   <div class="input-group header-elements-margin">
-										  <span class="input-group-addon">
-											Vendedor
-										  </span>
-										    <select class="form-control">
-												<option value="one">Mi comida Express</option>
-												<option value="two">Doña Alexandra</option>
-											</select>
-									   </div><!-- /input-group -->
-									  <div class="input-group header-elements-margin">
-										  <span class="input-group-addon">
-											Platillo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										  </span>
-										  <input type="text" ng-model="newMenu.menuname" placeholder="Digite..." class="form-control" ng-required="newMenu.menuname" required>
-									   </div><!-- /input-group -->
-									  <div class="input-group header-elements-margin">
-										  <span class="input-group-addon">
-											Precio ₡&nbsp;&nbsp;&nbsp;
-										  </span>
-										  <input type="text" ng-model="newMenu.price" placeholder="Digite..." class="form-control" ng-required="newMenu.price" required>
-										  <span class="input-group-addon">.00</span>
-										</div><!-- /input-group -->
-									  </div><!-- /.col-lg-6 -->
-									  
-								</form>
-								</tab>
-								<tab select="next(idMenu)" active=imageTab heading="Cargar Imagen">
-									  <div class="col-lg-12" style="height:275px">						
-										<div class="row" ng-controller="UploadDishCtrl">			
-											
-											<div class="row">
-												<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
-												
-												</div>	
-												<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" >				  
-												<img class="thumbnail img-responsive" style="width: 100%; height:250px" ng-src="{{imgDish}}"/>
-												</div>
-												<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
-												
-												</div>
-											</div>	
-
-											
-											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">											
-											 <input ng-show="DishSaved" class="nav-button-margin" style="width: 100%;" type="file" ng-file-select="onFileSelect($files, idMenu)">
-											<div class="row alert alert-danger header-elements-margin" ng-show="!DishSaved">
-											 <div class="col-sm-12">
-												<span class="error ">Para cargar una imagen primero debes de registrar los datos del platillo.</span>
-											 </div>	
-											</div>
-											
-											</div>
-												
-										</div>	
-									  </div><!-- /.col-lg-6 -->
-								</tab>
-							    </tabset>
-								</div><!-- /.row -->
-							
-							</div>
-							<div class="modal-footer">
-								<button  class="btn btn-primary btn-sm" ng-click="ok(idMenu)">Aceptar</button>
-								
-								<!--<button ng-disabled="OnlyAceptClicked" class="btn btn-primary btn-sm" ng-click="tab.active = true"">Aceptar y Cerrar</button>-->
-								
-								<button class="btn btn-warning btn-sm" ng-click="cancel()">Cerrar</button>
-							</div>
-						</script>
-						<a class="btn btn-right btn-sm btn-warning header-elements-margin" ng-click="open('sm')"> 
-							<i class="glyphicon glyphicon-plus">
-							</i>&nbsp;Agregar platillo
-						</a>		
-						</div>
+			<div class="col-xs-4 col-sm-3 col-md-2 col-lg-4 pull-right">
+				<div ng-controller="ModalCtrl">
+					<a class="btn btn-sm btn-warning header-elements-margin form-control"  ng-click="open('sm')"> 
+						<i class="glyphicon glyphicon-plus">
+						</i>&nbsp;Agregar platillo
+					</a>		
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="widget-body">	
-	
 		<div class="task" >		
 		  <div class="table-responsive">
 		  
@@ -176,22 +92,85 @@
 		  
 					
 		 </div>			
-		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	</div>
 		
 	</div>
 	
-	
+	<div>
+	<script type="text/ng-template" id="myModalContent.html">
+		<div class="modal-header">
+			<h3 class="modal-title">{{modalTitle}}</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">								 
+				<tabset>								
+				<tab heading="Información del Platillo">
+				<form>
+			        <div class="col-lg-4" style="height:275px">
+					<img class="thumbnail img-responsive" style="width: 100%; height:300px" ng-src="http://192.168.0.124:8080/app/img/logoLunch.png"/>	
+					</div><!-- /.col-lg-6 -->			  
+					<div class="col-lg-8">
+						<div class="input-group header-elements-margin">
+							<span class="input-group-addon">
+							Vendedor
+							</span>
+							<select class="form-control">
+							<option value="one">Mi comida Express</option>
+							<option value="two">Doña Alexandra</option>
+							</select>
+					    </div><!-- /input-group -->
+						<div class="input-group header-elements-margin">
+							<span class="input-group-addon">
+							Platillo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+							<input type="text" ng-model="newMenu.menuname" placeholder="Digite..." class="form-control" ng-required="newMenu.menuname" required>
+							</div><!-- /input-group -->
+							<div class="input-group header-elements-margin">
+								<span class="input-group-addon">
+								Precio ₡&nbsp;&nbsp;&nbsp;
+								</span>
+								<input type="text" ng-model="newMenu.price" placeholder="Digite..." class="form-control" ng-required="newMenu.price" required>
+								<span class="input-group-addon">.00</span>
+							</div><!-- /input-group -->
+					</div><!-- /.col-lg-6 -->
+									  
+				</form>
+				</tab>
+				<tab select="next(idMenu)" active=imageTab heading="Cargar Imagen">
+				<div class="col-lg-12" style="height:275px">						
+					<div class="row" ng-controller="UploadDishCtrl">			
+						<div class="row">
+							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
+							</div>	
+							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" >				  
+								<img class="thumbnail img-responsive" style="width: 100%; height:250px" ng-src="{{imgDish}}"/>
+							</div>
+							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
+							</div>
+						</div>												
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">											
+							 <input ng-show="DishSaved" class="nav-button-margin" style="width: 100%;" type="file" ng-file-select="onFileSelect($files, idMenu)">
+							<div class="row alert alert-danger header-elements-margin" ng-show="!DishSaved">
+						        <div class="col-sm-12">
+									<span class="error ">Para cargar una imagen primero debes de registrar los datos del platillo.</span>
+								</div>	
+							</div>
+						</div>
+					</div>	
+				</div><!-- /.col-lg-6 -->
+				</tab>
+				</tabset>
+			</div><!-- /.row -->
+		</div>
+		<div class="modal-footer">
+								<button  class="btn btn-primary btn-sm" ng-click="ok(idMenu)">Aceptar</button>
+								
+								<!--<button ng-disabled="OnlyAceptClicked" class="btn btn-primary btn-sm" ng-click="tab.active = true"">Aceptar y Cerrar</button>-->
+								
+								<button class="btn btn-warning btn-sm" ng-click="cancel()">Cerrar</button>
+							</div>
+		</script>
+	</div>
 	
 	
 	
