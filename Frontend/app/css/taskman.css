@@ -70,16 +70,13 @@ div.task label.checkbox{
 	text-decoration:line-through;
 }
 .header-elements-margin {
-	margin-bottom: 5px;
 	margin: 5px;
-	margin-left: 0px;
-	margin-right: 0px;
 }
 .add-task{
 	margin-top: 10px;
 }
 .nav-button-margin{
-	margin: 10px 20px 0 0;
+	margin: 10px 10px 0 0;
 }
 
 .lightText{

@@ -1002,6 +1002,28 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
       $log.info('Modal Cerrada el: ' + new Date());
     });
   };
+  
+  
+   $scope.openDownLoad = function (size) {
+    var modalInstanceMyAcount = $modal.open({
+      templateUrl: 'myModalContentDownLoad.html',
+      controller: ModalInstanceCtrlDownLoad,
+      size: size,
+      resolve: {
+        user: function () {
+          return $scope.user;
+        }
+      }
+    });
+    modalInstanceMyAcount.result.then(function (user) {     	  
+	  
+    }, function () {
+      $log.info('Modal Cerrada el: ' + new Date());
+    });
+  };
+  
+  
+  
 }])
 
 var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateService) {
@@ -1037,6 +1059,16 @@ var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateSe
         };
   
   
+};
+
+var ModalInstanceCtrlDownLoad = function ($scope, $modalInstance) {
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.user);
+  };
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
 };
 
 

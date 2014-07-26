@@ -17,15 +17,16 @@
       </a>
     </div>
 		 	  	 
-	  <div class="navbar-collapse collapse">    	 	
+	  <div class="navbar-collapse collapse" ng-controller="ModalCtrlMyAcount">    	 	
 	
       <ul class="nav navbar-nav navbar-right">
         <div class="navbar-header pull-right" role="navigation">
+		  <a href="" class="btn btn-sm btn-warning nav-button-margin" ng-click="openDownLoad('sm')"> <i class="glyphicon glyphicon-download"></i>&nbsp;Descargar apk</a>
           <a target="_blank" href="https://github.com/jcordero-git/Food-Providers/issues" class="btn btn-sm btn-warning nav-button-margin"> <i class="glyphicon glyphicon-plus"></i>&nbsp;Issues</a>
           <a target="_blank" href="https://github.com/jcordero-git/Food-Providers/" class="btn btn-sm btn-danger nav-button-margin"> <i class="glyphicon glyphicon-cloud-download"></i>&nbsp;GIT</a>
           <!--<a  ng-click="LogOut()" class="btn btn-sm btn-danger nav-button-margin"> <i class="glyphicon glyphicon-off"></i>&nbsp;Salir ( {{username}} )  </a>-->		 
        
-		<div class="btn-group nav-button-margin" ng-controller="ModalCtrlMyAcount">
+		<div class="btn-group nav-button-margin" >
 			  <button type="button" class="btn btn-sm btn-primary" ng-click="open('sm')"><i class="glyphicon glyphicon-user"></i> ( {{username}} )</button>
 			  <button type="button" class="btn btn-sm btn-primary dropdown-toggle">
 				<span class="caret"></span>
@@ -51,7 +52,7 @@
 						<div class="modal-header">
 							<h3 class="modal-title">Mi Cuenta</h3>
 							</div>
-	                        <div class="modal-body">				
+	        <div class="modal-body">				
 								 <div class="row" ng-controller="UploadCtrl">
 									 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  ">
 										<div class="row">			
@@ -115,6 +116,36 @@
 	</div>
 
 
+	<div >
+		<script type="text/ng-template" id="myModalContentDownLoad.html">
+			<div class="modal-header">
+				<h3 class="modal-title">Descargar apk</h3>
+			</div>
+	        <div class="modal-body">				
+				 <div class="row">								 
+					<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 ">
+					<img class="thumbnail img-responsive" style="width: 100%;" ng-src="http://192.168.0.124:8080/app/img/QR.png"/>	
+					</div>
+					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
+					 
+					<div class="row alert alert-success btn-button-margin" ng-show="!DishSaved">
+					    <div class="col-sm-12">
+							<span class="success ">Avalunchs v0.1 - Avantica Technologies</span>
+						</div>	
+					</div>					 
+					<h4>SQA Project - Avalunchs</h4>					
+					 
+					 <a href="http://files.appsgeyser.com/Avalunchs.apk"  style="width: 100%;" class="btn btn-lg btn-success btn-button-margin pull-right"> <i class="glyphicon glyphicon-download"></i>&nbsp;Descargar</a>					
+					</div>
+				 </div>
+			</div>
+	        <div class="modal-footer">
+				<button class="btn btn-warning btn-sm" ng-click="cancel()">Cerrar</button>
+			</div>
+		</script>				
+	</div>
+
+	
 
 
 <!-- container -->
