@@ -2,7 +2,7 @@
 <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
-    <div class="navbar-header">
+    <div class="navbar-header animated bounceInDown">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">AvaLunchs</span>
         <span class="icon-bar"></span>
@@ -10,10 +10,12 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand">
-        <small>
-          <i class="glyphicon glyphicon glyphicon glyphicon-list"></i>
-          AvaLunchs 0.1
-        </small>
+        
+		<span class="logo">
+                  <i class="glyphicon glyphicon glyphicon glyphicon-list"></i>
+                  <span>Ava</span>Lunchs
+                  <small> 0.1 Alfa</small>
+        </span>
       </a>
     </div>
 		 	  	 
@@ -130,16 +132,19 @@
 					 
 					<div class="row alert alert-success btn-button-margin">
 					    <div class="col-sm-12">
-							<span class="success ">Avalunchs v0.1</span>
+							<span class="logo">
+								<span>Ava</span>Lunchs
+								<small> 0.1 Alfa</small>
+						    </span>
 						</div>	
-						<div class="col-sm-12">
+						<div class="col-sm-12" style="color: black;">
 							<span class="success ">Avantica Technologies</span>
 						</div>
-						<div class="col-sm-12">
+						<div class="col-sm-12" style="color: black;">
 						<span class="success "><h4>SQA Project - Avalunchs</h4></span>
 						</div>
 						
-						<div class="col-sm-12">
+						<div class="col-sm-12" style="color: black;">
 						<span class="success ">Sistema web para realizar pedidos de almuerzos online</span>
 						</div>
 						 <a href="http://files.appsgeyser.com/Avalunchs.apk"  style="width: 100%;" class="btn btn-lg btn-success btn-button-margin pull-right"> <i class="glyphicon glyphicon-download"></i>&nbsp;Descargar</a>	
@@ -159,14 +164,20 @@
 <!-- container -->
 <div class="container">
  
-  <div ng-show="OrderPanel" ng-init="OrderPanel=true" class="animated bounceIn" ng-include src="'partials/order.html'"></div>
+  <div ng-show="OrderPanel" ng-init="OrderPanel=true" class="animated " ng-include src="'partials/order.html'"></div>
 
   <div ng-show="MyAcountPanel" class="animated bounceIn" ng-include src="'partials/menu.html'"></div>
 
 <!-- footer -->
 <div class="col-sm-12">
     <div class="footer">
-      <small><p class="lightText">&copy; AvaLunchs SQA Project Liberia 2014</p></small>
+      <small>
+		<p class="lightText">
+		&copy; AvaLunchs SQA Project Liberia 2014
+		</p>
+	  </small>
+	  
+	  
     </div>
 </div>
 <!-- footer -->
