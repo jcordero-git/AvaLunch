@@ -7,7 +7,7 @@
 // In this case it is a simple value service.
 //angular.module('myApp.services', []).value('version', '0.1');
 
-var ipServer="192.168.0.124";
+var urlServer="http://186.176.231.166:port";
 
 angular.module('myApp.services', ['ngResource','ngCookies'])
   
@@ -47,7 +47,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
     .factory('GetServerHour', function($resource) {
-   return $resource('http://'+ipServer+':port/serverhour/', 
+   return $resource(urlServer+'/serverhour/', 
 	{
 	port: ':3000'
 	}
@@ -55,7 +55,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
    .factory('UpdateService', function($resource) {
-   return $resource('http://'+ipServer+':port/upload/', 
+   return $resource(urlServer+'/upload/', 
 	{
 	port: ':3000'
 	}
@@ -63,7 +63,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
    .factory('getUserImgService', function($resource) {
-   return $resource('http://'+ipServer+':port/getuserimg/', 
+   return $resource(urlServer+'/getuserimg/', 
 	{
 	port: ':3000'
 	}
@@ -72,7 +72,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   
   
   .factory('JsonService', function($resource) {
-   return $resource('http://'+ipServer+':port/user/', 
+   return $resource(urlServer+'/user/', 
 	{
 	port: ':3000'
 	}
@@ -90,7 +90,11 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   */
   
   .factory('JsonServiceUpdateUser', function($resource) {
-   return $resource('http://'+ipServer+':port/user/:id/:updatePass',{port: ':3000'},{
+   return $resource(urlServer+'/user/:id/:updatePass',
+		{
+		port: ':3000'
+		},
+		{
 	   update: {method:'PUT', params: {entryId: '@id', updatePas: '@updatePass'}}
 	   }
 	   );
@@ -98,7 +102,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   
   
     .factory('JsonServiceList', function($resource) {
-   return $resource('http://'+ipServer+':port/list/', 
+   return $resource(urlServer+'/list/', 
 	{
 	port: ':3000'
 	}
@@ -106,7 +110,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
   .factory('JsonServiceListByDate', function($resource) {
-   return $resource('http://'+ipServer+':port/list/:date', 
+   return $resource(urlServer+'/list/:date', 
 	{
 	port: ':3000'
 	}
@@ -114,7 +118,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
 
    .factory('JsonServiceListDeleteById', function($resource){
-  return $resource('http://'+ipServer+':port/list/:id',
+  return $resource(urlServer+'/list/:id',
 	{
 	port: ':3000',
 	id:'@id'
@@ -124,7 +128,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
   .factory('JsonServiceMenu', function($resource) {
-   return $resource('http://'+ipServer+':port/menu/', 
+   return $resource(urlServer+'/menu/', 
 	{
 	port: ':3000'
 	}
@@ -132,7 +136,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   }) 
   
     .factory('JsonServiceMenuDeleteById', function($resource){
-  return $resource('http://'+ipServer+':port/menu/:id',
+  return $resource(urlServer+'/menu/:id',
 	{
 	port: ':3000',
 	id:'@id'
@@ -142,7 +146,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
    .factory('JsonServiceMenuFindByName', function($resource){
-  return $resource('http://'+ipServer+':port/menu/:menuname',
+  return $resource(urlServer+'/menu/:menuname',
 	{
 	port: ':3000',
 	id:'@id'
@@ -151,7 +155,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
   .factory('ValidateUser', function($resource){
-  return $resource('http://'+ipServer+':port/user/:username/:password',
+  return $resource(urlServer+'/user/:username/:password',
 	{
 	port: ':3000',
 	username:'@username',
@@ -162,7 +166,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
    .factory('SendEmailNotification', function($resource){
-  return $resource('http://'+ipServer+':port/sendemail/:listuser/:caller/:date',
+  return $resource(urlServer+'/sendemail/:listuser/:caller/:date',
 	{
 	port: ':3000',
 	listuser:'@listuser',
@@ -174,7 +178,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
     .factory('ForgotPassword', function($resource){
-  return $resource('http://'+ipServer+':port/user/:email',
+  return $resource(urlServer+'/user/:email',
 	{
 	port: ':3000',
 	email:'@email'
