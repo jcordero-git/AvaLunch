@@ -334,11 +334,13 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
   
 .controller('UploadCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
 
+ $scope.progressBarValue=0;
  $scope.username = loggedInStatus.getUser().username;
  $scope.imgUserName= 'http://192.168.0.124:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
+	$scope.progressBarValue=0;
     for (var i = 0; i < $files.length; i++) {
       var file = $files[i];	  
 	  
@@ -356,6 +358,7 @@ $scope.onFileSelect = function($files) {
         //formDataAppender: function(formData, key, val){}
       }).progress(function(evt) {
         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
 		$scope.imgUserName= 'http://192.168.0.124:3000/images/'+$scope.username+'.jpg?updated=' + Math.random();
@@ -387,13 +390,14 @@ $scope.onFileSelect = function($files) {
 }])
   
 .controller('UploadDishCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
-
+  $scope.progressBarValue=0;
  //$scope.menuid = loggedInStatus.getUser().username;
  //$scope.imgDish= 'http://localhost:3000/images/Dish/'+$scope.menuid+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files, idMenu) {
     //$files: an array of files selected, each file has name, size, and type.
-    
+    $scope.progressBarValue=0;
+	
 	for (var i = 0; i < $files.length; i++) {
       var file = $files[i];	  
 	  
@@ -411,6 +415,7 @@ $scope.onFileSelect = function($files, idMenu) {
         //formDataAppender: function(formData, key, val){}
       }).progress(function(evt) {
         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
 		$scope.imgDish= 'http://192.168.0.124:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();

@@ -61,7 +61,8 @@
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">				  
 								            <img class="thumbnail img-responsive" style="width: 100%; height:100%" ng-src="http://186.176.231.166:3000/images/Dish/{{idMenu}}.jpg"/>											  
 											</div>			
-									</div><!-- /.row -->				
+									</div><!-- /.row -->
+
 							</div>
 							<div class="modal-footer">
 								<button  class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
@@ -106,7 +107,7 @@
 				<tabset>								
 				<tab heading="Información del Platillo">
 				<form>
-			        <div class="col-lg-4" style="height:275px">
+			        <div class="col-lg-4" style="height:280px">
 					<img class="thumbnail img-responsive" style="width: 100%; height:300px" ng-src="http://186.176.231.166:8090/app/img/logoLunch.png"/>	
 					</div><!-- /.col-lg-6 -->			  
 					<div class="col-lg-8">
@@ -137,7 +138,7 @@
 				</form>
 				</tab>
 				<tab select="next(idMenu)" active=imageTab heading="Cargar Imagen">
-				<div class="col-lg-12" style="height:275px">						
+				<div class="col-lg-12" style="height:280px">						
 					<div class="row" ng-controller="UploadDishCtrl">			
 						<div class="row">
 							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >				  
@@ -156,6 +157,16 @@
 								</div>	
 							</div>
 						</div>
+						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div ng-show="DishSaved" class="progress nav-button-margin">
+								<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{{progressBarValue}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarValue}}%">
+								<span class="sr-only">{{progressBarValue}}% Complete (success)</span> {{progressBarValue}} %
+								</div>
+							</div>
+						</div>
+						
+						
 					</div>	
 				</div><!-- /.col-lg-6 -->
 				</tab>

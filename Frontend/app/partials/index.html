@@ -64,7 +64,14 @@
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">											
 											 <input class="nav-button-margin" style="width: 100%;" type="file" ng-file-select="onFileSelect($files)">
 											
-											</div>		
+											</div>
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											 <div class="progress nav-button-margin">
+											  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{{progressBarValue}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarValue}}%">
+												<span class="sr-only">{{progressBarValue}}% Complete (success)</span> {{progressBarValue}} %
+											  </div>
+											</div>
+									    </div>
 										</div>	
 									  </div>									 
 								 
