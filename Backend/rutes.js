@@ -86,22 +86,21 @@ module.exports = function(app){
 		);
 	};
 	
-	var Server = function (date, hour) {
-    this.date = date;
-	this.hour = hour;
+	var serverVar = function (dateValue, hourValue) {
+    this.dateLocal = dateValue;
+	this.hourLocal = hourValue;
+	
 	};
 	
-	GetServerHour=function(req, res){
-		 
-		 var date=new Date;
-		 var hour=date.getHours();
-
-		 var server = new Server(date, hour);	
+	
+	GetServerHour=function(req, res){		 
+		 var dateAux=new Date;
+		 var hourAux=dateAux.getHours();
+		 var server = new serverVar(dateAux, hourAux);		
 		 console.log(server);
 		 res.autoEtag();
-		 res.json(server);
+		 res.send(JSON.stringify(server));
 	};
-	
 	
 	
 	var transporter = nodemailer.createTransport({

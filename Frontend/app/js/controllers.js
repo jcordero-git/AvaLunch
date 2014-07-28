@@ -158,7 +158,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	
 	var sendEmail;
 	var VerifyHourToSendEmail;
-	var serverHour={};
+	var serverHour=0;
 	
 	 var date={};
 	
@@ -177,9 +177,10 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		};
 		
 	$scope.checkTime = function (currentUser,listUser){
-    $scope.hour = new Date();
+	$scope.hour = new Date();
 	
-    if ($scope.hour.getHours()>=DueHour) 
+    //if ($scope.hour.getHours()>=DueHour)
+	if (serverHour>=DueHour)
 		{
 		return false;		
 		}
@@ -199,23 +200,13 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
   
   function getServerHour(){
   GetServerHour.query(function(response) {
-      //var data = form.XHR.response;
-	 // var parsed = JSON.parse(response);
-	 if(response){
-	 response.hour;
-	var foo = JSON.stringify(response);
-	//alert(foo.hour);
-	
-      //alert(response.error);
-	  
-	  serverHour=response.date;
-	   //	alert(serverHour); 
-		//alert(JSON.stringify(response));
-   }
-	
+	if(response)
+		{				
+		serverHour=response.hourLocal;
+		}	
 	else{
-	alert("error");
-	}
+		alert("error");
+		}
 	 });
   }
   
@@ -273,11 +264,14 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		*/
 		
 	function sendEmailNotiFunction(){
+		
+		getServerHour();				
+		
 		$scope.date = new Date();		
 	
-		if($scope.date.getHours()==DueHour-1)$scope.emailSent=false;
+		if(serverHour==DueHour-1)$scope.emailSent=false;
 		
-		if ($scope.date.getHours()==DueHour && $scope.emailSent==false) 
+		if (serverHour==DueHour && $scope.emailSent==false) 
 			{
 			updateList_MenuInterval=3000000;
 			getUsers();			
@@ -336,7 +330,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
  $scope.progressBarValue=0;
  $scope.username = loggedInStatus.getUser().username;
- $scope.imgUserName= 'http://192.168.0.124:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
+ $scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
@@ -345,7 +339,7 @@ $scope.onFileSelect = function($files) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://192.168.0.124:3000/upload', //upload.php script, node.js route, or servlet url
+        url: 'http://localhost:3000/upload', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -361,7 +355,7 @@ $scope.onFileSelect = function($files) {
 		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
-		$scope.imgUserName= 'http://192.168.0.124:3000/images/'+$scope.username+'.jpg?updated=' + Math.random();
+		$scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -402,7 +396,7 @@ $scope.onFileSelect = function($files, idMenu) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://192.168.0.124:3000/uploadDish', //upload.php script, node.js route, or servlet url
+        url: 'http://localhost:3000/uploadDish', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -418,7 +412,7 @@ $scope.onFileSelect = function($files, idMenu) {
 		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
-		$scope.imgDish= 'http://192.168.0.124:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
+		$scope.imgDish= 'http://localhost:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)

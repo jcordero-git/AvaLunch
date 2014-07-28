@@ -7,7 +7,7 @@
 // In this case it is a simple value service.
 //angular.module('myApp.services', []).value('version', '0.1');
 
-var urlServer="http://186.176.231.166:port";
+var urlServer="http://localhost:port";
 
 angular.module('myApp.services', ['ngResource','ngCookies'])
   
@@ -47,12 +47,17 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   })
   
     .factory('GetServerHour', function($resource) {
-   return $resource(urlServer+'/serverhour/', 
+   return $resource(urlServer+'/serverHour/', 
 	{
 	port: ':3000'
+	},
+	{
+	query: {method:'GET', isArray: false}
 	}
    );
   })
+  
+ 
   
    .factory('UpdateService', function($resource) {
    return $resource(urlServer+'/upload/', 
