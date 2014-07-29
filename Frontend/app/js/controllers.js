@@ -329,8 +329,8 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 .controller('UploadCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
 
  $scope.progressBarValue=0;
- $scope.username = loggedInStatus.getUser().username;
- $scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random(); 
+ $scope._id = loggedInStatus.getUser()._id;
+ $scope.imgUserName= 'http://localhost:3000/images/'+$scope._id+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
@@ -345,7 +345,7 @@ $scope.onFileSelect = function($files) {
         //withCredentials: true,
         data: {myObj: $scope.myModelObj},
         file: file, // or list of files ($files) for html5 only
-        fileName: $scope.username+".jpg" //or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+        fileName: $scope._id+".jpg" //or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
         // customize file formData name ('Content-Desposition'), server side file variable name. 
         //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file' 
         // customize how data is added to formData. See #40#issuecomment-28612000 for sample code
@@ -355,7 +355,7 @@ $scope.onFileSelect = function($files) {
 		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
-		$scope.imgUserName= 'http://localhost:3000/images/'+$scope.username+'.jpg?updated=' + Math.random();
+		$scope.imgUserName= 'http://localhost:3000/images/'+$scope._id+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -976,6 +976,8 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
   $scope.open = function (size) {
 	$scope.user=loggedInStatus.getUser();
     $scope.user.password = "";
+	$scope.user.newpassword = "";
+	$scope.user.confpassword = "";
     var modalInstanceMyAcount = $modal.open({
       templateUrl: 'myModalContentAcount.html',
       controller: ModalInstanceCtrlMyAcount,
@@ -988,14 +990,25 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
     });
 
     modalInstanceMyAcount.result.then(function (user) {      
+	  
+	  /*
 	  var updatePass=false;
 	  $scope.user= user;	  
 	  if($scope.user.password!="")	  
 		updatePass=true;
 	  
-	  JsonServiceUpdateUser.update({'id': $scope.user._id,'updatePass':updatePass}, $scope.user);
-	  loggedInStatus.setUser($scope.user);
-	  alert("Usuario actualizado exitosamente");
+	  JsonServiceUpdateUser.update({'id': $scope.user._id,'updatePass':updatePass}, $scope.user, function( response){
+			if (response.username)
+				{
+				loggedInStatus.setUser($scope.user);
+				alert("Usuario actualizado exitosamente");	
+				}
+			else{
+				alert("error, actual contraseña no coincide");
+				}			
+			});	
+		*/	
+	 
 	  
     }, function () {
       $log.info('Modal Cerrada el: ' + new Date());
@@ -1025,13 +1038,31 @@ app.controller('ModalCtrlMyAcount', ['$scope','$modal', '$log','JsonServiceUpdat
   
 }])
 
-var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateService) {
+var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateService, JsonServiceUpdateUser, loggedInStatus) {
 
   $scope.user = user;
-  $scope.wrap={};
+  
 
   $scope.ok = function () {
-    $modalInstance.close($scope.user);
+  
+      var updatePass=false;
+	  //$scope.user= user;	  
+	  if($scope.user.password!="")	  
+		updatePass=true;
+	  
+	  JsonServiceUpdateUser.update({'id': $scope.user._id,'updatePass':updatePass}, $scope.user, function( response){
+			if (response.username)
+				{
+				loggedInStatus.setUser($scope.user);
+				alert("Usuario actualizado exitosamente");
+				$modalInstance.close($scope.user);				
+				}
+			else{
+				//alert("error, actual contraseña no coincide");
+				$scope.currentPasswordInvalid=true;
+				}			
+			});
+  
   };
 
   $scope.cancel = function () {
@@ -1041,8 +1072,6 @@ var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateSe
   
   $scope.upload = function (form1) {
   
- // var fd = new FormData()
- // fd.append('file', $scope.wrap);
     	  
 	alert(form1);
 	UpdateService.save(form1, function(response){

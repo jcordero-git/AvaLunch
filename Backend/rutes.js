@@ -256,7 +256,6 @@ module.exports = function(app){
 	});	
 	};
 	
-	/*
 	validateUserPassEncrypt=function(req, res){
 	userVa.findOne({username:req.params.username}, function(err,user){
 	if(user)
@@ -288,7 +287,7 @@ module.exports = function(app){
 		//else console.log('Error '+err);
 		});
 	};
-	*/
+
 	
 	validateUser=function(req, res){
 	userVa.findOne({username:req.params.username,password:req.params.password}, function(err,user){
@@ -358,35 +357,96 @@ module.exports = function(app){
 	var updatePass=req.params.updatePass;
 	
 	userVa.findById(req.params.id,function(err,user)
-		{		
-		console.log("password sin update 1: "+user.password);
-		user.username=req.body.username;
-		console.log("password sin update 2: "+user.password);
-		user.email=req.body.email;
-		
-		if(updatePass=="false"){}
-		else{user.password=req.body.password;}	
-		
-		console.log("User to update: "+user+", updatePass: "+req.params.updatePass);
-		
-		user.save
-			(function(err)
-				{	
-				console.log("Function");				
-				if(!err) 
+		{
+
+		if(!err)
+			{
+			var updateUser=false;
+			user.username=req.body.username;
+			user.email=req.body.email;			
+			if(updatePass=="false")
+				{
+				updateUser=true;
+				console.log("User to update: "+user+", updatePass: "+req.params.updatePass);				
+				user.save
+				(function(err)
+					{	
+					console.log("Function");				
+					if(!err) 
+						{
+						console.log('User updated');
+						}
+					else 
+						{
+						console.log('Error'+ err);
+						}
+					}				
+				);
+				res.send(user);
+				}
+			else{		
+				console.log("nuevo password: "+req.body.password);			
+				user.comparePassword(req.body.password, function(err, isMatch)
 					{
-					console.log('User updated');
-					}
-				else 
-					{
-					console.log('Error'+ err);
-					}
-				}				
-			)
-		res.send(user);			
-		});	
-		
-		
+					if(!err)
+						{
+						console.log('Password: '+ isMatch );
+						if(isMatch==true)
+							{
+							updateUser=true;
+							user.password=req.body.newpassword;
+							console.log("User to update: "+user+", updatePass: "+req.params.updatePass);				
+								user.save
+								(function(err)
+									{	
+									console.log("Function");				
+									if(!err) 
+										{
+										console.log('User updated');
+										res.send(user);
+										}
+									else 
+										{
+										console.log('Error'+ err);
+										res.send(false);
+										}
+									}				
+								);
+								
+							}
+						else{
+							console.log('El nuevo password no coincide con el actual: '+req.body.username+' usando el Password: '+ req.body.password );
+							updateUser=false;
+							res.send(false);
+							//res.send(null);
+							}			
+						}
+					else{
+						res.send(false);
+						updateUser=false;
+						throw err;	
+						}			
+					});
+				}
+				/*
+			console.log('update user: '+ updateUser);
+			if(updateUser==true)
+				{
+				
+				}
+			else
+			{
+			console.log('enviando null');
+			res.send(false);
+			}
+			*/
+		}
+		else{
+			res.send(false);
+			};														
+		}		
+				
+	    );	
 	};
 	
 	/*
@@ -477,7 +537,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUser);
+app.get('/user/:username/:password',validateUserPassEncrypt);
 app.get('/user/:email',findUserByEmail);
 app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);

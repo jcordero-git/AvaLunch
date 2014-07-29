@@ -51,10 +51,12 @@
 <!-- MODALS -->
 	<div >
 					<script type="text/ng-template" id="myModalContentAcount.html">
+						
+					<form role="form" name="myacount" id="myacount" class="form-horizontal" ng-submit="ok()">
 						<div class="modal-header">
 							<h3 class="modal-title">Mi Cuenta</h3>
-							</div>
-	        <div class="modal-body">				
+						</div>
+							<div class="modal-body">				
 								 <div class="row" ng-controller="UploadCtrl">
 									 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  ">
 										<div class="row">			
@@ -79,48 +81,66 @@
 									 <div class="row">
 									 
 									  <div class="col-lg-12">									  
-										<div class="input-group ">
-										  <input type="text" ng-model="user.username" placeholder="Nombre de Usuario" class="form-control nav-button-margin" ng-required="user.menuname" username>
+										<div class="input-group"  style="width: 100%;">
+										  <input  id="myacount-username" type="text" ng-model="user.username" placeholder="Nombre de Usuario" class="form-control nav-button-margin" name="username" required >
 										</div><!-- /input-group -->
 									  </div><!-- /.col-lg-6 -->
 									  <div class="col-lg-12 ">
 									  </div>
 									  <div class="col-lg-12">
-										<div class="input-group">
-										  <input type="text" ng-model="user.email" placeholder="Email" class="form-control nav-button-margin" ng-required="user.email" required>
+										<div class="input-group"  style="width: 100%;">
+										  <input id="myacount-email" type="text" ng-model="user.email" placeholder="Email" class="form-control nav-button-margin" name="email" required>
 										</div>
 										<!-- /input-group -->
 									  </div><!-- /.col-lg-6 -->
 									   <div class="col-lg-12 ">
 									  </div>
 									  <div class="col-lg-12">
-										<div class="input-group">
-										  <input type="password" ng-model="user.password" placeholder="Contrasena Actual" class="form-control nav-button-margin" ng-required="user.password" required>
+										<div class="input-group"  style="width: 100%;">
+										  <input  id="myacount-password" type="password" ng-model="user.password" placeholder="Contrasena Actual" class="form-control nav-button-margin" name="password">
 										</div>
 									  </div><!-- /.col-lg-6 -->
 									   <div class="col-lg-12 ">
 									  </div>
 									  <div class="col-lg-12">
-										<div class="input-group">
-										  <input type="password" ng-model="user.newpassword" placeholder="Nueva Contrasena" class="form-control nav-button-margin" ng-required="user.newpassword" required>
+										<div class="input-group"  style="width: 100%;">
+										  <input  id="myacount-newpassword" type="password" placeholder="Nueva Contrasena" class="form-control nav-button-margin" data-ng-model='user.newpassword' name="newpassword">
 										</div>
 									  </div><!-- /.col-lg-6 -->
 									   <div class="col-lg-12 ">
 									  </div>
 									  <div class="col-lg-12">
-										<div class="input-group">
-										  <input type="password" ng-model="user.confpassword" name="confpassword" placeholder="Confirma Contrasena" class="form-control nav-button-margin" ng-required="user.confpassword" required>
+										<div class="input-group"  style="width: 100%;">
+										  <input id="myacount-confpassword"  type="password" ng-model="user.confpassword" name="confpassword" placeholder="Confirma Contrasena" class="form-control nav-button-margin" name="confpassword" data-password-verify="user.newpassword">
 										</div>
 									</div>
 									
+									 <div class="col-lg-12 ">									 
+										 <div class="row alert alert-danger" ng-show="myacount.username.$error.required || myacount.email.$error.required || myacount.confpassword.$error.passwordVerify || currentPasswordInvalid">
+											 <div class="col-sm-12">
+												<small><span class="error " ng-show="myacount.username.$error.required">Nombre de usuario requerido.</span></small>
+											 </div>	
+											  <div class="col-sm-12">
+												<small><span class="error " ng-show="myacount.email.$error.required">Email requerido.</span></small>
+											 </div>	
+											 <div class="col-sm-12">
+												<small><span class="error " ng-show="myacount.confpassword.$error.passwordVerify">Contrasenas no coinciden.</span></small>
+											 </div>
+											 <div class="col-sm-12">
+												<small><span class="error " ng-show="currentPasswordInvalid">Contrasena actual invalida.</span></small>
+											 </div>
+										 </div>
+									</div>
 								 </div><!-- /.col-lg-6 -->
 								 </div>
 							  </div><!-- /.row -->				
 							</div>
 	        <div class="modal-footer">
-				<button class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>
+				<!-- <button class="btn btn-primary btn-sm" ng-click="ok()">Aceptar</button>-->
+				<button  class="btn btn-primary btn-sm" type="submit" ng-disabled="myacount.username.$error.required || myacount.email.$error.required || myacount.confpassword.$error.passwordVerify">Aceptar</button>
 				<button class="btn btn-warning btn-sm" ng-click="cancel()">Cancelar</button>
 			</div>
+		 </form>
 		</script>				
 	</div>
 

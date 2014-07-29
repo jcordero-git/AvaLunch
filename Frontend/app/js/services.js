@@ -83,16 +83,6 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	}
    );
   }) 
-  /*
-   .factory('JsonServiceUpdateUser', function($resource) {
-   return $resource('http://'+ipServer+':port/user/', 
-	{
-	port: ':3000'
-	
-	}
-   );
-  })
-  */
   
   .factory('JsonServiceUpdateUser', function($resource) {
    return $resource(urlServer+'/user/:id/:updatePass',
