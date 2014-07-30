@@ -39,7 +39,7 @@
 					<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
 					<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
 					<div class="input-group-btn">
-						<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? RegisterList(username,taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
+						<button class="btn btn-danger" type="submit" ng-disabled="!taskInput" ng-click="taskInput !== '' ? RegisterList(taskInput) : alert('failed')"><i class="glyphicon glyphicon-plus-sign"></i>&nbsp;</button>
 					</div>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 				  <td style="text-align:right">Opción</td>
 				</tr>  
 				<tr ng-repeat="task in tasks | filter : filterTask">				  
-				  <td><img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://192.168.0.124:3000/images/{{task.username}}.jpg"/></td>
+				  <td><img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://localhost:3000/images/{{task.idUser}}.jpg" err-src="http://localhost:8080/app/img/default_user.png"/></td>
 				  <td>{{task.username}}</td>
 				  <td>{{task.menuname}}</td>				  
 				  <td>{{task.date}}</td>

@@ -159,6 +159,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	var sendEmail;
 	var VerifyHourToSendEmail;
 	var serverHour=0;
+	var serverDate;
 	
 	 var date={};
 	
@@ -177,7 +178,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		};
 		
 	$scope.checkTime = function (currentUser,listUser){
-	$scope.hour = new Date();
+	//$scope.hour = new Date();
 	
     //if ($scope.hour.getHours()>=DueHour)
 	if (serverHour>=DueHour)
@@ -201,8 +202,10 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
   function getServerHour(){
   GetServerHour.query(function(response) {
 	if(response)
-		{				
-		serverHour=response.hourLocal;
+		{
+		serverDate= new Date(response.serverDate);		
+		serverHour=serverDate.getHours();
+		ValuesBetweenCtrl.setValueServerDate(serverDate);
 		}	
 	else{
 		alert("error");
@@ -267,7 +270,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		
 		getServerHour();				
 		
-		$scope.date = new Date();		
+		//$scope.date = new Date();		
 	
 		if(serverHour==DueHour-1)$scope.emailSent=false;
 		
@@ -279,7 +282,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 			generateList();
 			var listEmailUsers="";
 			var caller="";
-			var date=$filter('date')($scope.date,'dd-MM-yyyy'); 
+			var dateFormat=$filter('date')(serverDate,'DD-MM-yyyy'); 
 			
 			//alert("CAntidad de users: "+ $scope.ListCount);
 			//alert($scope.ListCount);
@@ -290,7 +293,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 			 $.each($scope.generatedList, function(u, valueUser) {
 			  listEmailUsers+=$scope.generatedList[u].email+",";
 			  });			
-			SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': date}, function(response) {
+			SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': dateFormat}, function(response) {
 				if(response)
 				{
 				//alert("envio email");
@@ -479,7 +482,7 @@ $scope.onFileSelect = function($files, idMenu) {
 	
   }])
 
-.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListByDate', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', function($scope, JsonServiceList,JsonServiceListByDate, JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName) {
+.controller('listController', ['$scope','JsonServiceList', 'JsonServiceListByDate', 'JsonServiceListDeleteById', 'JsonServiceMenu', 'JsonServiceMenuDeleteById','$filter', '$rootScope' , 'ValuesBetweenCtrl', 'JsonServiceMenuFindByName', 'loggedInStatus', function($scope, JsonServiceList,JsonServiceListByDate, JsonServiceListDeleteById,JsonServiceMenu,JsonServiceMenuDeleteById, $filter, $rootScope, ValuesBetweenCtrl,JsonServiceMenuFindByName, loggedInStatus) {
 
   $scope.newListModel={};
   $scope.newListModel.username="";
@@ -487,13 +490,15 @@ $scope.onFileSelect = function($files, idMenu) {
   $scope.newListModel.date="";
   $scope.date = new Date(); 
   
+  
+  
   $rootScope.$on('loadSelectedMenuItem', function(event, data){	  
-	$scope.taskInput=ValuesBetweenCtrl.getvalueObject();
+	$scope.taskInput=ValuesBetweenCtrl.getValueObject();
 	});
 	
 	
 	$rootScope.$on('applyFilterByDate', function(event, data){	  
-	 $scope.date=ValuesBetweenCtrl.getvalueString();
+	 $scope.date=ValuesBetweenCtrl.getValueString();
 	 getList();
 	});
   
@@ -514,7 +519,8 @@ $scope.onFileSelect = function($files, idMenu) {
   
   function getList(){
     //$scope.datalist = {}; 
-    var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy'); 
+	
+    var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy');		
     JsonServiceListByDate.query({'date': dateFormat}, function(response) {
       $scope.tasks = response;
 	 // $scope.imgUserName= 'http://localhost:3000/images/'+$scope.tasks.username+'.jpg?updated=' + Math.random();
@@ -545,13 +551,15 @@ $scope.onFileSelect = function($files, idMenu) {
   
 
   
-  $scope.RegisterList = function(username,menuname){
+  $scope.RegisterList = function(menuname){
 	var dishName;
 	var idMenu=0;
 	var existMenu=false;
 	
-	var day = new Date();   
-    var dayFormat= $filter('date')(day,'dd-MM-yyyy HH:MM');   
+	var serverDate= ValuesBetweenCtrl.getValueServerDate();
+	//alert(serverDate.getHours());	
+	//var day = new Date();   
+    var dayFormat= $filter('date')(serverDate,'dd-MM-yyyy HH:mm');   
 		
     if(typeof menuname == 'object'){
       dishName = menuname.menuname;
@@ -560,7 +568,9 @@ $scope.onFileSelect = function($files, idMenu) {
       dishName = menuname;
     }	
 	
-	$scope.newListModel.username=username;
+	var currentUser=loggedInStatus.getUser();	
+	$scope.newListModel.idUser=currentUser._id;
+	$scope.newListModel.username=currentUser.username;
 	$scope.newListModel.menuname=dishName;
 	$scope.newListModel.date=dayFormat;
 

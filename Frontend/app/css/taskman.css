@@ -10,6 +10,20 @@ body.animations .fade-enter {
 .starter-template {
   text-align: center;
 }
+
+
+.upload{
+    overflow: hidden;
+	width:100%;
+	
+}
+
+.upload input {
+    display: block !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+}
+
 .input-group-addonx {
 	 width: 1%;
   white-space: nowrap;
@@ -118,6 +132,9 @@ div.task label.checkbox{
 .bs-callout-danger {
 	border-left-color: #d9534f;
 }
+
+
+
 .logo {
 	color: #d9534f;
 	font-size: 24px;

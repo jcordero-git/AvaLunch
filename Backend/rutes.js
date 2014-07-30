@@ -87,8 +87,8 @@ module.exports = function(app){
 	};
 	
 	var serverVar = function (dateValue, hourValue) {
-    this.dateLocal = dateValue;
-	this.hourLocal = hourValue;
+    this.serverDate = dateValue;
+	this.serverHour = hourValue;
 	
 	};
 	
@@ -151,6 +151,7 @@ module.exports = function(app){
 	var list = new listVa(
 		{
 		menuname: req.body.menuname,
+		idUser:	  req.body.idUser,
 		username: req.body.username,
 		date: req.body.date
 		});
@@ -537,7 +538,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUserPassEncrypt);
+app.get('/user/:username/:password',validateUser);
 app.get('/user/:email',findUserByEmail);
 app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);

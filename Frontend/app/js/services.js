@@ -185,6 +185,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   .service('ValuesBetweenCtrl', function(){
 	  var valueString="";
 	  var valueObject={};
+	  var serverDate;
 	  var menu={};
 	  var list={};
 	  
@@ -192,7 +193,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	  valueString = value;	  
 	  }  
 	  
-	  var getvalueString = function(){	    
+	  var getValueString = function(){	    
 	  return valueString;
 	  }	 
 
@@ -200,10 +201,17 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	  valueObject = value;	  
 	  }  
 	  
-	  var getvalueObject = function(){	    
+	  var getValueObject = function(){	    
 	  return valueObject;
 	  }	
 	  
+	   var setValueServerDate = function(value){
+	  serverDate = value;	  
+	  }  
+	  
+	  var getValueServerDate = function(){	    
+	  return serverDate;
+	  }
 	  var setMenu = function(value){
 	  menu = value;	  
 	  }  
@@ -221,9 +229,11 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 		
 	  return{
 	  setValueString: setValueString,
-	  getvalueString: getvalueString,
+	  getValueString: getValueString,
 	  setValueObject: setValueObject,
-	  getvalueObject: getvalueObject,
+	  getValueObject: getValueObject,
+	  setValueServerDate: setValueServerDate,
+	  getValueServerDate: getValueServerDate,
 	  setMenu: setMenu,
 	  getMenu: getMenu,
 	  setList: setList,
