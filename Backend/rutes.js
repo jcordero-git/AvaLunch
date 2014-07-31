@@ -20,7 +20,21 @@ module.exports = function(app){
 	var fs = require('fs');
 	var path = require("path");
 	
-			
+
+	function copyDefaultUserImage(idUser)
+		{
+		var newImageLocation = path.join(__dirname, 'public/images', idUser+".jpg");
+		fs.readFile("public/images/user_default_img.jpg", function(err, data) {
+		if (err)
+			throw err;
+		else{							
+			fs.writeFile(newImageLocation, data, function(err) {
+			console.log("Imagen predeterminada copiada a: "+newImageLocation);
+			});							
+			}
+		});		
+		}
+	
 	
 	upload=function(req, res){	
 		  setTimeout(			
@@ -347,7 +361,11 @@ module.exports = function(app){
 		});
 	console.log("usuario: "+user);
 		user.save(function(err){
-			if (!err) console.log('User saved');
+			if (!err) 
+				{
+				console.log('User saved');
+				copyDefaultUserImage(user._id);
+				}
 			else console.log('error'+ err);
 		});
 		res.send(user);

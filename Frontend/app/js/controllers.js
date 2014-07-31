@@ -282,7 +282,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 			generateList();
 			var listEmailUsers="";
 			var caller="";
-			var dateFormat=$filter('date')(serverDate,'DD-MM-yyyy'); 
+			var dateFormat=$filter('date')(serverDate,'dd-MM-yyyy'); 
 			
 			//alert("CAntidad de users: "+ $scope.ListCount);
 			//alert($scope.ListCount);
