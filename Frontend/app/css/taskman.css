@@ -11,11 +11,12 @@ body.animations .fade-enter {
   text-align: center;
 }
 
-
 .upload{
     overflow: hidden;
 	width:100%;
-	
+	background-image: url('../img/icon/clip_attachment.png');
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .upload input {
