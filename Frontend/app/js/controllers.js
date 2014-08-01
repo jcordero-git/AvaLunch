@@ -59,10 +59,12 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
 
 .controller('TemplateCtrl',['$scope','loggedInStatus', '$location',function($scope,loggedInStatus, $location){
+	/*
 	$scope.panelLogin=true;
 	$scope.panelSingUp=false;
 	$scope.panelForgot=false;
 	$scope.logged=loggedInStatus.getLoggedIn(); 	
+	*/
 	
 	/*
 	if($scope.logged==false)
@@ -70,12 +72,13 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		$location.path('/login');
 		}
 		*/
-			
+	/*	
 	$scope.ShowPanels = function(login,singUp,forgot){
 		$scope.panelLogin=login;
 		$scope.panelSingUp=singUp;
 		$scope.panelForgot=forgot;
 		};
+		*/
 		/*
 	$scope.ShowPanelSingUp = function(){
 		$scope.panelLogin=false;
@@ -95,12 +98,26 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
  .controller('LoginCtrl', ['$scope', 'ValidateUser', '$location', 'loggedInStatus', '$http', 'JsonService', 'ForgotPassword', function($scope, ValidateUser, $location, loggedInStatus, $http, JsonService, ForgotPassword) {
  	
 	$http.defaults.useXDomain = true; 	
+	
+	$scope.panelLogin=true;
+	$scope.panelSingUp=false;
+	$scope.panelForgot=false;
+	$scope.logged=loggedInStatus.getLoggedIn(); 	
+	
+	
 	$scope.statusMessage="*****";	
 	$scope.newUserModel={};
 	$scope.newUserModel.username="";
 	$scope.newUserModel.password="";
 	$scope.newUserModel.confPassword="";
 	$scope.newUserModel.email="";
+	
+	$scope.ShowPanels = function(login,singUp,forgot){	
+		$scope.panelLogin=login;
+		$scope.panelSingUp=singUp;
+		$scope.panelForgot=forgot;
+		};
+	
 	
 	$scope.Validate = function(){
     ValidateUser.get({'username': $scope.newUserModel.username,'password': $scope.newUserModel.password}, function(response){	  
@@ -122,8 +139,23 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	JsonService.save($scope.newUserModel, function(response){
 	if (response)
 		{
-		alert("Usuario registrado exitosamente");
-		$scope.Validate();
+		if(response._id)
+			{			
+			$scope.ShowPanels(true,false,false);
+			alert("Usuario registrado exitosamente");
+			$scope.Validate();			
+			}	
+		else{
+			if(response.username)
+				{
+				alert("El nombre de usuario ya esta siendo utilizado");
+				}
+				alert(response.email);
+			if(response.email)
+				{
+				alert("El email ya esta siendo utilizado");
+				}
+			}
 		}
 	else {alert("error");}
 	

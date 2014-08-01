@@ -95,10 +95,10 @@
 							<div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
 								<div class="row">
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">       
-                                        No tienes cuenta?<a href="#" ng-Click="ShowPanels(false,true,false)"> Registrate ahora!</a>
+                                        No tienes cuenta?<a ng-Click="ShowPanels(false,true,false)"> Registrate ahora!</a>
                                     </div>
                                     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                        <a href="#" ng-Click="ShowPanels(false,false,true)">Olvidé mi contraseña?</a>
+                                        <a ng-Click="ShowPanels(false,false,true)">Olvidé mi contraseña?</a>
                                     </div>
 								</div>
 							</div>
@@ -147,7 +147,7 @@
             <!-- Button -->                                        
             <div class="col-xs-6 col-xs-offset-6 col-md-offset-7 col-md-5">
                <!-- <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i>  Sign Up</button>  -->  
-              <button  ng-disabled="signupform.username.$error.required||signupform.email.$error.required||!signupform.email.$valid||signupform.password.$error.required||signupform.confpasswordName.$error.required||signupform.confpasswordName.$error.passwordVerify" type="submit"class="btn  btn-sm btn-info btn-small" ng-Click="ShowPanels(true,false,false)" style="width: 100%;">
+              <button  ng-disabled="signupform.username.$error.required||signupform.email.$error.required||!signupform.email.$valid||signupform.password.$error.required||signupform.confpasswordName.$error.required||signupform.confpasswordName.$error.passwordVerify" type="submit"class="btn  btn-sm btn-info btn-small"  style="width: 100%;">
 				<i class="glyphicon glyphicon-ok-sign"></i> 
 				Aceptar
 				</button>           
@@ -161,7 +161,7 @@
 										<!--
 										<a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a>
                                   -->
-                                  <a href="#" ng-Click="ShowPanels(true,false,false)">
+                                  <a ng-Click="ShowPanels(true,false,false)">
                                     Iniciar sesión
                                 </a>
                             </div>
@@ -230,7 +230,7 @@
 										<!--
 										<a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a>
 										-->
-										<a href="#" ng-Click="ShowPanels(true,false,false)">
+										<a  ng-Click="ShowPanels(true,false,false)">
                                             Iniciar Sesión
                                         </a>
                                         </div>

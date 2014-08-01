@@ -80,6 +80,9 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
    return $resource(urlServer+'/user/', 
 	{
 	port: ':3000'
+	},
+	{
+	save: {method:'POST', isArray: false}
 	}
    );
   }) 

@@ -352,24 +352,56 @@ module.exports = function(app){
 		}
 		)};
 	
+	var error = function(user,email) {
+				this.username= user;
+				this.email= email;
+				};
+	
 	registerUser=function(req, res){
+	
+	var existUserName=false;
+	var existEmail=false;
+	
 	var user = new userVa(
 		{
 		username: req.body.username,
 		email: req.body.email,
 		password: req.body.password	
-		});
-	console.log("usuario: "+user);
-		user.save(function(err){
-			if (!err) 
-				{
-				console.log('User saved');
-				copyDefaultUserImage(user._id);
+		});	
+	
+	userVa.findOne({$or:[{username:req.body.username},{email:req.body.email}]}, function(err,userAux){ // Falta verificar todos los users que hacen match con la condición
+			if(!err) 
+				{				
+				if(userAux)
+					{	
+					if(userAux.username==user.username)existUserName=true;
+					if(userAux.email==user.email)existEmail=true;																				
+					}
+				if(!existUserName&&!existEmail)
+						{
+						console.log("usuario: "+user);
+						user.save(function(err){
+									if (!err) 
+										{
+										console.log('User saved');
+										copyDefaultUserImage(user._id);
+										res.send(user);
+										}
+									else console.log('error'+ err);
+								});
+						}
+						else{						
+							var errorAux = new error(existUserName, existEmail);						
+							console.log("username: "+existUserName+", email: "+existEmail);
+							res.send(JSON.stringify(errorAux));							
+							}
 				}
-			else console.log('error'+ err);
-		});
-		res.send(user);
+			});		
 	};
+	
+	
+	
+	
 	
 	updateUserById=function(req, res){
 	
@@ -556,7 +588,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUser);
+app.get('/user/:username/:password',validateUserPassEncrypt);
 app.get('/user/:email',findUserByEmail);
 app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);
