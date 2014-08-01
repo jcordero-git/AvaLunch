@@ -150,7 +150,6 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 				{
 				alert("El nombre de usuario ya esta siendo utilizado");
 				}
-				alert(response.email);
 			if(response.email)
 				{
 				alert("El email ya esta siendo utilizado");

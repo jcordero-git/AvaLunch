@@ -14,15 +14,12 @@ module.exports = function(app){
 	var menuVa= require('./model/menu');
 	var listVa= require('./model/list');
 	var emailSentVa= require('./model/emailsent');
-	var nodemailer = require('nodemailer');
-	
+	var nodemailer = require('nodemailer');	
 	
 	var fs = require('fs');
 	var path = require("path");
-	
-
-	function copyDefaultUserImage(idUser)
-		{
+	 
+	function copyDefaultUserImage(idUser){
 		var newImageLocation = path.join(__dirname, 'public/images', idUser+".jpg");
 		fs.readFile("public/images/user_default_img.jpg", function(err, data) {
 		if (err)
@@ -34,7 +31,6 @@ module.exports = function(app){
 			}
 		});		
 		}
-	
 	
 	upload=function(req, res){	
 		  setTimeout(			
@@ -100,12 +96,11 @@ module.exports = function(app){
 		);
 	};
 	
-	var serverVar = function (dateValue, hourValue) {
+	var serverVar = function (dateValue, hourValue){
     this.serverDate = dateValue;
 	this.serverHour = hourValue;
 	
 	};
-	
 	
 	GetServerHour=function(req, res){		 
 		 var dateAux=new Date;
@@ -115,15 +110,25 @@ module.exports = function(app){
 		 res.autoEtag();
 		 res.send(JSON.stringify(server));
 	};
-	
-	
-	var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'jocorbre@gmail.com',
-        pass: 'Ya881125'
-		}
-	});
+
+	var file = __dirname + '/config/emailConfig.json';	
+	var transporter;
+	fs.readFile(file, 'utf8', function (err, data) {
+		  if (err) {
+			console.log('Error: ' + err);
+			return;
+			}		 
+		data = JSON.parse(data);		 
+		console.log("Configuracion de Email cargada");			
+		transporter = nodemailer.createTransport({		
+		service: data.service,
+		auth: {
+			user: data.user,
+			pass: data.pass
+			}		
+		});
+		return transporter;
+	});		
 	/*
 	var mailOptions = {
     from: 'Fred Foo ? <foo@blurdybloop.com>', // sender address
@@ -303,7 +308,6 @@ module.exports = function(app){
 		});
 	};
 
-	
 	validateUser=function(req, res){
 	userVa.findOne({username:req.params.username,password:req.params.password}, function(err,user){
 		if(!err) res.send(user);
