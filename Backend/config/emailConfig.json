@@ -1,5 +1,8 @@
 {
-  "service": "Gmail",
-  "user": "xx@gmail.com",
-  "pass": "xx"
+  "host": "secure.emailsrvr.com",
+  "port": "465",
+  "secure": "true",
+  "service": "Avantica",
+  "user": "jose.cordero@avantica.net",
+  "pass": "xxxxxxxxxx"
 }

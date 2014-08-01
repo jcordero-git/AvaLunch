@@ -15,6 +15,7 @@ module.exports = function(app){
 	var listVa= require('./model/list');
 	var emailSentVa= require('./model/emailsent');
 	var nodemailer = require('nodemailer');	
+	var smtpTransport = require('nodemailer-smtp-transport');
 	
 	var fs = require('fs');
 	var path = require("path");
@@ -120,13 +121,16 @@ module.exports = function(app){
 			}		 
 		data = JSON.parse(data);		 
 		console.log("Configuracion de Email cargada");			
-		transporter = nodemailer.createTransport({		
-		service: data.service,
+		transporter = nodemailer.createTransport(smtpTransport({		
+		//service: data.service,
+		host: data.host,
+		port: data.port,
+		secure: data.secure, 
 		auth: {
 			user: data.user,
 			pass: data.pass
 			}		
-		});
+		}));
 		return transporter;
 	});		
 	/*
@@ -328,7 +332,7 @@ module.exports = function(app){
 			tempPass += possible.charAt(Math.floor(Math.random() * possible.length));
 			
 		var mailOptions1 = {
-						from: 'AvaLunchs <jocorbre@gmail.com>', // sender address
+						from: 'AvaLunchs <jose.cordero@avantica.net>', // sender address
 						to: req.params.email, // list of receivers
 						subject: 'AvaLunchs - Recuperacion de Contrasena', // Subject line
 						text: 'Recuperación de Contraseña', // plaintext body
@@ -545,7 +549,7 @@ module.exports = function(app){
 				{
 				console.log("User List that buy a lunch: "+lisUsers);								
 				var mailOptions1 = {
-									from: 'AvaLunchs <jocorbre@gmail.com>', // sender address
+									from: 'AvaLunchs <jose.cordero@avantica.net>', // sender address
 									to: lisUsers, // list of receivers
 									subject: 'AvaLunchs - Pedido del '+date, // Subject line
 									text: 'Pedido', // plaintext body
