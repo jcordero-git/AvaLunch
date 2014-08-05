@@ -144,21 +144,42 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		if(response._id)
 			{			
 			$scope.ShowPanels(true,false,false);
-			alert("Usuario registrado exitosamente");
+			//alert("Usuario registrado exitosamente");
+			noty({
+				type: 'success', 
+				text: 'Usuario registrado exitosamente.',
+				timeout:5000
+				});	
 			$scope.Validate();			
 			}	
 		else{
 			if(response.username)
 				{
-				alert("El nombre de usuario ya esta siendo utilizado");
+				//alert("El nombre de usuario ya esta siendo utilizado");
+				noty({
+					type: 'error', 
+					text: 'El nombre de usuario ya esta siendo utilizado.',
+					timeout:5000
+					});
 				}
 			if(response.email)
 				{
-				alert("El email ya esta siendo utilizado");
+				//alert("El email ya esta siendo utilizado");
+				noty({
+					type: 'error', 
+					text: 'El email ya esta siendo utilizado.',
+					timeout:5000
+					});
 				}
 			}
 		}
-	else {alert("error");}
+	else {
+		//alert("error");
+		noty({
+			type: 'error', 
+			text: 'Error.'
+			});
+		}
 	
 	});	
 	};
@@ -166,13 +187,23 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	$scope.ForgotPassword = function(){
 	 ForgotPassword.get({'email': $scope.newUserModel.email}, function(response){	  
 	   if(response.username)
-		{			
-		alert("Una nueva contraseña ha sido enviada a su correo electronico.");
-		$scope.statusMessage="Email enviado exitosamente.";
+		{	
+		noty({
+			type: 'success', 
+			text: 'Una nueva contraseña ha sido enviada a su correo electronico.',
+			timeout:5000
+			});		
+		//alert("Una nueva contraseña ha sido enviada a su correo electronico.");		
+		//$scope.statusMessage="Email enviado exitosamente.";
 		}
 		else
 		{
-		$scope.statusMessage="Email no registrado.";
+		//$scope.statusMessage="Email no registrado.";
+		noty({
+			type: 'error', 
+			text: 'Email no registrado.',
+			timeout:5000
+			});	
 		}
 	  });
 	};
@@ -219,7 +250,12 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		};
 		
 	$scope.callMadeBtn = function(){
-		alert("llamada realizada");
+		//alert("llamada realizada");
+		noty({
+			type: 'success', 
+			text: 'Llamada realizada.',
+			timeout:5000
+			});
 		getServerHour();
 		var dateFormat=$filter('date')(serverDate,'dd-MM-yyyy');
 		VerifyCallMade.update({'date': dateFormat}, function(response) 
@@ -269,7 +305,11 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		ValuesBetweenCtrl.setValueServerDate(serverDate);
 		}	
 	else{
-		alert("error");
+		//alert("error");
+		noty({
+			type: 'error', 
+			text: 'Error.'
+			});
 		}
 	 });
   }
@@ -442,6 +482,11 @@ $scope.onFileSelect = function($files) {
 		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
+		noty({
+			type: 'success', 
+			text: 'Imagen subida al servidor exitosamente.',
+			timeout:5000
+			});	
 		$scope.imgUserName= 'http://localhost:3000/images/'+$scope._id+'.jpg?updated=' + Math.random();
         console.log(data);
       });
@@ -499,6 +544,11 @@ $scope.onFileSelect = function($files, idMenu) {
 		$scope.progressBarValue = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function(data, status, headers, config) {
         // file is uploaded successfully
+		noty({
+			type: 'success', 
+			text: 'Imagen subida al servidor exitosamente.',
+			timeout:5000
+			});
 		$scope.imgDish= 'http://localhost:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
         console.log(data);
       });
@@ -685,7 +735,12 @@ $scope.onFileSelect = function($files, idMenu) {
 					 }
 			if(existMenu==false)
 				{*/
-				alert("El plato seleccionado aun no ha sido registrado");
+				//alert("El plato seleccionado aun no ha sido registrado");
+				noty({
+					type: 'warning', 
+					text: 'El plato seleccionado aun no ha sido registrado.',
+					timeout:5000
+					});
 				/*}
 				
 			});*/
@@ -698,7 +753,13 @@ $scope.onFileSelect = function($files, idMenu) {
 						getList();
 						$scope.taskInput = "";		
 						}
-					else {alert("error");}
+					else {
+						//alert("error");
+						noty({
+							type: 'error', 
+							text: 'Error.'
+							});
+						}
 					
 					});	
 	}
@@ -740,22 +801,56 @@ $scope.onFileSelect = function($files, idMenu) {
     //$scope.hour = new Date();
    // if ($scope.hour.getHours()<=DueHour) {
 	
-      if(confirm("Está seguro de querer borrar su pedido?")){        
-		//JsonServiceListDeleteById.delete({'id': task})
+	noty({
+		  text: 'Está seguro de querer borrar su pedido?',
+		  buttons: [
+			{addClass: 'btn btn-primary', text: 'Ok', onClick: function($noty) {
+
+				// this = button element
+				// $noty = $noty element
+				JsonServiceListDeleteById.delete({'id': task},function(response){
+				if (response)
+					{
+					noty({text: 'Pedido eliminado exitosamente.', type: 'success', timeout:5000});
+					getList();
+					}
+				else {
+					//alert("error");
+					noty({
+						type: 'error', 
+						text: 'Error.'
+						});
+					}
+				});	
+				$noty.close();				
+			  }
+			},
+			{addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
+				$noty.close();
+				noty({text: 'Acción cancelada', type: 'error', timeout:5000});
+			  }
+			}
+		  ]
+		});
+    
+	
+	/*
+      if(confirm("Está seguro de querer borrar su pedido?")){		
 		JsonServiceListDeleteById.delete({'id': task},function(response){
 				if (response)
 					{
 					getList();
 					}
-				else {alert("error");}
+				else {
+					//alert("error");
+					noty({
+						type: 'error', 
+						text: 'Error.'
+						});
+					}
 			});				
-        }      
-    /*
-	}else{
-      getList();
-    }
-	*/
-	
+        }
+	*/       	
   };
   /*
    $scope.deleteMenu = function (menu) {
@@ -819,20 +914,52 @@ app.controller('menuController', ['$scope','JsonServiceList', 'JsonServiceListDe
 		};
 		
    $scope.deleteMenu = function (menu) {
-    $scope.hour = new Date();	
-      if(confirm("Está seguro de querer borrar el platillo?")){        
-	  JsonServiceMenuDeleteById.delete({'id': menu});			
+    $scope.hour = new Date();
+
+	noty({
+		  text: 'Está seguro de querer borrar el platillo?',
+		  buttons: [
+			{addClass: 'btn btn-primary', text: 'Ok', onClick: function($noty) {
+
+				// this = button element
+				// $noty = $noty element
+				
+				//JsonServiceMenuDeleteById.delete({'id': menu});			
 				JsonServiceMenuDeleteById.delete({'id': menu},function(response){
 				if (response)
 					{
 					getMenu();
 					//alert(response);
+					noty({text: 'Platillo eliminado exitosamente.', type: 'success', timeout:5000});
 					}
-				else {alert("error");}
+				else {
+					//alert("error");
+					noty({
+						type: 'error', 
+						text: 'Error.'
+						});
+					}
 				
 				});	
-		getMenu();					
-        }        
+				getMenu();
+				$noty.close();				
+			  }
+			},
+			{addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
+				$noty.close();
+				noty({text: 'Acción cancelada', type: 'error', timeout:5000});
+			  }
+			}
+		  ]
+		});
+
+	/*
+      if(confirm("Está seguro de querer borrar el platillo?")){ 
+
+        } 
+
+	*/
+		
   };
   
 
@@ -996,8 +1123,21 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMe
 				$scope.infoTab=false;
 				$scope.modalTitle="Modificar Platillo";
 				//alert("Plato Registrado Existosamente");
+				
+				noty({
+					type: 'success', 
+					text: 'Plato Registrado Existosamente.',
+					timeout:5000
+					});	
+					
 				}
-			else {alert("error");}
+			else {
+				//alert("error");
+				noty({
+					type: 'error', 
+					text: 'Error.'
+					});
+				}
 			
 			});
 	}
@@ -1019,7 +1159,13 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, newMenu, JsonServiceMe
 				//alert("Plato Registrado Existosamente");
 				$modalInstance.close($scope.newMenu);	
 				}
-			else {alert("error");}
+			else {
+				//alert("error");
+				noty({
+					type: 'error', 
+					text: 'Error.'
+					});
+				}
 			
 			});	
 	}	
@@ -1148,7 +1294,11 @@ var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateSe
 			if (response.username)
 				{
 				loggedInStatus.setUser($scope.user);
-				alert("Usuario actualizado exitosamente");
+				//alert("Usuario actualizado exitosamente");
+				noty({
+					type: 'success', 
+					text: 'Usuario actualizado exitosamente.'
+					});
 				$modalInstance.close($scope.user);				
 				}
 			else{
