@@ -103,8 +103,10 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	$scope.panelSingUp=false;
 	$scope.panelForgot=false;
 	$scope.logged=loggedInStatus.getLoggedIn(); 	
-	
-	
+	if($scope.logged)
+		{
+		$location.path('/welcome');
+		}	
 	$scope.statusMessage="*****";	
 	$scope.newUserModel={};
 	$scope.newUserModel.username="";
@@ -178,6 +180,11 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     	  
   }])
 
+ .controller('WelcomeCookie', ['$scope', 'loggedInStatus', function($scope, loggedInStatus) { 
+ $scope.username=loggedInStatus.getUser().username; 
+ }
+ ])
+  
  .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', '$rootScope', 'GetServerHour', 'VerifyCallMade', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter, $rootScope, GetServerHour, VerifyCallMade) {
 	
 	$scope.DueHour=DueHour;	

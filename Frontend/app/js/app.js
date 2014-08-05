@@ -16,7 +16,7 @@ angular.module('myApp', [
   $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
   $routeProvider.when('/index', {templateUrl: 'partials/index.html', controller: 'IndexCtrl'});
   $routeProvider.when('/login', {templateUrl: 'login/login.html', controller: 'LoginCtrl'});
-  
+  $routeProvider.when('/welcome', {templateUrl: 'partials/welcomeCookie.html', controller: 'WelcomeCookie'});
   $routeProvider.otherwise({redirectTo: '/login'});
   
 }])

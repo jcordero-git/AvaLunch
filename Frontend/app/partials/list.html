@@ -1,5 +1,13 @@
 
 <div class="widget-box" id="recent-box"  ng-controller="listController" >
+
+
+<div> 
+
+</div>
+
+
+
 	<div class="widget-header header-color-blue">
 		<div class="row">
 			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
@@ -63,7 +71,10 @@
 				  <td style="text-align:right">Opción</td>
 				</tr>  
 				<tr ng-repeat="task in tasks | filter : filterTask">				  
-				  <td><img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://localhost:3000/images/{{task.idUser}}.jpg" err-src="http://localhost:8080/app/img/default_user.png"/></td>
+				  <td>
+				  <img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://localhost:3000/images/{{task.idUser}}.jpg" err-src="http://localhost:8080/app/img/default_user.png" custom-popover popover-html="<img class='thumbnail img-responsive' style='width: 400px; height:250px' src='http://localhost:3000/images/{{task.idUser}}.jpg'/>"  popover-placement="right" popover-label="Imagen">
+				  </img>				  
+				  </td>
 				  <td>{{task.username}}</td>
 				  <td>{{task.menuname}}</td>				  
 				  <td>{{task.date}}</td>
