@@ -532,18 +532,52 @@ module.exports = function(app){
 	};
 	*/
 	
+	
+	verifyCallMade=function(req, res){		
+	var date=req.params.date;
+	
+	emailSentVa.findOne({date:date}, function(err,callMade){
+		if(!err) 
+		{
+			if(callMade)
+				{
+				res.send(callMade);
+				}
+		}		
+	});
+	};	
+	
+	putCallMade=function(req, res){		
+	var date=req.params.date;
+	console.log("fecha: "+date);
+	emailSentVa.findOne({date:date}, function(err,call){
+	if(!err) 
+		{
+		if(call)
+			{
+			call.callMade=true;
+			call.save();
+			console.log("Call made by: "+call.caller);
+			res.send(call);
+			}
+		}		
+	});
+	};
+	
+	
 	sendEmailNotification=function(req, res){		
 	var lisUsers=req.params.listuser;
 	var caller=req.params.caller;
 	var date=req.params.date;
-    var verifyEmailSent=false;	
+    //var verifyEmailSent=false;	
 	
 	emailSentVa.findOne({date:date}, function(err,emailSent){
 		if(!err) 
 		{
 			if(emailSent)
 				{
-				console.log("The email confirmation was already sent: "+ emailSent.date +', caller: '+emailSent.caller);															
+				console.log("The email confirmation was already sent: "+ emailSent.date +', caller: '+emailSent.caller);	
+				res.send(false);														
 				}
 			else
 				{
@@ -557,25 +591,27 @@ module.exports = function(app){
 									};
 									
 					sendEmail(mailOptions1);	
-					registerEmailSent(date,caller);				
+					registerEmailSent(date,caller, false);				
 					res.send(true);
 				}
 		}
 		else 
 		{
 		console.log('Error '+err);
-		verifyEmailSent=false;
+		res.send(false);
+		//verifyEmailSent=false;
 		}
 		});			
-	console.log(verifyEmailSent);
-    res.send(false);	
+	//console.log("verify email sent: "+verifyEmailSent);
+    //res.send(false);	
 	};
 	
-	function registerEmailSent(date, caller){		
+	function registerEmailSent(date, caller, callMade){		
 		var emailSent = new emailSentVa(
 		{
 		date: date,
-		caller: caller
+		caller: caller,
+		callMade: callMade
 		});
 	console.log("Email Sent: "+emailSent);
 		emailSent.save(function(err){
@@ -596,7 +632,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUserPassEncrypt);
+app.get('/user/:username/:password',validateUser);
 app.get('/user/:email',findUserByEmail);
 app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);
@@ -605,6 +641,9 @@ app.get('/serverhour', GetServerHour);
 
 app.post('/upload',upload);
 app.post('/uploadDish',uploadDish);
+
+app.get('/verifyCallMade/:date',verifyCallMade);
+app.put('/verifyCallMade/:date',putCallMade);
 	
 };
 

@@ -1,7 +1,7 @@
 var mongoose = require ('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
-var SALT_WORK_FACTOR = 10;
+//var bcrypt = require('bcrypt');
+//var SALT_WORK_FACTOR = 10;
 
 var userSh = new Schema({
 	username: String,
@@ -9,7 +9,7 @@ var userSh = new Schema({
 	password: String
 });
 
-
+/*
 userSh.pre('save', function(next) {
     var user = this;
 	
@@ -39,6 +39,6 @@ userSh.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
-
+*/
 
 module.exports = mongoose.model('Users', userSh);

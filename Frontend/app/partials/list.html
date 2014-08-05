@@ -34,7 +34,7 @@
 		<form ng-init="addNewClicked=false; " id="newTaskForm" class="add-task">
 			<div class="form-actions">
 				<div class="input-group">
-					<input ng-disabled="!checkTime()" type="text" ng-model="taskInput" placeholder="Digite..." name="comment" typeahead="c as c.menuname for c in menu1 | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' class="form-control" ng-required="taskInput" required>
+					<input ng-disabled="!checkTime()" type="text" ng-model="taskInput" placeholder="Por favor has tu elección aquí!" name="comment" typeahead="c as c.menuname for c in menu1 | filter:$viewValue | limitTo:5" typeahead-min-length='1' typeahead-on-select='onSelectPart($item, $model, $label)' class="form-control" ng-required="taskInput" required>
 
 					<!--<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">-->
 					<!--<autocomplete ng-model="taskInput" ng-focus="addNewClicked" attr-input-class="form-control" attr-placeholder="Digite su seleccion del menú" name="comment" click-activation="true" data="movies" on-type="doSomething" ng-required="true"></autocomplete>-->
@@ -44,8 +44,8 @@
 				</div>
 			</div>
 			<br>
-			<div class="alert alert-warning" ng-show="!taskInput.length && checkTime()">
-				<strong>Advertencia!</strong> Por favor has tu elección!. 
+			<div class="alert alert-success" ng-show="callMade">
+				<strong>Información!</strong> La llamada ha sido realizada por: {{caller}} 
 			</div>
 			<div class="alert alert-danger" ng-show="!checkTime()">
 				<strong>Información!</strong> La suscripción al pedido se ha cerrado!. 
@@ -74,5 +74,8 @@
 			</table>
 		 </div>			
 		</div>
+	</div>
+	<div class="pull-right">
+	<a href="" ng-disabled="callMade" ng-show="isCaller" class="btn btn-sm btn-success nav-button-margin" ng-click="callMadeBtn()"> <i class="glyphicon glyphicon-earphone"></i>&nbsp;Llamada Realizada!!!</a>
 	</div>
 </div>

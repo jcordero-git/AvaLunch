@@ -171,7 +171,22 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
 	caller: '@caller',
 	date: '@date'
 	},
-	{}
+	{
+	query: {method:'GET', isArray: false}
+	}
+  );
+  })
+  
+   .factory('VerifyCallMade', function($resource){
+  return $resource(urlServer+'/verifyCallMade/:date',
+	{
+	port: ':3000',
+	date: '@date'
+	},
+	{
+	query: {method:'GET', isArray: false},
+	update: {method:'PUT', isArray: false}
+	}
   );
   })
   

@@ -178,7 +178,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
     	  
   }])
 
- .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', '$rootScope', 'GetServerHour', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter, $rootScope, GetServerHour) {
+ .controller('IndexCtrl', ['$scope', 'JsonServiceMenu', 'loggedInStatus' , '$location', 'ValuesBetweenCtrl', 'JsonService', 'SendEmailNotification', '$filter', '$rootScope', 'GetServerHour', 'VerifyCallMade', function($scope, JsonServiceMenu, loggedInStatus, $location, ValuesBetweenCtrl, JsonService, SendEmailNotification, $filter, $rootScope, GetServerHour, VerifyCallMade) {
 	
 	$scope.DueHour=DueHour;	
 	$scope.usersTemp={};
@@ -186,15 +186,18 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	$scope.ListCount=0;
 	
 	$scope.emailSent=false;
+	$scope.callMade=false;
+	$scope.isCaller=true;
 	
 	var sendEmail;
 	var VerifyHourToSendEmail;
 	var serverHour=0;
 	var serverDate;
 	
-	 var date={};
-	
+	var date={};
+		
 	getServerHour();
+	
 	
 		
 	//alert(loggedInStatus.getUsername());
@@ -207,6 +210,26 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		$location.path('/login');
 		//alert($scope.logged);
 		};
+		
+	$scope.callMadeBtn = function(){
+		alert("llamada realizada");
+		getServerHour();
+		var dateFormat=$filter('date')(serverDate,'dd-MM-yyyy');
+		VerifyCallMade.update({'date': dateFormat}, function(response) 
+		{
+		if(response.callMade)
+			{
+			$scope.callMade=true;
+			$scope.caller=response.caller;
+			}
+		else
+			{
+			$scope.callMade=false;
+			$scope.caller="";
+			}	
+		});			
+		};
+	
 		
 	$scope.checkTime = function (currentUser,listUser){
 	//$scope.hour = new Date();
@@ -296,13 +319,32 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		
 		}
 		*/
-		
+
+	function verifyCallMade()
+	{
+	getServerHour();
+	var dateFormat=$filter('date')(serverDate,'dd-MM-yyyy');
+	VerifyCallMade.query({'date': dateFormat}, function(response) 
+		{
+		if(response.callMade)
+			{
+			$scope.callMade=true;
+			$scope.caller=response.caller;
+			}
+		else
+		{
+		$scope.callMade=false;
+		$scope.caller="";
+		}
+	
+		});
+	}
+
+	
 	function sendEmailNotiFunction(){
 		
-		getServerHour();				
-		
-		//$scope.date = new Date();		
-	
+		getServerHour();					
+		//$scope.date = new Date();			
 		if(serverHour==DueHour-1)$scope.emailSent=false;
 		
 		if (serverHour==DueHour && $scope.emailSent==false) 
@@ -327,8 +369,11 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 			SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': dateFormat}, function(response) {
 				if(response)
 				{
+				//alert("La llamada ha sido realizada por: "+ response.caller);
+				//$scope.caller=response.caller;
 				//alert("envio email");
 				$scope.emailSent=true;
+				//$scope.callMade=true;
 				//stopSendEmail();
 				}
 				});
@@ -343,7 +388,8 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		
 	//function startSendEmailInterval(){
 			sendEmail=setInterval(function(){			
-			sendEmailNotiFunction();  
+			sendEmailNotiFunction(); 
+			verifyCallMade();
 			console.log("startSendEmailInterval");
 			//clearInterval(VerifyHourToSendEmail);				
 			},20000);
