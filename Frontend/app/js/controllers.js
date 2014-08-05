@@ -132,7 +132,12 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		}
 		else
 		{
-		$scope.statusMessage="El usuario y la contraseña no coinciden";
+		//$scope.statusMessage="El usuario y la contraseña no coinciden";
+		noty({
+			type: 'error', 
+			text: 'El usuario y la contraseña no coinciden.',
+			timeout:5000
+			});
 		}
 	  });
     };
