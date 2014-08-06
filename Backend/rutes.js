@@ -365,6 +365,7 @@ module.exports = function(app){
 				this.email= email;
 				};
 	
+	
 	registerUser=function(req, res){
 	
 	var existUserName=false;
@@ -576,8 +577,8 @@ module.exports = function(app){
 		{
 			if(emailSent)
 				{
-				console.log("The email confirmation was already sent: "+ emailSent.date +', caller: '+emailSent.caller);	
-				res.send(false);														
+				console.log("The email confirmation was already sent: "+ emailSent.date +', caller: '+emailSent.caller);
+				res.send(emailSent);
 				}
 			else
 				{
@@ -587,12 +588,12 @@ module.exports = function(app){
 									to: lisUsers, // list of receivers
 									subject: 'AvaLunchs - Pedido del '+date, // Subject line
 									text: 'Pedido', // plaintext body
-									html: '<p><b>El seleccionado para realizar la llamada del dia de hoy es: '+caller+'</b></p><p>La lista se encuentra en el sitio web: <a target="_black" href="http:192.168.0.124:8080/app"> http:192.168.49.115:8080/app <a></p></br></br><p><b>AvaLunchs SQA Project Liberia 2014</b><p>' // html body
+									html: '<p><b>El seleccionado para realizar la llamada del dia de hoy es: '+caller+'</b></p><p>La lista se encuentra en el sitio web: <a target="_black" href="http:192.168.49.13:8080/app"> http:192.168.49.13:8080/app <a></p></br></br><p><b>AvaLunchs SQA Project Liberia 2014</b><p>' // html body
 									};
 									
 					sendEmail(mailOptions1);	
 					registerEmailSent(date,caller, false);				
-					res.send(true);
+					res.send(emailSent);
 				}
 		}
 		else 
@@ -632,7 +633,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUser);
+app.get('/user/:username/:password',validateUserPassEncrypt);
 app.get('/user/:email',findUserByEmail);
 app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);

@@ -52,7 +52,7 @@
 				</div>
 			</div>
 			<br>
-			<div class="alert alert-success" ng-show="callMade">
+			<div class="alert alert-success" ng-show="callMadeLabel">
 				<strong>Información!</strong> La llamada ha sido realizada por: {{caller}} 
 			</div>
 			<div class="alert alert-danger" ng-show="!checkTime()">
@@ -68,7 +68,7 @@
 				  <td>Nombre</td>
 				  <td>Plato</td>
 				  <td>Fecha / Hora</td>
-				  <td style="text-align:right">Opción</td>
+				  <td style="text-align:right"></td>
 				</tr>  
 				<tr ng-repeat="task in tasks | filter : filterTask">				  
 				  <td>
@@ -87,6 +87,6 @@
 		</div>
 	</div>
 	<div class="pull-right">
-	<a href="" ng-disabled="callMade" ng-show="isCaller" class="btn btn-sm btn-success nav-button-margin" ng-click="callMadeBtn()"> <i class="glyphicon glyphicon-earphone"></i>&nbsp;Llamada Realizada!!!</a>
+	<a href="" ng-disabled="callMadeButton" ng-show="isCaller " class="btn btn-sm btn-success nav-button-margin" ng-click="callMadeBtn()"> <i class="glyphicon glyphicon-earphone"></i>&nbsp;Llamada Realizada!!!</a>
 	</div>
 </div>

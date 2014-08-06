@@ -229,7 +229,8 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 	$scope.ListCount=0;
 	
 	$scope.emailSent=false;
-	$scope.callMade=false;
+	$scope.callMadeButton=false;
+	$scope.callMadeLabel=false;
 	$scope.isCaller=true;
 	
 	var sendEmail;
@@ -267,12 +268,14 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		{
 		if(response.callMade)
 			{
-			$scope.callMade=true;
+			$scope.callMadeButton=true;
+			$scope.callMadeLabel=true;
 			$scope.caller=response.caller;
 			}
 		else
 			{
-			$scope.callMade=false;
+			$scope.callMadeButton=false;
+			$scope.callMadeLabel=false;
 			$scope.caller="";
 			}	
 		});			
@@ -299,14 +302,23 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		}    
   };
   
- 
-  
   function getServerHour(){
   GetServerHour.query(function(response) {
 	if(response)
 		{
 		serverDate= new Date(response.serverDate);		
 		serverHour=serverDate.getHours();
+		if(serverHour < DueHour)
+			{
+			$scope.callMadeButton=true;
+			}
+		else
+			{
+			if(!$scope.callMadeLabel)
+				{
+				$scope.callMadeButton=false;
+				}
+			}
 		ValuesBetweenCtrl.setValueServerDate(serverDate);
 		}	
 	else{
@@ -380,12 +392,14 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 		{
 		if(response.callMade)
 			{
-			$scope.callMade=true;
+			$scope.callMadeLabel=true;
+			$scope.callMadeButton=true;			
 			$scope.caller=response.caller;
 			}
 		else
 		{
-		$scope.callMade=false;
+		$scope.callMadeLabel=false;
+		$scope.callMadeButton=false;
 		$scope.caller="";
 		}
 	
@@ -424,9 +438,20 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 				//alert("La llamada ha sido realizada por: "+ response.caller);
 				//$scope.caller=response.caller;
 				//alert("envio email");
-				$scope.emailSent=true;
-				//$scope.callMade=true;
-				//stopSendEmail();
+				if(response.caller)
+					{					
+					
+					}
+				else
+					{
+					noty({
+						type: 'success', 
+						text: 'La notificación de correo fue enviada exitosamente. El responzable de realizar la llamada es: <b>'+caller+'</b>'
+						});
+					$scope.emailSent=true;
+					//$scope.callMade=true;
+					//stopSendEmail();
+					}
 				}
 				});
 			}			  
