@@ -68,12 +68,18 @@
 				  <td>Nombre</td>
 				  <td>Plato</td>
 				  <td>Fecha / Hora</td>
-				  <td style="text-align:right"></td>
+				  <td style="text-align:right">Opción</td>
 				</tr>  
 				<tr ng-repeat="task in tasks | filter : filterTask">				  
 				  <td>
-				  <img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://localhost:3000/images/{{task.idUser}}.jpg" err-src="http://localhost:8080/app/img/default_user.png" custom-popover popover-html="<img class='thumbnail img-responsive' style='width: 400px; height:250px' src='http://localhost:3000/images/{{task.idUser}}.jpg'/>"  popover-placement="right" popover-label="Imagen">
-				  </img>				  
+				  
+				  <img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="http://192.168.49.104:3000/images/{{task.idUser}}.jpg" err-src="http://192.168.49.104:8080/app/img/default_user.png" custom-popover popover-html="<img class='thumbnail img-responsive' style='width: 400px; height:250px' src='http://192.168.49.104:3000/images/{{task.idUser}}.jpg'/>"  popover-placement="right">
+				  </img>
+					
+				  <!--
+				  <img class="thumbnail img-responsive" style="width: 40px; height:40px" ng-src="{{getUserImage(task.idUser)}}" err-src="http://192.168.49.104:8080/app/img/default_user.png">
+				  </img>
+				  -->
 				  </td>
 				  <td>{{task.username}}</td>
 				  <td>{{task.menuname}}</td>				  

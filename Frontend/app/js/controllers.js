@@ -432,27 +432,29 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 			 $.each($scope.generatedList, function(u, valueUser) {
 			  listEmailUsers+=$scope.generatedList[u].email+",";
 			  });			
-			SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': dateFormat}, function(response) {
-				if(response)
-				{
-				//alert("La llamada ha sido realizada por: "+ response.caller);
-				//$scope.caller=response.caller;
-				//alert("envio email");
+			SendEmailNotification.query({'listuser': listEmailUsers,'caller': caller, 'date': dateFormat}, function(response) {			
+			if(response)
+				{				
 				if(response.caller)
-					{					
-					
-					}
-				else
 					{
 					noty({
-						type: 'success', 
-						text: 'La notificación de correo fue enviada exitosamente. El responzable de realizar la llamada es: <b>'+caller+'</b>'
-						});
-					$scope.emailSent=true;
-					//$scope.callMade=true;
-					//stopSendEmail();
+							type: 'success', 
+							text: 'La notificación de correo ya habia sido enviada exitosamente. El responzable de realizar la llamada es: <b>'+response.caller+'</b>'
+							});
+						$scope.emailSent=true;	
+					}
+				else{
+					noty({
+							type: 'success', 
+							text: 'La notificación de correo fue enviada exitosamente. El responzable de realizar la llamada es: <b>'+caller+'</b>'
+							});
+						$scope.emailSent=true;								
 					}
 				}
+				else
+					{
+					alert("else");
+					}
 				});
 			}			  
 			//return false;		
@@ -487,7 +489,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
  $scope.progressBarValue=0;
  $scope._id = loggedInStatus.getUser()._id;
- $scope.imgUserName= 'http://localhost:3000/images/'+$scope._id+'.jpg?updated=' + Math.random(); 
+ $scope.imgUserName= 'http://192.168.49.104:3000/images/'+$scope._id+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
@@ -496,7 +498,7 @@ $scope.onFileSelect = function($files) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://localhost:3000/upload', //upload.php script, node.js route, or servlet url
+        url: 'http://192.168.49.104:3000/upload', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -517,7 +519,7 @@ $scope.onFileSelect = function($files) {
 			text: 'Imagen subida al servidor exitosamente.',
 			timeout:5000
 			});	
-		$scope.imgUserName= 'http://localhost:3000/images/'+$scope._id+'.jpg?updated=' + Math.random();
+		$scope.imgUserName= 'http://192.168.49.104:3000/images/'+$scope._id+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -548,7 +550,7 @@ $scope.onFileSelect = function($files) {
 .controller('UploadDishCtrl',['$scope', '$upload', 'loggedInStatus', 'getUserImgService' ,function($scope, $upload, loggedInStatus, getUserImgService){
   $scope.progressBarValue=0;
  //$scope.menuid = loggedInStatus.getUser().username;
- //$scope.imgDish= 'http://localhost:3000/images/Dish/'+$scope.menuid+'.jpg?updated=' + Math.random(); 
+ //$scope.imgDish= 'http://192.168.49.104:3000/images/Dish/'+$scope.menuid+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files, idMenu) {
     //$files: an array of files selected, each file has name, size, and type.
@@ -558,7 +560,7 @@ $scope.onFileSelect = function($files, idMenu) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://localhost:3000/uploadDish', //upload.php script, node.js route, or servlet url
+        url: 'http://192.168.49.104:3000/uploadDish', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -579,7 +581,7 @@ $scope.onFileSelect = function($files, idMenu) {
 			text: 'Imagen subida al servidor exitosamente.',
 			timeout:5000
 			});
-		$scope.imgDish= 'http://localhost:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
+		$scope.imgDish= 'http://192.168.49.104:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -654,6 +656,10 @@ $scope.onFileSelect = function($files, idMenu) {
   $scope.newListModel.date="";
   $scope.date = new Date(); 
   
+  $scope.getUserImage = function(userID)
+  {
+  return "http://192.168.49.104:3000/images/"+userID+".jpg?updated=" + Math.random();
+  }
   
   
   $rootScope.$on('loadSelectedMenuItem', function(event, data){	  
@@ -687,7 +693,7 @@ $scope.onFileSelect = function($files, idMenu) {
     var dateFormat= $filter('date')($scope.date,'dd-MM-yyyy');		
     JsonServiceListByDate.query({'date': dateFormat}, function(response) {
       $scope.tasks = response;
-	 // $scope.imgUserName= 'http://localhost:3000/images/'+$scope.tasks.username+'.jpg?updated=' + Math.random();
+	 // $scope.imgUserName= 'http://192.168.49.104:3000/images/'+$scope.tasks.username+'.jpg?updated=' + Math.random();
 	  //ValuesBetweenCtrl.setList($scope.tasks);	  	  	  	  	  
     });
 	$scope.currentDate = new Date();
@@ -1327,7 +1333,8 @@ var ModalInstanceCtrlMyAcount = function ($scope, $modalInstance, user, UpdateSe
 				//alert("Usuario actualizado exitosamente");
 				noty({
 					type: 'success', 
-					text: 'Usuario actualizado exitosamente.'
+					text: 'Usuario actualizado exitosamente.',
+					timeout:5000
 					});
 				$modalInstance.close($scope.user);				
 				}

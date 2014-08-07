@@ -332,7 +332,7 @@ module.exports = function(app){
 			tempPass += possible.charAt(Math.floor(Math.random() * possible.length));
 			
 		var mailOptions1 = {
-						from: 'AvaLunchs <jose.cordero@avantica.net>', // sender address
+						from: 'AvaLunchs <apps.dev@avantica.net>', // sender address
 						to: req.params.email, // list of receivers
 						subject: 'AvaLunchs - Recuperacion de Contrasena', // Subject line
 						text: 'Recuperación de Contraseña', // plaintext body
@@ -571,30 +571,41 @@ module.exports = function(app){
 	var caller=req.params.caller;
 	var date=req.params.date;
     //var verifyEmailSent=false;	
-	
+	var emailSentAux;
 	emailSentVa.findOne({date:date}, function(err,emailSent){
 		if(!err) 
 		{
 			if(emailSent)
 				{
 				console.log("The email confirmation was already sent: "+ emailSent.date +', caller: '+emailSent.caller);
+				//emailSentAux=emailSent;
 				res.send(emailSent);
 				}
 			else
 				{
 				console.log("User List that buy a lunch: "+lisUsers);								
 				var mailOptions1 = {
-									from: 'AvaLunchs <jose.cordero@avantica.net>', // sender address
+									from: 'AvaLunchs <apps.dev@avantica.net>', // sender address
 									to: lisUsers, // list of receivers
 									subject: 'AvaLunchs - Pedido del '+date, // Subject line
 									text: 'Pedido', // plaintext body
-									html: '<p><b>El seleccionado para realizar la llamada del dia de hoy es: '+caller+'</b></p><p>La lista se encuentra en el sitio web: <a target="_black" href="http:192.168.49.13:8080/app"> http:192.168.49.13:8080/app <a></p></br></br><p><b>AvaLunchs SQA Project Liberia 2014</b><p>' // html body
+									html: '<p><b>El seleccionado para realizar la llamada del dia de hoy es: '+caller+'</b></p><p>La lista se encuentra en el sitio web: <a target="_black" href="http:192.168.49.104:8080/app"> http:192.168.49.104:8080/app <a></p></br></br><p><b>AvaLunchs SQA Project Liberia 2014</b><p>' // html body
 									};
 									
 					sendEmail(mailOptions1);	
-					registerEmailSent(date,caller, false);				
-					res.send(emailSent);
+					registerEmailSent(date,caller, false);
+				
+					emailSent = new emailSentVa(
+						{
+						date: "",
+						caller: "",
+						callMade: false
+						});
+					emailSentAux=emailSent;
+					res.send(emailSentAux);
 				}
+				
+			
 		}
 		else 
 		{
@@ -602,7 +613,9 @@ module.exports = function(app){
 		res.send(false);
 		//verifyEmailSent=false;
 		}
-		});			
+		});		
+	console.log('new log '+emailSentAux);
+	//res.send(emailSentAux);			
 	//console.log("verify email sent: "+verifyEmailSent);
     //res.send(false);	
 	};

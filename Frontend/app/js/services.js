@@ -7,7 +7,7 @@
 // In this case it is a simple value service.
 //angular.module('myApp.services', []).value('version', '0.1');
 
-var urlServer="http://localhost:port";
+var urlServer="http://192.168.49.104:port";
 
 angular.module('myApp.services', ['ngResource','ngCookies'])
   
@@ -18,7 +18,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   
   
   flowFactoryProvider.defaults = {
-    target: 'http://localhost:3000/upload',
+    target: 'http://192.168.49.104:3000/upload',
     permanentErrors: [404, 500, 501],
     maxChunkRetries: 1,
     chunkRetryInterval: 5000,
@@ -43,7 +43,7 @@ angular.module('myApp.services', ['ngResource','ngCookies'])
   
   .factory('AngularIssues', function($resource){
     return $resource('https://api.github.com/repos/angular/angular.js/issues', {});
-	//return $resource('http://localhost:3000/user/', {})
+	//return $resource('http://192.168.49.104:3000/user/', {})
   })
   
     .factory('GetServerHour', function($resource) {
