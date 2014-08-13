@@ -107,7 +107,7 @@ module.exports = function(app){
 		 var dateAux=new Date;
 		 var hourAux=dateAux.getHours();
 		 var server = new serverVar(dateAux, hourAux);		
-		 console.log(server);
+		 //console.log(server);
 		 res.autoEtag();
 		 res.send(JSON.stringify(server));
 	};
