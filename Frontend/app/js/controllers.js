@@ -9,7 +9,7 @@
 (function(){
 
 var StartHour=10;
-var DueHour=11;
+var DueHour=24;
 var updateList_MenuInterval=5000;
 
 
@@ -489,7 +489,7 @@ var app= angular.module('myApp.controllers', ['myApp.autocomplete','ui.bootstrap
 
  $scope.progressBarValue=0;
  $scope._id = loggedInStatus.getUser()._id;
- $scope.imgUserName= 'http://192.168.49.104:3000/images/'+$scope._id+'.jpg?updated=' + Math.random(); 
+ $scope.imgUserName= 'http://jcordero:3000/images/'+$scope._id+'.jpg?updated=' + Math.random(); 
 
 $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
@@ -498,7 +498,7 @@ $scope.onFileSelect = function($files) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://192.168.49.104:3000/upload', //upload.php script, node.js route, or servlet url
+        url: 'http://jcordero:3000/upload', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -519,7 +519,7 @@ $scope.onFileSelect = function($files) {
 			text: 'Imagen subida al servidor exitosamente.',
 			timeout:5000
 			});	
-		$scope.imgUserName= 'http://192.168.49.104:3000/images/'+$scope._id+'.jpg?updated=' + Math.random();
+		$scope.imgUserName= 'http://jcordero:3000/images/'+$scope._id+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -560,7 +560,7 @@ $scope.onFileSelect = function($files, idMenu) {
       var file = $files[i];	  
 	  
       $scope.upload = $upload.upload({
-        url: 'http://192.168.49.104:3000/uploadDish', //upload.php script, node.js route, or servlet url
+        url: 'http://jcordero:3000/uploadDish', //upload.php script, node.js route, or servlet url
         method: 'POST',// or 'PUT',
         //headers: {'header-key': 'header-value'},
         //withCredentials: true,
@@ -581,7 +581,7 @@ $scope.onFileSelect = function($files, idMenu) {
 			text: 'Imagen subida al servidor exitosamente.',
 			timeout:5000
 			});
-		$scope.imgDish= 'http://192.168.49.104:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
+		$scope.imgDish= 'http://jcordero:3000/images/Dish/'+idMenu+'.jpg?updated=' + Math.random();
         console.log(data);
       });
       //.error(...)
@@ -658,7 +658,7 @@ $scope.onFileSelect = function($files, idMenu) {
   
   $scope.getUserImage = function(userID)
   {
-  return "http://192.168.49.104:3000/images/"+userID+".jpg?updated=" + Math.random();
+  return "http://jcordero:3000/images/"+userID+".jpg?updated=" + Math.random();
   }
   
   

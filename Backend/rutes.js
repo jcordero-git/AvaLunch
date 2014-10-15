@@ -646,7 +646,7 @@ app.delete('/menu/:id',deleteMenuById);
 app.post('/menu',registerMenu);
 app.get('/user',findAllUsers);
 app.post('/user',registerUser);
-app.get('/user/:username/:password',validateUserPassEncrypt);
+app.get('/user/:username/:password',validateUser);
 app.get('/user/:email',findUserByEmail);
 app.put('/user/:id/:updatePass',updateUserById);
 //app.get('/sendemail',sendEmail);

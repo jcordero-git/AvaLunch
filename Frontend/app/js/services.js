@@ -7,7 +7,7 @@
 // In this case it is a simple value service.
 //angular.module('myApp.services', []).value('version', '0.1');
 
-var urlServer="http://192.168.49.104:port";
+var urlServer="http://jcordero:port";
 
 angular.module('myApp.services', ['ngResource','ngCookies'])
   

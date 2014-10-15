@@ -87,7 +87,7 @@ app.all('*', function(req, res,next) {
 */
 
 app.listen(3000, function() {
-  console.log("Node server running on http://localhost:3000");
+  console.log("Node server running on http://jcordero:3000");
 });
 
 

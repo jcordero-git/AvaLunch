@@ -38,7 +38,6 @@ userSh.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
-
 */
 
 module.exports = mongoose.model('Users', userSh);
